@@ -119,7 +119,7 @@ TEST(IntegrationTest, SingleWriteOneHop) {
 
 ## 4. Golden Verification
 
-與 [Golden 驗證機制](07_golden_verification.md) 交叉引用。
+與 [Golden 驗證機制](13_golden_verification.md) 交叉引用。
 
 ### 4.1 驗證點
 
@@ -153,7 +153,7 @@ struct VerificationReport {
 
 ## 5. Performance Validation
 
-與 [效能指標](09_metrics.md) 交叉引用。
+與 [效能指標](14_metrics.md) 交叉引用。
 
 ### 5.1 效能基準測試
 
@@ -188,7 +188,7 @@ for (int buf_depth : {2, 4, 8, 16}) {
 
 ## 6. RTL Co-simulation
 
-與 [模擬規格](08_simulation.md) Section 6 交叉引用。
+與 [模擬規格](11_simulation.md) Section 6 交叉引用。
 
 ### 6.1 Co-sim 架構
 
@@ -258,8 +258,8 @@ for (int buf_depth : {2, 4, 8, 16}) {
 
 ## 相關文件
 
-- [Golden 驗證機制](07_golden_verification.md) — Golden data comparison
-- [效能指標](09_metrics.md) — MetricsCollector, stats classes
-- [模擬規格](08_simulation.md) — DPI-C bridge, system API
-- [Router 規格](02_router.md) — Router behavior under test
-- [Network Interface 規格](03_network_interface.md) — NI behavior under test
+- [Golden 驗證機制](13_golden_verification.md) — Golden data comparison
+- [效能指標](14_metrics.md) — MetricsCollector, stats classes
+- [模擬規格](11_simulation.md) — DPI-C bridge, system API
+- [Router 規格](03_router.md) — Router behavior under test
+- [Network Interface 規格](04_network_interface.md) — NI behavior under test

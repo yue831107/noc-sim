@@ -36,23 +36,23 @@ Multi-port LOCAL 架構詳見 Section 11。
 
 ## 2. Design Parameters
 
-所有參數與 [Flit Format](04_flit.md) 一致，採固定值設計。
+所有參數與 [Flit Format](02_flit.md) 一致，採固定值設計。
 
 | Parameter | Value | Source | Description |
 |-----------|-------|--------|-------------|
-| `FLIT_WIDTH` | 408 | 04_flit.md | Flit 寬度 (bits) |
-| `HEADER_WIDTH` | 56 | 04_flit.md | Header 寬度 (bits) |
-| `PAYLOAD_WIDTH` | 352 | 04_flit.md | Payload 寬度 (bits) |
-| `NODE_ID_WIDTH` | 8 | 04_flit.md | Node ID 寬度 (X_WIDTH + Y_WIDTH) |
-| `X_WIDTH` | 4 | 04_flit.md | X coordinate width (max 16 columns) |
-| `Y_WIDTH` | 4 | 04_flit.md | Y coordinate width (max 16 rows) |
-| `QOS_WIDTH` | 4 | 04_flit.md | QoS priority width (16 levels) |
-| `LINK_WIDTH` | 410 | 04_flit.md | Physical link width (valid + ready + flit) |
+| `FLIT_WIDTH` | 408 | 02_flit.md | Flit 寬度 (bits) |
+| `HEADER_WIDTH` | 56 | 02_flit.md | Header 寬度 (bits) |
+| `PAYLOAD_WIDTH` | 352 | 02_flit.md | Payload 寬度 (bits) |
+| `NODE_ID_WIDTH` | 8 | 02_flit.md | Node ID 寬度 (X_WIDTH + Y_WIDTH) |
+| `X_WIDTH` | 4 | 02_flit.md | X coordinate width (max 16 columns) |
+| `Y_WIDTH` | 4 | 02_flit.md | Y coordinate width (max 16 rows) |
+| `QOS_WIDTH` | 4 | 02_flit.md | QoS priority width (16 levels) |
+| `LINK_WIDTH` | 410 | 02_flit.md | Physical link width (valid + ready + flit) |
 | `INPUT_BUFFER_DEPTH` | 4 | Router config | Input buffer 深度 (flits) |
 | `OUTPUT_BUFFER_DEPTH` | 2 | Router config | Output buffer 深度 (flits, 0 = bypass) |
 | `NUM_MESH_PORTS` | 4 | Router config | Mesh direction ports (N/S/E/W) |
 | `NUM_LOCAL_PORTS` | 1 | Router config | LOCAL ports per Router (0~4, port_id 識別) |
-| `MAX_LOCAL_PORTS` | 4 | 04_flit.md | port_id 2 bits → 最多 4 個 LOCAL ports |
+| `MAX_LOCAL_PORTS` | 4 | 02_flit.md | port_id 2 bits → 最多 4 個 LOCAL ports |
 
 ---
 
@@ -334,7 +334,7 @@ std::set<Direction> compute_output_ports(const Flit& flit, Direction input_dir) 
         return { compute_output_port(flit, input_dir) };
     }
     // Multicast (commtype=1): coordinate-range routing
-    // See rectangle_multicast_spec_zh-TW.md Section 3.1
+    // See 10_multicast.md Section 3.1
     return compute_rcr_outputs(flit, input_dir);
 }
 ```
@@ -635,7 +635,7 @@ Single Write (awlen=0, 1 beat):
 
 ## 7. QoS-Aware Round-Robin Arbitration
 
-仲裁策略與 [QoS Design](10_qos.md) Section 5 一致：**qos 為第一優先級，同 qos 才使用 Round-Robin**。
+仲裁策略與 [QoS Design](07_qos.md) Section 5 一致：**qos 為第一優先級，同 qos 才使用 Round-Robin**。
 
 ### 7.1 Arbitration Policy
 
@@ -823,7 +823,7 @@ void crossbar_switch(Direction in_dir, Direction out_dir, const Flit& flit) {
 
 #### 8.3.2 Multicast Switching（Independent Per-Port）
 
-Multicast 時，routing function 產生 multi-hot output port set（見 [RCR-Multicast Spec](rectangle_multicast_spec_zh-TW.md) Section 3.1）。Crossbar 採用 **independent per-port handshake** 策略：各 target output 可在不同 cycle 獨立接受 flit。
+Multicast 時，routing function 產生 multi-hot output port set（見 [RCR-Multicast Spec](10_multicast.md) Section 3.1）。Crossbar 採用 **independent per-port handshake** 策略：各 target output 可在不同 cycle 獨立接受 flit。
 
 **核心規則：每個可用的 target output 獨立完成 handshake。已完成的 output 立即釋放。Input buffer 在所有 target output 都完成後才 pop。**
 
@@ -1276,7 +1276,7 @@ bool is_uturn(Direction in_dir, int in_port_id, Direction out_dir, int out_port_
 ### 13.1 Key Data Structures
 
 ```cpp
-// Flit header (56 bits) - matching 04_flit.md
+// Flit header (56 bits) - matching 02_flit.md
 struct FlitHeader {
     uint8_t  qos;              // [3:0]   4 bits
     uint8_t  axi_ch;           // [6:4]   3 bits
@@ -1627,7 +1627,7 @@ if (config_.routing_delay > 0) {
 | Buffer overflow | `input_buffer.push()` when full | `assert()` 失敗，simulation 中止 | FATAL |
 | Invalid destination | `dst_id` 座標超出 mesh 範圍 | Drop flit + log warning | ERROR |
 | Y→X turn violation | XY routing assertion | `assert()` 失敗（不應發生） | FATAL |
-| ECC failure | 偵測於 destination NI | 標記 `ecc_fail` flag 在 response flit（見 [NI Spec](03_network_interface.md) Section 8） | WARNING |
+| ECC failure | 偵測於 destination NI | 標記 `ecc_fail` flag 在 response flit（見 [NI Spec](04_network_interface.md) Section 8） | WARNING |
 | Wormhole deadlock | 不偵測 | 本設計不模擬 deadlock recovery | N/A |
 
 ### 15.2 Credit Underflow
@@ -1694,15 +1694,15 @@ Router **不檢查、不修改 ECC** — Router 為 flit 的透通轉發器。EC
 Source NI (ECC generate) → Router chain (pass-through) → Destination NI (ECC check)
 ```
 
-ECC 錯誤處理完全在 NI 層面，詳見 [Network Interface Specification](03_network_interface.md) Section 8。
+ECC 錯誤處理完全在 NI 層面，詳見 [Network Interface Specification](04_network_interface.md) Section 8。
 
 ---
 
 ## Related Documents
 
 - [System Overview](01_overview.md) — Mesh 拓撲與系統架構
-- [Network Interface Specification](03_network_interface.md) — NI 與 LOCAL port 連接、CppNI 內部 functions
-- [Flit Format](04_flit.md) — Flit 結構、header 欄位定義、physical link format
+- [Network Interface Specification](04_network_interface.md) — NI 與 LOCAL port 連接、CppNI 內部 functions
+- [Flit Format](02_flit.md) — Flit 結構、header 欄位定義、physical link format
 - [Internal Interface](05_internal_interface.md) — Abstract Interface、Channel\<T\>、TrafficManager、Allocator、8-phase cycle 定義
-- [模擬規格](08_simulation.md) — NocSystem API (6 組)、I/O Pattern、NocConfig、Replaceable Components
-- [QoS Design](10_qos.md) — QoS-Aware arbitration policy、QoS Generator
+- [模擬規格](11_simulation.md) — NocSystem API (6 組)、I/O Pattern、NocConfig、Replaceable Components
+- [QoS Design](07_qos.md) — QoS-Aware arbitration policy、QoS Generator

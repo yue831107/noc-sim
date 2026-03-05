@@ -208,5 +208,5 @@ for (auto& [pos, ni] : system.mesh().nis()) {
 
 ## 相關文件
 
-- [模擬參數](08_simulation.md)
-- [Flit 格式](04_flit.md)
+- [模擬參數](11_simulation.md)
+- [Flit 格式](02_flit.md)

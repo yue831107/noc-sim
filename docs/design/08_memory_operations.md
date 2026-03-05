@@ -149,7 +149,7 @@ Node0.blk1 → Node1.blk1 → Node2.blk1 → Node3.blk1 →
 
 ## 5. Flit 大小與傳輸計算
 
-以下參數與 [Flit 格式](04_flit.md) 一致：
+以下參數與 [Flit 格式](02_flit.md) 一致：
 
 | 參數 | 值 | 說明 |
 |------|-----|------|
@@ -185,4 +185,4 @@ Total request flits = 128 + 8 = 136 flits
 ## 相關文件
 
 - [系統概述](01_overview.md)
-- [Flit 格式](04_flit.md)
+- [Flit 格式](02_flit.md)

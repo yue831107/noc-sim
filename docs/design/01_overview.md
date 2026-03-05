@@ -44,7 +44,7 @@
 
 ### 2.1 Flit 與 Link 參數
 
-以下為固定設計參數，與 [Flit 格式](04_flit.md) 一致：
+以下為固定設計參數，與 [Flit 格式](02_flit.md) 一致：
 
 | 參數 | 值 | 說明 |
 |------|-----|------|
@@ -83,7 +83,7 @@
 
 ## 相關文件
 
-- [Router 規格](02_router.md)
-- [Network Interface 規格](03_network_interface.md)
-- [Flit 格式](04_flit.md)
+- [Router 規格](03_router.md)
+- [Network Interface 規格](04_network_interface.md)
+- [Flit 格式](02_flit.md)
 - [內部介面架構](05_internal_interface.md)

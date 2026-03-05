@@ -70,7 +70,7 @@ struct NocConfig {
 
 ### 1.3 固定設計參數
 
-以下參數為固定值，與 [Flit 格式](04_flit.md) 一致，不可於模擬中調整：
+以下參數為固定值，與 [Flit 格式](02_flit.md) 一致，不可於模擬中調整：
 
 | 參數 | 值 | 說明 |
 |------|-----|------|
@@ -756,10 +756,10 @@ Phase 2 (Clear) → Phase 3 (Ready)
 ## 相關文件
 
 - [系統概述](01_overview.md)
-- [Router 規格](02_router.md) — 8-phase pipeline 行為、CppRouter 內部 pipeline stages
-- [Network Interface 規格](03_network_interface.md) — NMU/NSU 處理、CppNI 內部 functions
-- [Flit 格式](04_flit.md) — 固定參數基準
+- [Router 規格](03_router.md) — 8-phase pipeline 行為、CppRouter 內部 pipeline stages
+- [Network Interface 規格](04_network_interface.md) — NMU/NSU 處理、CppNI 內部 functions
+- [Flit 格式](02_flit.md) — 固定參數基準
 - [內部介面架構](05_internal_interface.md) — Channel\<T\>、TrafficManager、Allocator、Phase 詳細定義
-- [效能指標](09_metrics.md) — MetricsCollector
-- [Golden 驗證](07_golden_verification.md) — VerificationReport
+- [效能指標](14_metrics.md) — MetricsCollector
+- [Golden 驗證](13_golden_verification.md) — VerificationReport
 - [架構圖](../images/noc_env.txt) — 系統架構圖

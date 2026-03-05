@@ -1,6 +1,6 @@
 # 內部介面架構
 
-本文件定義 NoC 元件之間的 physical link 信號、flow control 機制、連接拓撲與 cycle processing model。所有參數以 [Flit Format](04_flit.md) 為基準，設計目標為可直接映射至 C++ cycle-accurate model 與 RTL 實作。
+本文件定義 NoC 元件之間的 physical link 信號、flow control 機制、連接拓撲與 cycle processing model。所有參數以 [Flit Format](02_flit.md) 為基準，設計目標為可直接映射至 C++ cycle-accurate model 與 RTL 實作。
 
 ---
 
@@ -10,7 +10,7 @@
 
 ### 1.1 Link Signal Table
 
-與 [04_flit.md Section 4.1](04_flit.md) 完全一致：
+與 [02_flit.md Section 4.1](02_flit.md) 完全一致：
 
 | Signal | Bit | Width | Direction | Description |
 |--------|-----|-------|-----------|-------------|
@@ -52,7 +52,7 @@ static constexpr int PHYSICAL_LINK_WIDTH = 410;  // valid(1) + ready(1) + flit(4
 
 ## 2. Flow Control 架構
 
-04_flit.md 定義了兩種 flow control 版本，差異在於 Virtual Channel (VC) 的實現方式。以下明確定義兩者的信號、行為與適用場景。
+02_flit.md 定義了兩種 flow control 版本，差異在於 Virtual Channel (VC) 的實現方式。以下明確定義兩者的信號、行為與適用場景。
 
 ### 2.1 Version A — Valid/Ready Handshake（Per-VC Physical Lines）
 
@@ -1067,17 +1067,17 @@ private:
 
 ## 12. 參數總表
 
-以下參數與 [04_flit.md](04_flit.md) 一致：
+以下參數與 [02_flit.md](02_flit.md) 一致：
 
 | Parameter | Value | Source |
 |-----------|-------|--------|
-| `FLIT_WIDTH` | 408 bits | 04_flit.md Section 1.2 |
-| `HEADER_WIDTH` | 56 bits | 04_flit.md Section 1.2 |
-| `PAYLOAD_WIDTH` | 352 bits | 04_flit.md Section 1.2 |
-| `PHYSICAL_LINK_WIDTH` | 410 bits | 04_flit.md Section 4.1 |
-| `MAX_VC` | 8 | 04_flit.md Section 2.2.9 |
-| `NODE_ID_WIDTH` | 8 bits | 04_flit.md Section 1.2 |
-| `VC_ID_WIDTH` | 3 bits | 04_flit.md Section 2.1 (Version B) |
+| `FLIT_WIDTH` | 408 bits | 02_flit.md Section 1.2 |
+| `HEADER_WIDTH` | 56 bits | 02_flit.md Section 1.2 |
+| `PAYLOAD_WIDTH` | 352 bits | 02_flit.md Section 1.2 |
+| `PHYSICAL_LINK_WIDTH` | 410 bits | 02_flit.md Section 4.1 |
+| `MAX_VC` | 8 | 02_flit.md Section 2.2.9 |
+| `NODE_ID_WIDTH` | 8 bits | 02_flit.md Section 1.2 |
+| `VC_ID_WIDTH` | 3 bits | 02_flit.md Section 2.1 (Version B) |
 
 Router 相關參數：
 
@@ -1095,9 +1095,9 @@ Router 相關參數：
 ## 相關文件
 
 - [系統概述](01_overview.md)
-- [Router 規格](02_router.md) — Port 定義、XY Routing、Wormhole Arbiter、CppRouter Pipeline Stages
-- [Network Interface 規格](03_network_interface.md) — NI 功能模組、AXI Protocol Conversion、CppNI Functions
-- [Flit Format](04_flit.md) — **基準文件**：Header/Payload 格式、Physical Link 定義、Flow Control 版本
-- [模擬規格](08_simulation.md) — NocSystem API (6 組)、I/O Pattern、DPI-C Bridge、Replaceable Components
-- [QoS Design](10_qos.md) — QoS arbitration 策略
+- [Router 規格](03_router.md) — Port 定義、XY Routing、Wormhole Arbiter、CppRouter Pipeline Stages
+- [Network Interface 規格](04_network_interface.md) — NI 功能模組、AXI Protocol Conversion、CppNI Functions
+- [Flit Format](02_flit.md) — **基準文件**：Header/Payload 格式、Physical Link 定義、Flow Control 版本
+- [模擬規格](11_simulation.md) — NocSystem API (6 組)、I/O Pattern、DPI-C Bridge、Replaceable Components
+- [QoS Design](07_qos.md) — QoS arbitration 策略
 - [架構圖](../images/noc_env.txt) — 系統架構圖
