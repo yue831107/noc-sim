@@ -1,0 +1,26 @@
+{
+  "topology": {
+    "mesh_cols": 5,
+    "mesh_rows": 4
+  },
+  "router": {
+    "input_buffer_depth": 4,
+    "output_buffer_depth": 2,
+    "num_vc": 1,
+    "flow_control": "valid_ready",
+    "vc_allocator": "round_robin",
+    "sw_allocator": "qos_aware_rr"
+  },
+  "ni": {
+    "nmu_buffer_depth": 2,
+    "rob_entries": 32,
+    "max_burst_len": 16
+  },
+  "pipeline": {
+    "routing_delay": 0,
+    "vc_alloc_delay": 0,
+    "sw_alloc_delay": 0,
+    "credit_delay": 1,
+    "channel_delay": 1
+  }
+}

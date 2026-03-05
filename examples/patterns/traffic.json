@@ -1,0 +1,25 @@
+{
+  "transactions": [
+    {
+      "id": 0,
+      "type": "WRITE",
+      "src_node": "0x00",
+      "dst_addr": "0x10_00001000",
+      "data_file": "txn0_wdata.hex",
+      "data_size": 64,
+      "axi_id": 0,
+      "burst_len": 2,
+      "inject_cycle": 0
+    },
+    {
+      "id": 1,
+      "type": "READ",
+      "src_node": "0x00",
+      "dst_addr": "0x10_00001000",
+      "data_size": 64,
+      "axi_id": 1,
+      "burst_len": 2,
+      "inject_cycle": "after:0"
+    }
+  ]
+}
