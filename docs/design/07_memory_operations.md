@@ -1,10 +1,10 @@
-# Memory Copy 操作
+# Memory Operations
 
 本文件說明 Host Memory 到 Local Memory 的複製機制。
 
 ---
 
-## 1. 架構概述
+## 1. Overview
 
 ### 1.1 簡化架構
 
@@ -57,20 +57,20 @@
                                      │ via Router LOCAL port (port_id)
                                      ▼
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│  NOC MESH (5×4)                                                              │
+│  NOC MESH (4×4)                                                              │
 │                                                                              │
-│  (0,3)────(1,3)───(2,3)───(3,3)───(4,3)                                    │
-│    │  R    │  R     │  R    │  R    │  R                                    │
-│   NI      NI       NI      NI      NI                                       │
-│  (0,2)────(1,2)───(2,2)───(3,2)───(4,2)                                    │
-│    │  R    │  R     │  R    │  R    │  R                                    │
-│   NI      NI       NI      NI      NI                                       │
-│  (0,1)────(1,1)───(2,1)───(3,1)───(4,1)                                    │
-│    │  R    │  R     │  R    │  R    │  R                                    │
-│   NI      NI       NI      NI      NI                                       │
-│  (0,0)────(1,0)───(2,0)───(3,0)───(4,0)                                    │
-│    │  R    │  R     │  R    │  R    │  R                                    │
-│   NI      NI       NI      NI      NI                                       │
+│  (0,3)────(1,3)───(2,3)───(3,3)                                            │
+│    │  R    │  R     │  R    │  R                                            │
+│   NI      NI       NI      NI                                               │
+│  (0,2)────(1,2)───(2,2)───(3,2)                                            │
+│    │  R    │  R     │  R    │  R                                            │
+│   NI      NI       NI      NI                                               │
+│  (0,1)────(1,1)───(2,1)───(3,1)                                            │
+│    │  R    │  R     │  R    │  R                                            │
+│   NI      NI       NI      NI                                               │
+│  (0,0)────(1,0)───(2,0)───(3,0)                                            │
+│    │  R    │  R     │  R    │  R                                            │
+│   NI      NI       NI      NI                                               │
 │                                                                              │
 │  R = Router, NI = Network Interface (含 Local Memory)                        │
 └─────────────────────────────────────────────────────────────────────────────┘
@@ -139,6 +139,8 @@ Node0.blk1 → Node1.blk1 → Node2.blk1 → Node3.blk1 →
 |------|--------|------------|------|
 | 順序 | 168 | 9.58 B/cycle | 單一路徑，等待 Response |
 | 交錯 (4) | 87 | 18.60 B/cycle | 路徑分散，減少等待 |
+
+> Throughput = (total_blocks × block_size) / total_cycles。範例：交錯 (4) = (42 blocks × 32 B × 4 nodes × ... ) / 87 cycles ≈ 18.60 B/cycle。實際值取決於 block_size 與 burst 配置。
 
 **效能提升來源**:
 1. **路徑分散**: 不同目的地使用不同 mesh 路徑

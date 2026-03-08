@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" font-family="Consolas, monospace" font-size="13">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="10" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#333"/>
+    </marker>
+    <marker id="arr-g" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="10" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#16a34a"/>
+    </marker>
+    <marker id="arr-r" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="10" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#e11d48"/>
+    </marker>
+    <marker id="arr-b" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="10" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#2563eb"/>
+    </marker>
+    <marker id="arr-a" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="10" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#d97706"/>
+    </marker>
+    <marker id="arr-p" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="10" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#7c3aed"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="720" fill="#fafbfc" rx="8"/>
+
+  <!-- Title -->
+  <text x="600" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1a2e">NoC C++ Behavior Model — NI / Router Block Diagram</text>
+  <text x="600" y="48" text-anchor="middle" font-size="11" fill="#64748b">Hot-Swap: 同一組 port 信號，內部可替換為 C++ Model 或 RTL (DPI-C Bridge)</text>
+
+  <!-- ============================================================ -->
+  <!--                     NI BLOCK (LEFT)                          -->
+  <!-- ============================================================ -->
+  <rect x="100" y="70" width="380" height="530" rx="6" fill="#dff0ff" stroke="#3b82f6" stroke-width="2.5"/>
+  <text x="290" y="96" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e3a5f">Network Interface</text>
+
+  <!-- ── Left side: AXI ports (signal wires) ── -->
+  <!-- AW -->
+  <line x1="30" y1="140" x2="98" y2="140" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arr-b)"/>
+  <text x="26" y="137" text-anchor="end" font-size="10" fill="#1e40af" font-weight="bold">AW</text>
+  <rect x="48" y="144" width="36" height="13" rx="2" fill="#dbeafe"/>
+  <text x="66" y="154" text-anchor="middle" font-size="8" fill="#2563eb">addr+ctrl</text>
+
+  <!-- W -->
+  <line x1="30" y1="172" x2="98" y2="172" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arr-b)"/>
+  <text x="26" y="169" text-anchor="end" font-size="10" fill="#1e40af" font-weight="bold">W</text>
+  <rect x="48" y="176" width="36" height="13" rx="2" fill="#dbeafe"/>
+  <text x="66" y="186" text-anchor="middle" font-size="8" fill="#2563eb">data+strb</text>
+
+  <!-- AR -->
+  <line x1="30" y1="204" x2="98" y2="204" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arr-b)"/>
+  <text x="26" y="201" text-anchor="end" font-size="10" fill="#1e40af" font-weight="bold">AR</text>
+  <rect x="48" y="208" width="36" height="13" rx="2" fill="#dbeafe"/>
+  <text x="66" y="218" text-anchor="middle" font-size="8" fill="#2563eb">addr+ctrl</text>
+
+  <!-- B (response, ← out) -->
+  <line x1="98" y1="240" x2="30" y2="240" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arr-b)"/>
+  <text x="26" y="237" text-anchor="end" font-size="10" fill="#1e40af" font-weight="bold">B</text>
+  <rect x="48" y="244" width="30" height="13" rx="2" fill="#dbeafe"/>
+  <text x="63" y="254" text-anchor="middle" font-size="8" fill="#2563eb">resp</text>
+
+  <!-- R (response, ← out) -->
+  <line x1="98" y1="272" x2="30" y2="272" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arr-b)"/>
+  <text x="26" y="269" text-anchor="end" font-size="10" fill="#1e40af" font-weight="bold">R</text>
+  <rect x="48" y="276" width="36" height="13" rx="2" fill="#dbeafe"/>
+  <text x="66" y="286" text-anchor="middle" font-size="8" fill="#2563eb">data+resp</text>
+
+  <!-- AXI group label -->
+  <text x="12" y="130" font-size="9" fill="#64748b" font-style="italic">AXI4</text>
+  <text x="12" y="142" font-size="9" fill="#64748b" font-style="italic">Master/</text>
+  <text x="12" y="154" font-size="9" fill="#64748b" font-style="italic">Slave</text>
+
+  <!-- ── Right side: Flit ports (to Channel) ── -->
+  <!-- REQ out -->
+  <line x1="482" y1="140" x2="540" y2="140" stroke="#16a34a" stroke-width="2.5" marker-end="url(#arr-g)"/>
+  <text x="488" y="133" font-size="10" fill="#16a34a" font-weight="bold">REQ_OUT</text>
+  <rect x="488" y="144" width="48" height="13" rx="2" fill="#dcfce7"/>
+  <text x="512" y="154" text-anchor="middle" font-size="8" fill="#16a34a">valid+flit</text>
+
+  <!-- RSP in -->
+  <line x1="540" y1="180" x2="482" y2="180" stroke="#e11d48" stroke-width="2.5" marker-end="url(#arr-r)"/>
+  <text x="488" y="173" font-size="10" fill="#e11d48" font-weight="bold">RSP_IN</text>
+  <rect x="488" y="184" width="48" height="13" rx="2" fill="#ffe4e6"/>
+  <text x="512" y="194" text-anchor="middle" font-size="8" fill="#e11d48">valid+flit</text>
+
+  <!-- Ready / Credit (flow control) -->
+  <line x1="540" y1="218" x2="482" y2="218" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-g)"/>
+  <text x="488" y="213" font-size="9" fill="#16a34a">req_ready (or credit)</text>
+
+  <line x1="482" y1="246" x2="540" y2="246" stroke="#e11d48" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-r)"/>
+  <text x="488" y="241" font-size="9" fill="#e11d48">rsp_ready (or credit)</text>
+
+  <!-- CLK -->
+  <line x1="30" y1="315" x2="98" y2="315" stroke="#7c3aed" stroke-width="2" marker-end="url(#arr-p)"/>
+  <text x="26" y="312" text-anchor="end" font-size="10" fill="#7c3aed" font-weight="bold">tick()</text>
+  <text x="26" y="326" text-anchor="end" font-size="8" fill="#9ca3af">= posedge clk</text>
+
+  <!-- ── NI Internal: two options ── -->
+  <!-- Divider label -->
+  <text x="290" y="360" text-anchor="middle" font-size="11" fill="#ef4444" font-weight="bold">── 擇一實作 ──</text>
+
+  <!-- Option A: C++ Model -->
+  <rect x="112" y="376" width="168" height="210" rx="4" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <rect x="118" y="382" width="70" height="16" rx="3" fill="#22c55e"/>
+  <text x="153" y="393" text-anchor="middle" font-size="9" fill="white" font-weight="bold">C++ Model</text>
+  <text x="196" y="412" text-anchor="middle" font-size="11" font-weight="bold" fill="#166534">C++ NI</text>
+  <line x1="120" y1="420" x2="272" y2="420" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="120" y="436" font-size="8.5" fill="#166534" font-weight="bold">NMU (AXI→Flit):</text>
+  <text x="120" y="450" font-size="8.5" fill="#166534">_AddrTranslate()</text>
+  <text x="120" y="462" font-size="8.5" fill="#166534">_PackAW/_PackW/_PackAR</text>
+  <text x="120" y="474" font-size="8.5" fill="#166534">_QosGenerate()</text>
+  <text x="120" y="486" font-size="8.5" fill="#166534">_EccGenerate()→_Inject()</text>
+  <text x="120" y="504" font-size="8.5" fill="#166534" font-weight="bold">NSU (Flit→AXI):</text>
+  <text x="120" y="518" font-size="8.5" fill="#166534">_UnpackAW/_UnpackW</text>
+  <text x="120" y="530" font-size="8.5" fill="#166534">_EccCheck()→_Reassemble</text>
+  <text x="120" y="542" font-size="8.5" fill="#166534">_PackB/_PackR/_MemoryOp</text>
+
+  <!-- Option B: DPI-C Bridge -->
+  <rect x="300" y="376" width="168" height="140" rx="4" fill="#fefce8" stroke="#eab308" stroke-width="1.5"/>
+  <rect x="306" y="382" width="68" height="16" rx="3" fill="#eab308"/>
+  <text x="340" y="393" text-anchor="middle" font-size="9" fill="white" font-weight="bold">RTL Mode</text>
+  <text x="384" y="412" text-anchor="middle" font-size="11" font-weight="bold" fill="#854d0e">DPI-C Bridge</text>
+  <line x1="308" y1="420" x2="460" y2="420" stroke="#fde68a" stroke-width="1"/>
+  <text x="384" y="438" text-anchor="middle" font-size="9" fill="#92400e">每 cycle 透過 DPI-C</text>
+  <text x="384" y="452" text-anchor="middle" font-size="9" fill="#92400e">轉發 port 信號：</text>
+  <text x="384" y="472" text-anchor="middle" font-size="9" fill="#854d0e">noc_set_port_input()</text>
+  <text x="384" y="488" text-anchor="middle" font-size="9" fill="#854d0e">noc_get_port_output()</text>
+  <text x="384" y="504" text-anchor="middle" font-size="9" fill="#854d0e">noc_advance_time()</text>
+
+  <!-- DPI-C → RTL DUT -->
+  <line x1="370" y1="516" x2="370" y2="542" stroke="#d97706" stroke-width="2" marker-end="url(#arr-a)"/>
+  <line x1="398" y1="542" x2="398" y2="516" stroke="#d97706" stroke-width="2" marker-end="url(#arr-a)"/>
+  <rect x="308" y="546" width="152" height="40" rx="4" fill="#fff7ed" stroke="#f97316" stroke-width="2"/>
+  <text x="384" y="564" text-anchor="middle" font-size="11" font-weight="bold" fill="#c2410c">NI RTL DUT</text>
+  <text x="384" y="578" text-anchor="middle" font-size="8" fill="#ea580c">SystemVerilog</text>
+
+  <!-- ============================================================ -->
+  <!--                    CHANNEL<T> (CENTER)                       -->
+  <!-- ============================================================ -->
+  <rect x="554" y="110" width="92" height="160" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="600" y="134" text-anchor="middle" font-size="12" font-weight="bold" fill="#92400e">Channel</text>
+  <text x="600" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="#92400e">&lt;T&gt;</text>
+  <line x1="562" y1="156" x2="638" y2="156" stroke="#fde68a" stroke-width="1"/>
+  <text x="600" y="172" text-anchor="middle" font-size="9" fill="#a16207">永遠 C++ only</text>
+  <text x="600" y="188" text-anchor="middle" font-size="9" fill="#a16207">DELAY = 1 cycle</text>
+  <text x="600" y="210" text-anchor="middle" font-size="8" fill="#78716c" font-style="italic">RTL 類比:</text>
+  <text x="600" y="222" text-anchor="middle" font-size="8" fill="#78716c" font-style="italic">wire 或 1-stage FF</text>
+
+  <!-- REQ arrow: NI → Channel (top pair) -->
+  <line x1="542" y1="140" x2="552" y2="140" stroke="#16a34a" stroke-width="2.5" marker-end="url(#arr-g)"/>
+  <!-- REQ arrow: Channel → Router -->
+  <line x1="648" y1="140" x2="700" y2="140" stroke="#16a34a" stroke-width="2.5" marker-end="url(#arr-g)"/>
+
+  <!-- RSP arrow: Router → Channel (bottom pair) -->
+  <line x1="700" y1="180" x2="648" y2="180" stroke="#e11d48" stroke-width="2.5" marker-end="url(#arr-r)"/>
+  <!-- RSP arrow: Channel → NI -->
+  <line x1="552" y1="180" x2="542" y2="180" stroke="#e11d48" stroke-width="2.5" marker-end="url(#arr-r)"/>
+
+  <!-- Flow control dashed: right side -->
+  <line x1="700" y1="218" x2="648" y2="218" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-g)"/>
+  <line x1="648" y1="246" x2="700" y2="246" stroke="#e11d48" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-r)"/>
+
+  <!-- Channel labels on wires -->
+  <text x="600" y="132" text-anchor="middle" font-size="8" fill="#16a34a">REQ flit [408]</text>
+  <text x="600" y="198" text-anchor="middle" font-size="8" fill="#e11d48">RSP flit [408]</text>
+  <text x="600" y="244" text-anchor="middle" font-size="8" fill="#64748b">ready / credit</text>
+
+  <!-- ============================================================ -->
+  <!--                    ROUTER BLOCK (RIGHT)                      -->
+  <!-- ============================================================ -->
+  <rect x="702" y="70" width="380" height="530" rx="6" fill="#fce7f3" stroke="#ec4899" stroke-width="2.5"/>
+  <text x="892" y="96" text-anchor="middle" font-size="17" font-weight="bold" fill="#831843">Router</text>
+
+  <!-- ── Left side: LOCAL port (from Channel / NI) ── -->
+  <text x="708" y="133" font-size="10" fill="#16a34a" font-weight="bold">REQ_IN</text>
+  <text x="708" y="173" font-size="10" fill="#e11d48" font-weight="bold">RSP_OUT</text>
+  <text x="708" y="213" font-size="9" fill="#16a34a">req_ready</text>
+  <text x="708" y="241" font-size="9" fill="#e11d48">rsp_ready</text>
+
+  <!-- ── Right side: Mesh ports N/S/E/W (signal wires) ── -->
+  <!-- N out -->
+  <line x1="1084" y1="128" x2="1152" y2="128" stroke="#16a34a" stroke-width="2.5" marker-end="url(#arr-g)"/>
+  <text x="1158" y="125" font-size="10" fill="#16a34a" font-weight="bold">N_REQ</text>
+  <rect x="1098" y="132" width="42" height="12" rx="2" fill="#dcfce7"/>
+  <text x="1119" y="141" text-anchor="middle" font-size="7.5" fill="#16a34a">valid+flit</text>
+
+  <!-- N in -->
+  <line x1="1152" y1="152" x2="1084" y2="152" stroke="#e11d48" stroke-width="2.5" marker-end="url(#arr-r)"/>
+  <text x="1158" y="149" font-size="10" fill="#e11d48" font-weight="bold">N_RSP</text>
+  <rect x="1098" y="156" width="42" height="12" rx="2" fill="#ffe4e6"/>
+  <text x="1119" y="165" text-anchor="middle" font-size="7.5" fill="#e11d48">valid+flit</text>
+
+  <!-- S -->
+  <line x1="1084" y1="192" x2="1152" y2="192" stroke="#16a34a" stroke-width="2.5" marker-end="url(#arr-g)"/>
+  <text x="1158" y="189" font-size="10" fill="#16a34a" font-weight="bold">S_REQ</text>
+  <line x1="1152" y1="210" x2="1084" y2="210" stroke="#e11d48" stroke-width="2.5" marker-end="url(#arr-r)"/>
+  <text x="1158" y="207" font-size="10" fill="#e11d48" font-weight="bold">S_RSP</text>
+
+  <!-- E -->
+  <line x1="1084" y1="248" x2="1152" y2="248" stroke="#16a34a" stroke-width="2.5" marker-end="url(#arr-g)"/>
+  <text x="1158" y="245" font-size="10" fill="#16a34a" font-weight="bold">E_REQ</text>
+  <line x1="1152" y1="266" x2="1084" y2="266" stroke="#e11d48" stroke-width="2.5" marker-end="url(#arr-r)"/>
+  <text x="1158" y="263" font-size="10" fill="#e11d48" font-weight="bold">E_RSP</text>
+
+  <!-- W -->
+  <line x1="1084" y1="304" x2="1152" y2="304" stroke="#16a34a" stroke-width="2.5" marker-end="url(#arr-g)"/>
+  <text x="1158" y="301" font-size="10" fill="#16a34a" font-weight="bold">W_REQ</text>
+  <line x1="1152" y1="322" x2="1084" y2="322" stroke="#e11d48" stroke-width="2.5" marker-end="url(#arr-r)"/>
+  <text x="1158" y="319" font-size="10" fill="#e11d48" font-weight="bold">W_RSP</text>
+
+  <!-- Mesh group label -->
+  <text x="1178" y="350" font-size="9" fill="#831843" font-style="italic">→ Mesh</text>
+  <text x="1178" y="362" font-size="9" fill="#831843" font-style="italic">  Links</text>
+
+  <!-- Flow ctrl dashed (N only, others implied) -->
+  <line x1="1152" y1="174" x2="1084" y2="174" stroke="#64748b" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+  <text x="1158" y="178" font-size="8" fill="#64748b">ready/credit</text>
+
+  <!-- CLK -->
+  <line x1="1170" y1="395" x2="1084" y2="395" stroke="#7c3aed" stroke-width="2" marker-end="url(#arr-p)"/>
+  <text x="1176" y="392" font-size="10" fill="#7c3aed" font-weight="bold">tick()</text>
+  <text x="1176" y="406" font-size="8" fill="#9ca3af">= posedge clk</text>
+
+  <!-- ── Router Internal: two options ── -->
+  <text x="892" y="360" text-anchor="middle" font-size="11" fill="#ef4444" font-weight="bold">── 擇一實作 ──</text>
+
+  <!-- Option A: C++ Model -->
+  <rect x="714" y="376" width="168" height="210" rx="4" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <rect x="720" y="382" width="70" height="16" rx="3" fill="#22c55e"/>
+  <text x="755" y="393" text-anchor="middle" font-size="9" fill="white" font-weight="bold">C++ Model</text>
+  <text x="798" y="412" text-anchor="middle" font-size="11" font-weight="bold" fill="#166534">C++ Router</text>
+  <line x1="722" y1="420" x2="874" y2="420" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="722" y="436" font-size="8.5" fill="#166534" font-weight="bold">Pipeline (Phase 4):</text>
+  <text x="722" y="450" font-size="8.5" fill="#166534">_InputQueuing()</text>
+  <text x="722" y="462" font-size="8.5" fill="#166534">→ _RouteEvaluate()</text>
+  <text x="722" y="474" font-size="8.5" fill="#166534">→ _VCAllocEvaluate()</text>
+  <text x="722" y="486" font-size="8.5" fill="#166534">→ _SWAllocEvaluate()</text>
+  <text x="722" y="498" font-size="8.5" fill="#166534">→ _SwitchTraverse()</text>
+  <text x="722" y="510" font-size="8.5" fill="#166534">→ _OutputQueuing()</text>
+  <text x="722" y="530" font-size="8.5" fill="#166534" font-weight="bold">×2: ReqRouter+RspRouter</text>
+  <text x="722" y="544" font-size="8.5" fill="#166534">(對稱, +Reduction)</text>
+
+  <!-- Option B: DPI-C Bridge -->
+  <rect x="902" y="376" width="168" height="140" rx="4" fill="#fefce8" stroke="#eab308" stroke-width="1.5"/>
+  <rect x="908" y="382" width="68" height="16" rx="3" fill="#eab308"/>
+  <text x="942" y="393" text-anchor="middle" font-size="9" fill="white" font-weight="bold">RTL Mode</text>
+  <text x="986" y="412" text-anchor="middle" font-size="11" font-weight="bold" fill="#854d0e">DPI-C Bridge</text>
+  <line x1="910" y1="420" x2="1062" y2="420" stroke="#fde68a" stroke-width="1"/>
+  <text x="986" y="438" text-anchor="middle" font-size="9" fill="#92400e">每 cycle 透過 DPI-C</text>
+  <text x="986" y="452" text-anchor="middle" font-size="9" fill="#92400e">轉發 port 信號：</text>
+  <text x="986" y="472" text-anchor="middle" font-size="9" fill="#854d0e">noc_set_port_input()</text>
+  <text x="986" y="488" text-anchor="middle" font-size="9" fill="#854d0e">noc_get_port_output()</text>
+  <text x="986" y="504" text-anchor="middle" font-size="9" fill="#854d0e">noc_advance_time()</text>
+
+  <!-- DPI-C → RTL DUT -->
+  <line x1="972" y1="516" x2="972" y2="542" stroke="#d97706" stroke-width="2" marker-end="url(#arr-a)"/>
+  <line x1="1000" y1="542" x2="1000" y2="516" stroke="#d97706" stroke-width="2" marker-end="url(#arr-a)"/>
+  <rect x="910" y="546" width="152" height="40" rx="4" fill="#fff7ed" stroke="#f97316" stroke-width="2"/>
+  <text x="986" y="564" text-anchor="middle" font-size="11" font-weight="bold" fill="#c2410c">Router RTL DUT</text>
+  <text x="986" y="578" text-anchor="middle" font-size="8" fill="#ea580c">SystemVerilog</text>
+
+  <!-- ============================================================ -->
+  <!--                        PARAMETERS                            -->
+  <!-- ============================================================ -->
+  <!-- NI parameters (dashed, like pcieVHost) -->
+  <rect x="110" y="608" width="100" height="54" rx="0" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="160" y="624" text-anchor="middle" font-size="9" fill="#3b82f6" font-style="italic">Parameters</text>
+  <text x="160" y="638" text-anchor="middle" font-size="8" fill="#3b82f6" font-style="italic">FlowCtrlMode</text>
+  <text x="160" y="650" text-anchor="middle" font-size="8" fill="#3b82f6" font-style="italic">NumLocalPorts</text>
+  <line x1="212" y1="620" x2="260" y2="500" stroke="#3b82f6" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Router parameters (dashed) -->
+  <rect x="712" y="608" width="100" height="54" rx="0" fill="none" stroke="#ec4899" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="762" y="624" text-anchor="middle" font-size="9" fill="#ec4899" font-style="italic">Parameters</text>
+  <text x="762" y="638" text-anchor="middle" font-size="8" fill="#ec4899" font-style="italic">FlowCtrlMode</text>
+  <text x="762" y="650" text-anchor="middle" font-size="8" fill="#ec4899" font-style="italic">NumVCs</text>
+  <line x1="814" y1="620" x2="860" y2="500" stroke="#ec4899" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- ============================================================ -->
+  <!--                          LEGEND                              -->
+  <!-- ============================================================ -->
+  <rect x="40" y="680" width="1120" height="32" rx="4" fill="#f1f5f9"/>
+  <!-- Solid green = REQ -->
+  <line x1="55" y1="696" x2="80" y2="696" stroke="#16a34a" stroke-width="2.5" marker-end="url(#arr-g)"/>
+  <text x="85" y="700" font-size="9" fill="#475569">REQ flit</text>
+  <!-- Solid red = RSP -->
+  <line x1="145" y1="696" x2="170" y2="696" stroke="#e11d48" stroke-width="2.5" marker-end="url(#arr-r)"/>
+  <text x="175" y="700" font-size="9" fill="#475569">RSP flit</text>
+  <!-- Dashed = flow ctrl -->
+  <line x1="230" y1="696" x2="255" y2="696" stroke="#64748b" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="260" y="700" font-size="9" fill="#475569">ready / credit</text>
+  <!-- Blue = AXI -->
+  <line x1="345" y1="696" x2="370" y2="696" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arr-b)"/>
+  <text x="375" y="700" font-size="9" fill="#475569">AXI4</text>
+  <!-- Channel -->
+  <rect x="415" y="690" width="18" height="12" rx="2" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="438" y="700" font-size="9" fill="#475569">Channel (C++ only)</text>
+  <!-- Green box = C++ -->
+  <rect x="545" y="690" width="18" height="12" rx="2" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
+  <text x="568" y="700" font-size="9" fill="#475569">C++ Model</text>
+  <!-- Yellow box = DPI-C -->
+  <rect x="640" y="690" width="18" height="12" rx="2" fill="#fefce8" stroke="#eab308" stroke-width="1"/>
+  <text x="663" y="700" font-size="9" fill="#475569">DPI-C → RTL</text>
+  <!-- Orange box = RTL DUT -->
+  <rect x="740" y="690" width="18" height="12" rx="2" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
+  <text x="763" y="700" font-size="9" fill="#475569">RTL DUT</text>
+  <!-- Mode note -->
+  <text x="845" y="700" font-size="9" fill="#94a3b8">Mode: VALID_READY 或 CREDIT (compile-time)</text>
+</svg>

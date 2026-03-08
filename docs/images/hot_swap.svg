@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 620" font-family="Segoe UI, Arial, sans-serif" font-size="14">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="10" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#6b5b95"/>
+    </marker>
+    <marker id="ar-l" viewBox="0 0 10 6" refX="0" refY="3" markerWidth="10" markerHeight="6" orient="auto">
+      <path d="M10,0 L0,3 L10,6 Z" fill="#6b5b95"/>
+    </marker>
+    <marker id="ar-g" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="10" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#6b8e23"/>
+    </marker>
+    <marker id="ar-gl" viewBox="0 0 10 6" refX="0" refY="3" markerWidth="10" markerHeight="6" orient="auto">
+      <path d="M10,0 L0,3 L10,6 Z" fill="#6b8e23"/>
+    </marker>
+    <marker id="ar-req" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="10" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#16a34a"/>
+    </marker>
+    <marker id="ar-rsp" viewBox="0 0 10 6" refX="0" refY="3" markerWidth="10" markerHeight="6" orient="auto">
+      <path d="M10,0 L0,3 L10,6 Z" fill="#e11d48"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="620" fill="#f0f0f0" rx="4"/>
+
+  <!-- ============================================================ -->
+  <!--                  NETWORK INTERFACE (LEFT)                    -->
+  <!-- ============================================================ -->
+  <text x="280" y="32" text-anchor="middle" font-size="20" font-weight="bold" fill="#222">Network Interface</text>
+
+  <!-- NI dashed boundary -->
+  <rect x="30" y="46" width="500" height="440" rx="6" fill="#e8e8e8" stroke="#888" stroke-width="2" stroke-dasharray="10,5"/>
+
+  <!-- ── Row 1: C++ Model ── -->
+  <!-- Native C++ API (left) -->
+  <rect x="46" y="76" width="100" height="80" rx="4" fill="#888"/>
+  <text x="96" y="112" text-anchor="middle" font-size="13" fill="white" font-weight="bold">Native</text>
+  <text x="96" y="130" text-anchor="middle" font-size="13" fill="white" font-weight="bold">C++ API</text>
+
+  <!-- AXI arrow (bidirectional) -->
+  <line x1="148" y1="116" x2="194" y2="116" stroke="#6b5b95" stroke-width="3" marker-end="url(#ar)" marker-start="url(#ar-l)"/>
+  <rect x="154" y="103" width="36" height="18" rx="3" fill="#8B7FB5"/>
+  <text x="172" y="116" text-anchor="middle" font-size="11" fill="white" font-weight="bold">AXI</text>
+
+  <!-- C++ model (center) -->
+  <rect x="196" y="68" width="168" height="96" rx="4" fill="#1a1a4e"/>
+  <text x="280" y="122" text-anchor="middle" font-size="17" fill="white" font-weight="bold">C++ model</text>
+
+  <!-- NoC I/F arrow (bidirectional) -->
+  <line x1="366" y1="116" x2="414" y2="116" stroke="#6b5b95" stroke-width="3" marker-end="url(#ar)" marker-start="url(#ar-l)"/>
+  <rect x="370" y="103" width="42" height="18" rx="3" fill="#8B7FB5"/>
+  <text x="391" y="116" text-anchor="middle" font-size="10" fill="white" font-weight="bold">NoC I/F</text>
+
+  <!-- Native C++ API (right) -->
+  <rect x="416" y="76" width="100" height="80" rx="4" fill="#888"/>
+  <text x="466" y="112" text-anchor="middle" font-size="13" fill="white" font-weight="bold">Native</text>
+  <text x="466" y="130" text-anchor="middle" font-size="13" fill="white" font-weight="bold">C++ API</text>
+
+  <!-- ── Hot Swap label ── -->
+  <text x="280" y="200" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">Hot Swap</text>
+  <!-- Swap arrows -->
+  <path d="M230,186 L230,208 M330,208 L330,186" stroke="#555" stroke-width="2" marker-end="url(#ar)" fill="none"/>
+  <path d="M330,208 L330,186 M230,208 L230,186" stroke="#555" stroke-width="2" fill="none"/>
+
+  <!-- ── Row 2: RTL Model ── -->
+  <!-- DPI-C (left) -->
+  <rect x="46" y="226" width="100" height="80" rx="4" fill="#888"/>
+  <text x="96" y="272" text-anchor="middle" font-size="15" fill="white" font-weight="bold">DPI-C</text>
+
+  <!-- AXI arrow -->
+  <line x1="148" y1="266" x2="194" y2="266" stroke="#6b5b95" stroke-width="3" marker-end="url(#ar)" marker-start="url(#ar-l)"/>
+  <rect x="154" y="253" width="36" height="18" rx="3" fill="#8B7FB5"/>
+  <text x="172" y="266" text-anchor="middle" font-size="11" fill="white" font-weight="bold">AXI</text>
+
+  <!-- RTL model (center) -->
+  <rect x="196" y="218" width="168" height="96" rx="4" fill="#1a1a4e"/>
+  <text x="280" y="272" text-anchor="middle" font-size="17" fill="white" font-weight="bold">RTL model</text>
+
+  <!-- NoC I/F arrow -->
+  <line x1="366" y1="266" x2="414" y2="266" stroke="#6b5b95" stroke-width="3" marker-end="url(#ar)" marker-start="url(#ar-l)"/>
+  <rect x="370" y="253" width="42" height="18" rx="3" fill="#8B7FB5"/>
+  <text x="391" y="266" text-anchor="middle" font-size="10" fill="white" font-weight="bold">NoC I/F</text>
+
+  <!-- DPI-C (right) -->
+  <rect x="416" y="226" width="100" height="80" rx="4" fill="#888"/>
+  <text x="466" y="272" text-anchor="middle" font-size="15" fill="white" font-weight="bold">DPI-C</text>
+
+  <!-- ============================================================ -->
+  <!--                    CHANNEL (CENTER)                          -->
+  <!-- ============================================================ -->
+  <!-- Channel box spans both rows -->
+  <rect x="562" y="96" width="156" height="220" rx="6" fill="#8a9a3e" opacity="0.92"/>
+  <text x="640" y="190" text-anchor="middle" font-size="20" fill="white" font-weight="bold">Channel</text>
+  <text x="640" y="212" text-anchor="middle" font-size="13" fill="#e8f0d0">&lt;Flit&gt;</text>
+  <text x="640" y="236" text-anchor="middle" font-size="11" fill="#e8f0d0" font-style="italic">C++ only</text>
+
+  <!-- Channel ← NI connections (REQ/RSP, two rows) -->
+  <!-- Row 1 (C++ mode) -->
+  <line x1="518" y1="104" x2="560" y2="104" stroke="#16a34a" stroke-width="2.5" marker-end="url(#ar-req)"/>
+  <text x="539" y="99" text-anchor="middle" font-size="9" fill="#16a34a">REQ</text>
+  <line x1="560" y1="126" x2="518" y2="126" stroke="#e11d48" stroke-width="2.5" marker-start="url(#ar-rsp)"/>
+  <text x="539" y="140" text-anchor="middle" font-size="9" fill="#e11d48">RSP</text>
+
+  <!-- Row 2 (RTL mode) -->
+  <line x1="518" y1="254" x2="560" y2="254" stroke="#16a34a" stroke-width="2.5" marker-end="url(#ar-req)"/>
+  <text x="539" y="249" text-anchor="middle" font-size="9" fill="#16a34a">REQ</text>
+  <line x1="560" y1="276" x2="518" y2="276" stroke="#e11d48" stroke-width="2.5" marker-start="url(#ar-rsp)"/>
+  <text x="539" y="290" text-anchor="middle" font-size="9" fill="#e11d48">RSP</text>
+
+  <!-- Channel → Router connections (REQ/RSP, two rows) -->
+  <!-- Row 1 -->
+  <line x1="720" y1="104" x2="762" y2="104" stroke="#16a34a" stroke-width="2.5" marker-end="url(#ar-req)"/>
+  <text x="741" y="99" text-anchor="middle" font-size="9" fill="#16a34a">REQ</text>
+  <line x1="762" y1="126" x2="720" y2="126" stroke="#e11d48" stroke-width="2.5" marker-start="url(#ar-rsp)"/>
+  <text x="741" y="140" text-anchor="middle" font-size="9" fill="#e11d48">RSP</text>
+
+  <!-- Row 2 -->
+  <line x1="720" y1="254" x2="762" y2="254" stroke="#16a34a" stroke-width="2.5" marker-end="url(#ar-req)"/>
+  <text x="741" y="249" text-anchor="middle" font-size="9" fill="#16a34a">REQ</text>
+  <line x1="762" y1="276" x2="720" y2="276" stroke="#e11d48" stroke-width="2.5" marker-start="url(#ar-rsp)"/>
+  <text x="741" y="290" text-anchor="middle" font-size="9" fill="#e11d48">RSP</text>
+
+  <!-- ============================================================ -->
+  <!--                      ROUTER (RIGHT)                         -->
+  <!-- ============================================================ -->
+  <text x="1000" y="32" text-anchor="middle" font-size="20" font-weight="bold" fill="#222">Router</text>
+
+  <!-- Router dashed boundary -->
+  <rect x="750" y="46" width="500" height="440" rx="6" fill="#e8e8e8" stroke="#888" stroke-width="2" stroke-dasharray="10,5"/>
+
+  <!-- ── Row 1: C++ Model ── -->
+  <!-- Native C++ API (left) -->
+  <rect x="766" y="76" width="100" height="80" rx="4" fill="#888"/>
+  <text x="816" y="112" text-anchor="middle" font-size="13" fill="white" font-weight="bold">Native</text>
+  <text x="816" y="130" text-anchor="middle" font-size="13" fill="white" font-weight="bold">C++ API</text>
+
+  <!-- NoC I/F arrow (left) -->
+  <line x1="868" y1="116" x2="914" y2="116" stroke="#6b5b95" stroke-width="3" marker-end="url(#ar)" marker-start="url(#ar-l)"/>
+  <rect x="872" y="103" width="42" height="18" rx="3" fill="#8B7FB5"/>
+  <text x="893" y="116" text-anchor="middle" font-size="10" fill="white" font-weight="bold">NoC I/F</text>
+
+  <!-- C++ model -->
+  <rect x="916" y="68" width="168" height="96" rx="4" fill="#1a1a4e"/>
+  <text x="1000" y="122" text-anchor="middle" font-size="17" fill="white" font-weight="bold">C++ model</text>
+
+  <!-- NoC I/F arrow (right) -->
+  <line x1="1086" y1="116" x2="1132" y2="116" stroke="#6b5b95" stroke-width="3" marker-end="url(#ar)" marker-start="url(#ar-l)"/>
+  <rect x="1090" y="103" width="42" height="18" rx="3" fill="#8B7FB5"/>
+  <text x="1111" y="116" text-anchor="middle" font-size="10" fill="white" font-weight="bold">NoC I/F</text>
+
+  <!-- Native C++ API (right) -->
+  <rect x="1134" y="76" width="100" height="80" rx="4" fill="#888"/>
+  <text x="1184" y="112" text-anchor="middle" font-size="13" fill="white" font-weight="bold">Native</text>
+  <text x="1184" y="130" text-anchor="middle" font-size="13" fill="white" font-weight="bold">C++ API</text>
+
+  <!-- ── Hot Swap label ── -->
+  <text x="1000" y="200" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">Hot Swap</text>
+  <path d="M950,186 L950,208 M1050,208 L1050,186" stroke="#555" stroke-width="2" marker-end="url(#ar)" fill="none"/>
+  <path d="M1050,208 L1050,186 M950,208 L950,186" stroke="#555" stroke-width="2" fill="none"/>
+
+  <!-- ── Row 2: RTL Model ── -->
+  <!-- DPI-C (left) -->
+  <rect x="766" y="226" width="100" height="80" rx="4" fill="#888"/>
+  <text x="816" y="272" text-anchor="middle" font-size="15" fill="white" font-weight="bold">DPI-C</text>
+
+  <!-- NoC I/F arrow (left) -->
+  <line x1="868" y1="266" x2="914" y2="266" stroke="#6b5b95" stroke-width="3" marker-end="url(#ar)" marker-start="url(#ar-l)"/>
+  <rect x="872" y="253" width="42" height="18" rx="3" fill="#8B7FB5"/>
+  <text x="893" y="266" text-anchor="middle" font-size="10" fill="white" font-weight="bold">NoC I/F</text>
+
+  <!-- RTL model -->
+  <rect x="916" y="218" width="168" height="96" rx="4" fill="#1a1a4e"/>
+  <text x="1000" y="272" text-anchor="middle" font-size="17" fill="white" font-weight="bold">RTL model</text>
+
+  <!-- NoC I/F arrow (right) -->
+  <line x1="1086" y1="266" x2="1132" y2="266" stroke="#6b5b95" stroke-width="3" marker-end="url(#ar)" marker-start="url(#ar-l)"/>
+  <rect x="1090" y="253" width="42" height="18" rx="3" fill="#8B7FB5"/>
+  <text x="1111" y="266" text-anchor="middle" font-size="10" fill="white" font-weight="bold">NoC I/F</text>
+
+  <!-- DPI-C (right) -->
+  <rect x="1134" y="226" width="100" height="80" rx="4" fill="#888"/>
+  <text x="1184" y="272" text-anchor="middle" font-size="15" fill="white" font-weight="bold">DPI-C</text>
+
+  <!-- ============================================================ -->
+  <!--                   EXTERNAL ENDPOINTS                        -->
+  <!-- ============================================================ -->
+  <!-- Left: TrafficManager / PE -->
+  <text x="16" y="168" font-size="12" fill="#555" font-style="italic">TrafficManager</text>
+  <text x="16" y="184" font-size="12" fill="#555" font-style="italic">/ PE (AXI Master)</text>
+
+  <!-- Right: Mesh -->
+  <text x="1252" y="168" font-size="12" fill="#555" font-style="italic" text-anchor="end">→ Mesh</text>
+  <text x="1252" y="184" font-size="12" fill="#555" font-style="italic" text-anchor="end">(other Routers)</text>
+
+  <!-- ============================================================ -->
+  <!--                        NOTES                                -->
+  <!-- ============================================================ -->
+  <!-- Note 1: Independent mode -->
+  <rect x="40" y="510" width="460" height="44" rx="4" fill="#fff9db" stroke="#d4a017" stroke-width="1.2"/>
+  <text x="270" y="530" text-anchor="middle" font-size="12" fill="#7a6100" font-weight="bold">NI 與 Router 可獨立選擇 mode (C++ / RTL)</text>
+  <text x="270" y="546" text-anchor="middle" font-size="11" fill="#7a6100">例: C++ NI + RTL Router, 或 RTL NI + C++ Router</text>
+
+  <!-- Note 2: Channel always C++ -->
+  <rect x="540" y="510" width="200" height="44" rx="4" fill="#e8f5e9" stroke="#4caf50" stroke-width="1.2"/>
+  <text x="640" y="530" text-anchor="middle" font-size="12" fill="#2e7d32" font-weight="bold">Channel 永遠 C++ only</text>
+  <text x="640" y="546" text-anchor="middle" font-size="11" fill="#2e7d32">不隨 Hot Swap 切換</text>
+
+  <!-- Note 3: Flow control -->
+  <rect x="780" y="510" width="460" height="44" rx="4" fill="#e8eaf6" stroke="#5c6bc0" stroke-width="1.2"/>
+  <text x="1010" y="530" text-anchor="middle" font-size="12" fill="#283593" font-weight="bold">Flow Control Mode = compile-time template parameter</text>
+  <text x="1010" y="546" text-anchor="middle" font-size="11" fill="#283593">VALID_READY (ready 信號) 或 CREDIT (credit 信號) 擇一</text>
+
+  <!-- ============================================================ -->
+  <!--                        LEGEND                               -->
+  <!-- ============================================================ -->
+  <rect x="40" y="572" width="1200" height="36" rx="4" fill="#e0e0e0"/>
+  <!-- Grey = interface adapter -->
+  <rect x="60" y="580" width="20" height="16" rx="2" fill="#888"/>
+  <text x="86" y="593" font-size="11" fill="#333">Interface Adapter</text>
+  <!-- Navy = model -->
+  <rect x="210" y="580" width="20" height="16" rx="2" fill="#1a1a4e"/>
+  <text x="236" y="593" font-size="11" fill="#333">Model (swappable)</text>
+  <!-- Olive = channel -->
+  <rect x="370" y="580" width="20" height="16" rx="2" fill="#8a9a3e"/>
+  <text x="396" y="593" font-size="11" fill="#333">Channel (C++ only)</text>
+  <!-- REQ -->
+  <line x1="530" y1="588" x2="560" y2="588" stroke="#16a34a" stroke-width="2.5" marker-end="url(#ar-req)"/>
+  <text x="566" y="593" font-size="11" fill="#333">REQ (flit 408b)</text>
+  <!-- RSP -->
+  <line x1="680" y1="588" x2="650" y2="588" stroke="#e11d48" stroke-width="2.5" marker-start="url(#ar-rsp)"/>
+  <text x="686" y="593" font-size="11" fill="#333">RSP (flit 408b)</text>
+  <!-- Purple = protocol -->
+  <line x1="800" y1="588" x2="830" y2="588" stroke="#6b5b95" stroke-width="3" marker-end="url(#ar)" marker-start="url(#ar-l)"/>
+  <text x="836" y="593" font-size="11" fill="#333">Protocol (AXI / NoC I/F)</text>
+  <!-- Dashed = boundary -->
+  <rect x="990" y="580" width="30" height="16" rx="2" fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="1026" y="593" font-size="11" fill="#333">Hot-Swap Boundary</text>
+</svg>

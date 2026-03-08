@@ -1,6 +1,6 @@
-# 硬體參數設計指南
+# Parameters Guide
 
-本文件說明 NoC 硬體可調參數及其效能影響。
+本文件為調參參考指南，非規範性規格。參數預設值及定義請查詢 [Simulation Platform](09_simulation.md) § NocConfig。
 
 ---
 
@@ -15,7 +15,7 @@
 │   │  拓撲參數    │    │  硬體參數    │    │  介面參數    │            │
 │   └─────────────┘    └─────────────┘    └─────────────┘            │
 │         │                  │                  │                     │
-│    cols × rows        buffer_depth       max_outstanding            │
+│    cols × rows        INPUT_BUFFER_DEPTH       max_outstanding            │
 │    num_local_ports    pipeline_mode                                 │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
@@ -25,8 +25,8 @@
 
 | 類別 | 參數 | 預設值 | 主要影響 |
 |------|------|--------|----------|
-| Mesh | `cols × rows` | 5 × 4 | 網路規模 |
-| Router | `buffer_depth` | 4 | 壅塞容忍度 |
+| Mesh | `cols × rows` | 4 × 4 | 網路規模 |
+| Router | `INPUT_BUFFER_DEPTH` | 4 | 壅塞容忍度 |
 | Router | `pipeline_mode` | fast | 延遲精度 |
 | NI | `max_outstanding` | 8 | 並行度 |
 
@@ -42,7 +42,7 @@
 | `AXI_DATA_WIDTH` | 256 bits (32 bytes) | AXI 資料寬度 |
 | `AXI_ADDR_WIDTH` | 64 bits | AXI 位址寬度 |
 | `AXI_ID_WIDTH` | 8 bits | AXI transaction ID 寬度 |
-| `NODE_ID_WIDTH` | 8 bits | 節點 ID 寬度 ({y[3:0], x[3:0]}) |
+| `NODE_ID_WIDTH` | 8 bits | 節點 ID 寬度（[7:4]=y, [3:0]=x） |
 | `QOS_WIDTH` | 4 bits | QoS 優先級寬度 |
 | `ROB_IDX_WIDTH` | 5 bits | RoB index 寬度 (32 entries) |
 | `ECC_WIDTH` | 32 bits | ECC 總寬度 (SECDED per 64-bit granule) |
@@ -85,9 +85,9 @@ D_max   = (cols - 1) + (rows - 1)      # 最大 Manhattan 距離
 
 | 配置 | cols | rows | N_nodes | T_max | D_max |
 |------|------|------|---------|-------|-------|
-| 預設 | 5 | 4 | 20 | 128 B/c | 7 hops |
-| 小型 | 3 | 2 | 4 | 64 B/c | 3 hops |
-| 大型 | 9 | 8 | 64 | 256 B/c | 15 hops |
+| 預設 | 4 | 4 | 16 | 128 B/c | 6 hops |
+| 小型 | 2 | 2 | 4 | 64 B/c | 2 hops |
+| 大型 | 8 | 8 | 64 | 256 B/c | 14 hops |
 
 > **注意**: T_max = N_injectors × 32 B/c，其中 N_injectors 為具有 NMU 的 NI 數量。每個 NMU 每 cycle 最多注入一個 flit（攜帶 32 bytes 有效資料）。
 
@@ -100,7 +100,7 @@ D_max   = (cols - 1) + (rows - 1)      # 最大 Manhattan 距離
 ```
 Buffer Depth 與壅塞的關係：
 
-buffer_depth = 2          buffer_depth = 8
+INPUT_BUFFER_DEPTH = 2          INPUT_BUFFER_DEPTH = 8
 ┌───┬───┐                 ┌───┬───┬───┬───┬───┬───┬───┬───┐
 │ F │ F │ ← 容易滿        │ F │ F │   │   │   │   │   │   │ ← 餘裕大
 └───┴───┘                 └───┴───┴───┴───┴───┴───┴───┴───┘
@@ -109,7 +109,7 @@ buffer_depth = 2          buffer_depth = 8
 面積成本: 低              面積成本: 高
 ```
 
-| buffer_depth | 壅塞容忍度 | 面積成本 | 適用場景 |
+| INPUT_BUFFER_DEPTH | 壅塞容忍度 | 面積成本 | 適用場景 |
 |--------------|-----------|---------|---------|
 | 2-4 | 低 | 低 | 低負載、面積敏感 |
 | 4-8 | 中 | 中 | 一般應用 (推薦) |
@@ -163,9 +163,9 @@ max_outstanding = 4              max_outstanding = 32
 
 | max_outstanding | 吞吐量潛力 | 記憶體成本 | 適用場景 |
 |-----------------|-----------|-----------|---------|
-| 4-8 | 低 | 低 | 簡單控制流 |
-| 16 | 中 | 中 | 一般應用 (預設) |
-| 32-64 | 高 | 高 | 高吞吐需求 |
+| 4-8 | 低 | 低 | 簡單控制流（預設 8） |
+| 16-32 | 中 | 中 | 一般高吞吐應用 |
+| 32-64 | 高 | 高 | 極端吞吐需求 |
 
 ---
 
@@ -178,8 +178,8 @@ max_outstanding = 4              max_outstanding = 32
               ┌──────────┬──────────┬──────────┐
               │Throughput│ Latency  │ 壅塞容忍  │
 ┌─────────────┼──────────┼──────────┼──────────┤
-│↑ buffer_    │    ○     │    ✗     │    ✓     │
-│   depth     │ 無明顯   │ 略增     │ 大幅改善  │
+│↑ INPUT_     │    ○     │    ✗     │    ✓     │
+│ BUFFER_DEPTH│ 無明顯   │ 略增     │ 大幅改善  │
 ├─────────────┼──────────┼──────────┼──────────┤
 │↑ max_       │    ✓     │    ○     │    ○     │
 │ outstanding │ 顯著提升  │ 無明顯   │ 無明顯   │
@@ -215,7 +215,7 @@ max_outstanding = 4              max_outstanding = 32
 
 ```python
 MeshConfig(cols=5, rows=4)           # T_max = 128 B/c
-RouterConfig(buffer_depth=8)         # 壅塞容忍
+RouterConfig(input_buffer_depth=8)          # 壅塞容忍
 NIConfig(max_outstanding=32)         # 高並行
 ```
 
@@ -245,7 +245,7 @@ T_max = 128 B/c
 
 ```python
 RouterConfig(
-    buffer_depth=4,                  # 最小即可
+    input_buffer_depth=4,                  # 最小即可
     pipeline=PipelineConfig.fast()   # 1 cycle/hop
 )
 ```
@@ -274,12 +274,12 @@ L_min = 3 × 1 + 2 = 5 cycles
 ```python
 NIConfig(
     max_outstanding=64,              # 高並行
-    req_buffer_depth=32,             # 請求緩衝
-    resp_buffer_depth=32             # 回應緩衝
+    req_buffer_depth=32,                    # 請求緩衝
+    resp_buffer_depth=32                   # 回應緩衝
 )
 
 RouterConfig(
-    buffer_depth=16                  # 避免網路壅塞
+    input_buffer_depth=16                  # 避免網路壅塞
 )
 ```
 
@@ -323,5 +323,5 @@ RouterConfig(
 ## 相關文件
 
 - [Flit 格式](02_flit.md) - 固定設計參數定義
-- [效能指標](14_metrics.md) - Stats 類別
-- [模擬參數](11_simulation.md) - 模擬配置
+- [效能指標](10_verification.md) - Stats 類別
+- [模擬參數](09_simulation.md) - 模擬配置

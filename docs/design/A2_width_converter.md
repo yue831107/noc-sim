@@ -775,21 +775,13 @@ Width Converter 處理以下對齊情況：
 
 ---
 
-## 11. 外部設計參考
+## 11. 設計模式
 
-本設計參考 PULP Platform 的 AXI width converter 實作模式：
-
-| PULP 檔案 | 相關功能 |
-|-----------|----------|
-| `axi_dw_downsizer.sv` | SPLIT_INCR_DOWNSIZE state、`resp_precedence` response merging |
-| `axi_dw_upsizer.sv` | W data packing、R lane steering、state machines |
-| `axi_dw_converter.sv` | 根據寬度比例組合 upsizer/downsizer 的 wrapper |
-
-關鍵實作模式：
-- **Burst length 計算：** `new_len = (original_len + 1) * ratio - align_adj - 1`
-- **Response precedence：** `DECERR > SLVERR > EXOKAY > OKAY`
-- **Lane steering：** 基於 address alignment bits 選擇 data lane
-- **Split 追蹤：** per-transaction state 用於 response merging
+關鍵行為規則：
+- **Burst length 計算**：`new_len = (original_len + 1) * ratio - align_adj - 1`
+- **Response precedence**：`DECERR > SLVERR > EXOKAY > OKAY`
+- **Lane steering**：基於 address alignment bits 選擇 data lane
+- **Split 追蹤**：per-transaction state 用於 response merging
 
 ---
 

@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 920" font-family="Segoe UI, Arial, sans-serif" font-size="13">
+  <defs>
+    <marker id="a" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="10" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#444"/>
+    </marker>
+    <marker id="ab" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="10" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#2563eb"/>
+    </marker>
+    <marker id="ar" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="10" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#dc2626"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="10" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#16a34a"/>
+    </marker>
+    <marker id="ao" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="10" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#d97706"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1300" height="920" fill="#f8f8f8" rx="6"/>
+
+  <!-- Title -->
+  <text x="650" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#222">NoC C++ Behavior Model — Platform Diagram</text>
+
+  <!-- ============================================================ -->
+  <!--  SECTION 1: USER INTERFACE LAYER  (y=44 ~ 196)               -->
+  <!-- ============================================================ -->
+
+  <!-- User Code Snippet -->
+  <text x="110" y="46" text-anchor="middle" font-size="12" font-weight="bold" fill="#555" font-style="italic">User Code</text>
+  <rect x="24" y="52" width="172" height="140" rx="5" fill="#d4d4d4" stroke="#999" stroke-width="1.5"/>
+  <text x="34" y="72" font-family="Consolas, monospace" font-size="10" fill="#333" font-weight="bold">main() {</text>
+  <text x="44" y="88" font-family="Consolas, monospace" font-size="9.5" fill="#555">load_config(json);</text>
+  <text x="44" y="102" font-family="Consolas, monospace" font-size="9.5" fill="#555">load_memory(hex);</text>
+  <text x="44" y="118" font-family="Consolas, monospace" font-size="9.5" fill="#555">submit_write(...);</text>
+  <text x="44" y="134" font-family="Consolas, monospace" font-size="9.5" fill="#555">run_all();</text>
+  <text x="44" y="150" font-family="Consolas, monospace" font-size="9.5" fill="#555">get_latency();</text>
+  <text x="44" y="166" font-family="Consolas, monospace" font-size="9.5" fill="#555">dump_state();</text>
+  <text x="34" y="184" font-family="Consolas, monospace" font-size="10" fill="#333" font-weight="bold">}</text>
+
+  <!-- NocSystem Public API -->
+  <rect x="222" y="52" width="456" height="140" rx="6" fill="#eaeff5" stroke="#3d5a80" stroke-width="2"/>
+  <text x="450" y="72" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">NocSystem Public API</text>
+  <text x="610" y="72" font-size="9" fill="#777" font-style="italic">(noc_api.h)</text>
+
+  <!-- API Group boxes — Row 1 -->
+  <rect x="234" y="80" width="136" height="32" rx="3" fill="#3d5a80"/>
+  <text x="302" y="94" text-anchor="middle" font-size="10" fill="white" font-weight="bold">A: Construction</text>
+  <text x="302" y="106" text-anchor="middle" font-size="8" fill="#c0d8f0">config · memory · traffic</text>
+
+  <rect x="378" y="80" width="136" height="32" rx="3" fill="#3d5a80"/>
+  <text x="446" y="94" text-anchor="middle" font-size="10" fill="white" font-weight="bold">B: Transaction</text>
+  <text x="446" y="106" text-anchor="middle" font-size="8" fill="#c0d8f0">write · read · multicast</text>
+
+  <rect x="522" y="80" width="144" height="32" rx="3" fill="#3d5a80"/>
+  <text x="594" y="94" text-anchor="middle" font-size="10" fill="white" font-weight="bold">C: Simulation</text>
+  <text x="594" y="106" text-anchor="middle" font-size="8" fill="#c0d8f0">run · cycle · callback</text>
+
+  <!-- API Group boxes — Row 2 -->
+  <rect x="234" y="120" width="136" height="32" rx="3" fill="#3d5a80"/>
+  <text x="302" y="134" text-anchor="middle" font-size="10" fill="white" font-weight="bold">D: Metrics</text>
+  <text x="302" y="146" text-anchor="middle" font-size="8" fill="#c0d8f0">latency · throughput · verify</text>
+
+  <rect x="378" y="120" width="136" height="32" rx="3" fill="#3d5a80"/>
+  <text x="446" y="134" text-anchor="middle" font-size="10" fill="white" font-weight="bold">E: Debug</text>
+  <text x="446" y="146" text-anchor="middle" font-size="8" fill="#c0d8f0">dump · introspect</text>
+
+  <!-- I/O Files -->
+  <rect x="706" y="52" width="148" height="62" rx="5" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="780" y="70" text-anchor="middle" font-size="11" fill="#2563eb" font-weight="bold">Input Files</text>
+  <text x="780" y="84" text-anchor="middle" font-size="9" fill="#1e40af">config.json · memory.hex</text>
+  <text x="780" y="96" text-anchor="middle" font-size="9" fill="#1e40af">traffic.json</text>
+
+  <rect x="706" y="126" width="148" height="66" rx="5" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="780" y="144" text-anchor="middle" font-size="11" fill="#dc2626" font-weight="bold">Output Files</text>
+  <text x="780" y="158" text-anchor="middle" font-size="9" fill="#b91c1c">memory_state.hex</text>
+  <text x="780" y="170" text-anchor="middle" font-size="9" fill="#b91c1c">response_log · stats.json</text>
+  <text x="780" y="182" text-anchor="middle" font-size="9" fill="#b91c1c">cycle_trace.vcd</text>
+
+  <!-- Arrows: User Code → API -->
+  <line x1="198" y1="122" x2="220" y2="122" stroke="#555" stroke-width="2" marker-end="url(#a)"/>
+
+  <!-- Arrow: Input Files → API (blue, pointing left) -->
+  <line x1="704" y1="83" x2="680" y2="96" stroke="#2563eb" stroke-width="1.8" marker-end="url(#ab)"/>
+  <text x="688" y="82" font-size="8" fill="#2563eb">load</text>
+
+  <!-- Arrow: API → Output Files (red, pointing right) -->
+  <line x1="680" y1="140" x2="704" y2="155" stroke="#dc2626" stroke-width="1.8" marker-end="url(#ar)"/>
+  <text x="686" y="154" font-size="8" fill="#dc2626">dump</text>
+
+  <!-- ============================================================ -->
+  <!--  SECTION 2: NOCSYSTEM INTERNALS  (y=210 ~ 700)               -->
+  <!-- ============================================================ -->
+
+  <rect x="24" y="210" width="1252" height="490" rx="8" fill="#e8e8e8" stroke="#aaa" stroke-width="2"/>
+  <text x="650" y="230" text-anchor="middle" font-size="15" font-weight="bold" fill="#333">NocSystem Internals</text>
+
+  <!-- Arrows: API → Internals -->
+  <line x1="310" y1="194" x2="160" y2="236" stroke="#444" stroke-width="1.8" marker-end="url(#a)"/>
+  <text x="220" y="210" font-size="8" fill="#666">config</text>
+
+  <line x1="420" y1="194" x2="350" y2="236" stroke="#444" stroke-width="1.8" marker-end="url(#a)"/>
+  <text x="376" y="210" font-size="8" fill="#666">traffic / txn</text>
+
+  <!-- NocConfig -->
+  <rect x="80" y="238" width="150" height="42" rx="4" fill="#1a1a4e"/>
+  <text x="155" y="258" text-anchor="middle" font-size="11" fill="white" font-weight="bold">NocConfig</text>
+  <text x="155" y="272" text-anchor="middle" font-size="8" fill="#a5b4fc">JSON → factory → mesh</text>
+
+  <!-- TrafficManager -->
+  <rect x="262" y="238" width="160" height="42" rx="4" fill="#1a1a4e"/>
+  <text x="342" y="258" text-anchor="middle" font-size="11" fill="white" font-weight="bold">TrafficManager</text>
+  <text x="342" y="272" text-anchor="middle" font-size="8" fill="#a5b4fc">AXI txn lifecycle</text>
+
+  <!-- NocConfig → Mesh (creates) -->
+  <line x1="155" y1="282" x2="155" y2="298" stroke="#444" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="164" y="294" font-size="7.5" fill="#666">creates</text>
+
+  <!-- NocConfig → TrafficManager (params) -->
+  <line x1="232" y1="259" x2="260" y2="259" stroke="#444" stroke-width="1.2" marker-end="url(#a)"/>
+  <text x="240" y="253" font-size="7" fill="#666">params</text>
+
+  <!-- TrafficManager → Mesh (inject txn) -->
+  <line x1="342" y1="282" x2="270" y2="298" stroke="#444" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="298" y="294" font-size="7.5" fill="#666">AXI txn → NI</text>
+
+  <!-- ──────────────────────────────────────────────── -->
+  <!--  N×N MESH NETWORK                                -->
+  <!-- ──────────────────────────────────────────────── -->
+  <rect x="50" y="300" width="460" height="276" rx="6" fill="#f2f2ea" stroke="#8a9a3e" stroke-width="2"/>
+  <text x="280" y="318" text-anchor="middle" font-size="13" font-weight="bold" fill="#4a5520">N×N Mesh Network</text>
+  <text x="280" y="332" text-anchor="middle" font-size="9" fill="#6b7a3a" font-style="italic">N = 2~16 (default 4×4) · XY Routing · Wormhole Switching</text>
+
+  <!-- Mesh grid: 4 cols × 4 rows -->
+  <!-- Node size: 54×32, H-gap: 42, V-gap: 30 -->
+  <!-- Col x: 88, 184, 280, 376 -->
+  <!-- Row y: 340, 402, 464, 526 — bottom at 558 -->
+
+  <!-- ── Row 0 ── -->
+  <rect x="88" y="340" width="54" height="32" rx="4" fill="#1a1a4e" stroke="#d97706" stroke-width="2.5"/>
+  <text x="115" y="360" text-anchor="middle" font-size="9" fill="white" font-weight="bold">0,0</text>
+  <rect x="184" y="340" width="54" height="32" rx="4" fill="#2a2a5e"/>
+  <text x="211" y="360" text-anchor="middle" font-size="9" fill="white">1,0</text>
+  <rect x="280" y="340" width="54" height="32" rx="4" fill="#2a2a5e"/>
+  <text x="307" y="360" text-anchor="middle" font-size="9" fill="white">2,0</text>
+  <rect x="376" y="340" width="54" height="32" rx="4" fill="#2a2a5e"/>
+  <text x="403" y="360" text-anchor="middle" font-size="9" fill="white">3,0</text>
+
+  <!-- ── Row 1 ── -->
+  <rect x="88" y="402" width="54" height="32" rx="4" fill="#2a2a5e"/>
+  <text x="115" y="422" text-anchor="middle" font-size="9" fill="white">0,1</text>
+  <rect x="184" y="402" width="54" height="32" rx="4" fill="#2a2a5e" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="211" y="422" text-anchor="middle" font-size="9" fill="white">1,1</text>
+  <rect x="280" y="402" width="54" height="32" rx="4" fill="#2a2a5e"/>
+  <text x="307" y="422" text-anchor="middle" font-size="9" fill="white">2,1</text>
+  <rect x="376" y="402" width="54" height="32" rx="4" fill="#2a2a5e"/>
+  <text x="403" y="422" text-anchor="middle" font-size="9" fill="white">3,1</text>
+
+  <!-- ── Row 2 ── -->
+  <rect x="88" y="464" width="54" height="32" rx="4" fill="#2a2a5e"/>
+  <text x="115" y="484" text-anchor="middle" font-size="9" fill="white">0,2</text>
+  <rect x="184" y="464" width="54" height="32" rx="4" fill="#2a2a5e"/>
+  <text x="211" y="484" text-anchor="middle" font-size="9" fill="white">1,2</text>
+  <rect x="280" y="464" width="54" height="32" rx="4" fill="#2a2a5e"/>
+  <text x="307" y="484" text-anchor="middle" font-size="9" fill="white">2,2</text>
+  <rect x="376" y="464" width="54" height="32" rx="4" fill="#2a2a5e"/>
+  <text x="403" y="484" text-anchor="middle" font-size="9" fill="white">3,2</text>
+
+  <!-- ── Row 3 ── -->
+  <rect x="88" y="526" width="54" height="32" rx="4" fill="#2a2a5e"/>
+  <text x="115" y="546" text-anchor="middle" font-size="9" fill="white">0,3</text>
+  <rect x="184" y="526" width="54" height="32" rx="4" fill="#2a2a5e"/>
+  <text x="211" y="546" text-anchor="middle" font-size="9" fill="white">1,3</text>
+  <rect x="280" y="526" width="54" height="32" rx="4" fill="#2a2a5e"/>
+  <text x="307" y="546" text-anchor="middle" font-size="9" fill="white">2,3</text>
+  <rect x="376" y="526" width="54" height="32" rx="4" fill="#2a2a5e"/>
+  <text x="403" y="546" text-anchor="middle" font-size="9" fill="white">3,3</text>
+
+  <!-- ── Horizontal links (Channel<Flit>) ── -->
+  <!-- Row 0 -->
+  <line x1="142" y1="356" x2="184" y2="356" stroke="#8a9a3e" stroke-width="2.5"/>
+  <line x1="238" y1="356" x2="280" y2="356" stroke="#8a9a3e" stroke-width="2.5"/>
+  <line x1="334" y1="356" x2="376" y2="356" stroke="#8a9a3e" stroke-width="2.5"/>
+  <!-- Row 1 -->
+  <line x1="142" y1="418" x2="184" y2="418" stroke="#8a9a3e" stroke-width="2.5"/>
+  <line x1="238" y1="418" x2="280" y2="418" stroke="#8a9a3e" stroke-width="2.5"/>
+  <line x1="334" y1="418" x2="376" y2="418" stroke="#8a9a3e" stroke-width="2.5"/>
+  <!-- Row 2 -->
+  <line x1="142" y1="480" x2="184" y2="480" stroke="#8a9a3e" stroke-width="2.5"/>
+  <line x1="238" y1="480" x2="280" y2="480" stroke="#8a9a3e" stroke-width="2.5"/>
+  <line x1="334" y1="480" x2="376" y2="480" stroke="#8a9a3e" stroke-width="2.5"/>
+  <!-- Row 3 -->
+  <line x1="142" y1="542" x2="184" y2="542" stroke="#8a9a3e" stroke-width="2.5"/>
+  <line x1="238" y1="542" x2="280" y2="542" stroke="#8a9a3e" stroke-width="2.5"/>
+  <line x1="334" y1="542" x2="376" y2="542" stroke="#8a9a3e" stroke-width="2.5"/>
+
+  <!-- ── Vertical links (Channel<Flit>) ── -->
+  <!-- Col 0 -->
+  <line x1="115" y1="372" x2="115" y2="402" stroke="#8a9a3e" stroke-width="2.5"/>
+  <line x1="115" y1="434" x2="115" y2="464" stroke="#8a9a3e" stroke-width="2.5"/>
+  <line x1="115" y1="496" x2="115" y2="526" stroke="#8a9a3e" stroke-width="2.5"/>
+  <!-- Col 1 -->
+  <line x1="211" y1="372" x2="211" y2="402" stroke="#8a9a3e" stroke-width="2.5"/>
+  <line x1="211" y1="434" x2="211" y2="464" stroke="#8a9a3e" stroke-width="2.5"/>
+  <line x1="211" y1="496" x2="211" y2="526" stroke="#8a9a3e" stroke-width="2.5"/>
+  <!-- Col 2 -->
+  <line x1="307" y1="372" x2="307" y2="402" stroke="#8a9a3e" stroke-width="2.5"/>
+  <line x1="307" y1="434" x2="307" y2="464" stroke="#8a9a3e" stroke-width="2.5"/>
+  <line x1="307" y1="496" x2="307" y2="526" stroke="#8a9a3e" stroke-width="2.5"/>
+  <!-- Col 3 -->
+  <line x1="403" y1="372" x2="403" y2="402" stroke="#8a9a3e" stroke-width="2.5"/>
+  <line x1="403" y1="434" x2="403" y2="464" stroke="#8a9a3e" stroke-width="2.5"/>
+  <line x1="403" y1="496" x2="403" y2="526" stroke="#8a9a3e" stroke-width="2.5"/>
+
+  <!-- Mesh annotation -->
+  <text x="280" y="566" text-anchor="middle" font-size="8" fill="#d97706">(0,0) = Gateway Node — Host DMA injection point (configurable)</text>
+  <text x="280" y="574" text-anchor="middle" font-size="8" fill="#6b7a3a" font-style="italic">each link = Channel&lt;Flit&gt; (C++ only, delay=1)</text>
+
+  <!-- ──────────────────────────────────────────────── -->
+  <!--  NODE DETAIL CALLOUT  (right of mesh)            -->
+  <!-- ──────────────────────────────────────────────── -->
+  <rect x="560" y="300" width="370" height="276" rx="6" fill="#fafafa" stroke="#888" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="745" y="322" text-anchor="middle" font-size="13" font-weight="bold" fill="#333">Node Detail</text>
+  <text x="745" y="338" text-anchor="middle" font-size="9" fill="#777" font-style="italic">each node = PE + NI + Router</text>
+
+  <!-- Callout dashed line from node (1,1) to detail box -->
+  <line x1="240" y1="418" x2="558" y2="390" stroke="#2563eb" stroke-width="1.2" stroke-dasharray="6,3" marker-end="url(#ab)"/>
+
+  <!-- Block diagram: PE → NI → Router -->
+  <rect x="586" y="354" width="54" height="30" rx="3" fill="#5b7285"/>
+  <text x="613" y="368" text-anchor="middle" font-size="10" fill="white" font-weight="bold">PE</text>
+  <text x="613" y="380" text-anchor="middle" font-size="7.5" fill="#c0d0e0">(DMA)</text>
+
+  <!-- Arrow PE → NI -->
+  <line x1="642" y1="369" x2="674" y2="369" stroke="#6b5b95" stroke-width="2"/>
+  <text x="658" y="363" text-anchor="middle" font-size="7.5" fill="#6b5b95" font-weight="bold">AXI</text>
+
+  <rect x="676" y="354" width="54" height="30" rx="3" fill="#1a1a4e"/>
+  <text x="703" y="374" text-anchor="middle" font-size="10" fill="white" font-weight="bold">NI</text>
+
+  <!-- Arrow NI → Router -->
+  <line x1="732" y1="369" x2="766" y2="369" stroke="#6b5b95" stroke-width="2"/>
+  <text x="749" y="363" text-anchor="middle" font-size="6.5" fill="#6b5b95" font-weight="bold">NoC I/F</text>
+
+  <rect x="768" y="354" width="72" height="30" rx="3" fill="#1a1a4e"/>
+  <text x="804" y="374" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Router</text>
+
+  <!-- Router → mesh ports -->
+  <line x1="842" y1="369" x2="870" y2="369" stroke="#8a9a3e" stroke-width="2" marker-end="url(#a)"/>
+  <text x="876" y="364" font-size="8" fill="#555">N,S,E,W</text>
+  <text x="876" y="376" font-size="8" fill="#555">+ LOCAL</text>
+
+  <!-- LocalMemory under PE -->
+  <rect x="582" y="404" width="66" height="24" rx="3" fill="#5b7285"/>
+  <text x="615" y="420" text-anchor="middle" font-size="8.5" fill="white" font-weight="bold">LocalMemory</text>
+  <line x1="613" y1="384" x2="613" y2="402" stroke="#444" stroke-width="1" marker-end="url(#a)"/>
+
+  <!-- Hot-swap notes -->
+  <text x="578" y="448" font-size="9.5" fill="#444">▸ NI &amp; Router: independently C++ or RTL</text>
+  <text x="578" y="464" font-size="9.5" fill="#444">▸ Hot-swap via DPI-C Bridge:</text>
+  <text x="594" y="478" font-size="9" fill="#666" font-family="Consolas, monospace">CppNI     ↔ NIDpiBridge</text>
+  <text x="594" y="492" font-size="9" fill="#666" font-family="Consolas, monospace">CppRouter ↔ RouterDpiBridge</text>
+  <text x="578" y="510" font-size="9.5" fill="#444">▸ Channel&lt;Flit&gt;: always C++, configurable delay</text>
+  <text x="578" y="526" font-size="9.5" fill="#444">▸ Flow Control: Valid/Ready OR Credit-Based</text>
+  <text x="578" y="542" font-size="9.5" fill="#444">▸ Dual-rail: REQ + RSP physical channels</text>
+
+  <text x="578" y="564" font-size="10" fill="#2563eb" font-weight="bold" font-style="italic">→ detail: hot_swap.svg</text>
+
+  <!-- ──────────────────────────────────────────────── -->
+  <!--  SUPPORT COMPONENTS  (below mesh, inside system) -->
+  <!-- ──────────────────────────────────────────────── -->
+  <rect x="80" y="598" width="150" height="38" rx="4" fill="#1a1a4e"/>
+  <text x="155" y="616" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Scoreboard</text>
+  <text x="155" y="630" text-anchor="middle" font-size="8" fill="#a5b4fc">expected vs actual</text>
+
+  <rect x="262" y="598" width="160" height="38" rx="4" fill="#1a1a4e"/>
+  <text x="342" y="616" text-anchor="middle" font-size="10" fill="white" font-weight="bold">MetricsCollector</text>
+  <text x="342" y="630" text-anchor="middle" font-size="8" fill="#a5b4fc">latency · throughput</text>
+
+  <rect x="454" y="598" width="130" height="38" rx="4" fill="#5b7285"/>
+  <text x="519" y="621" text-anchor="middle" font-size="10" fill="white" font-weight="bold">HostMemory</text>
+
+  <!-- Observe arrows: mesh → support components -->
+  <line x1="155" y1="578" x2="155" y2="596" stroke="#444" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#a)"/>
+  <text x="163" y="592" font-size="7" fill="#666">track txn</text>
+
+  <line x1="342" y1="578" x2="342" y2="596" stroke="#444" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#a)"/>
+  <text x="350" y="592" font-size="7" fill="#666">observe</text>
+
+  <line x1="460" y1="578" x2="500" y2="596" stroke="#444" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#a)"/>
+  <text x="488" y="586" font-size="7" fill="#666">NI r/w</text>
+
+  <!-- ──────────────────────────────────────────────── -->
+  <!--  TRANSACTION LIFECYCLE  (right side)            -->
+  <!-- ──────────────────────────────────────────────── -->
+  <rect x="956" y="300" width="300" height="246" rx="6" fill="#f5f5ff" stroke="#3d5a80" stroke-width="1.2"/>
+  <text x="1106" y="320" text-anchor="middle" font-size="12" font-weight="bold" fill="#2c3e50">Transaction Lifecycle</text>
+
+  <text x="972" y="342" font-size="9.5" fill="#444"><tspan font-weight="bold" fill="#3d5a80">1.</tspan> User calls submit_write(addr, data)</text>
+  <text x="972" y="362" font-size="9.5" fill="#444"><tspan font-weight="bold" fill="#3d5a80">2.</tspan> TrafficManager enqueues AXI txn</text>
+  <text x="972" y="382" font-size="9.5" fill="#444"><tspan font-weight="bold" fill="#3d5a80">3.</tspan> Src NI: AXI → Flit (NMU)</text>
+  <text x="972" y="402" font-size="9.5" fill="#444"><tspan font-weight="bold" fill="#3d5a80">4.</tspan> Src Router: XY route lookup</text>
+  <text x="972" y="422" font-size="9.5" fill="#444"><tspan font-weight="bold" fill="#3d5a80">5.</tspan> Channel hops through mesh</text>
+  <text x="972" y="442" font-size="9.5" fill="#444"><tspan font-weight="bold" fill="#3d5a80">6.</tspan> Dst Router → Dst NI: Flit → AXI</text>
+  <text x="972" y="462" font-size="9.5" fill="#444"><tspan font-weight="bold" fill="#3d5a80">7.</tspan> Write to LocalMemory</text>
+  <text x="972" y="482" font-size="9.5" fill="#444"><tspan font-weight="bold" fill="#3d5a80">8.</tspan> Response flit returns (RSP channel)</text>
+  <text x="972" y="502" font-size="9.5" fill="#444"><tspan font-weight="bold" fill="#3d5a80">9.</tspan> TrafficManager marks complete</text>
+  <text x="972" y="522" font-size="9.5" fill="#444"><tspan font-weight="bold" fill="#3d5a80">10.</tspan> User: is_complete() / get_read_data()</text>
+
+  <!-- System-wide notes -->
+  <text x="80" y="660" font-size="9" fill="#888" font-style="italic">Flow Control: VALID_READY 或 CREDIT — compile-time template parameter (like RTL generate)</text>
+  <text x="80" y="676" font-size="9" fill="#888" font-style="italic">Flit: 408-bit (Header 56b + Payload 352b) · Dual-rail: REQ + RSP physical channels</text>
+  <text x="80" y="692" font-size="9" fill="#888" font-style="italic">Injection: HOST_DMA (via gateway) 或 DIRECT_PE (distributed to each node's NI)</text>
+
+  <!-- ============================================================ -->
+  <!--  SECTION 3: GOLDEN VERIFICATION FLOW  (y=718 ~ 840)         -->
+  <!-- ============================================================ -->
+
+  <rect x="24" y="718" width="1252" height="122" rx="6" fill="#e8f5e9" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="650" y="738" text-anchor="middle" font-size="14" font-weight="bold" fill="#2e7d32">Golden Verification Flow</text>
+
+  <!-- Same Input (left) -->
+  <rect x="56" y="750" width="130" height="68" rx="4" fill="#2563eb"/>
+  <text x="121" y="770" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Same Input</text>
+  <text x="121" y="784" text-anchor="middle" font-size="8" fill="#bfdbfe">config.json</text>
+  <text x="121" y="796" text-anchor="middle" font-size="8" fill="#bfdbfe">memory.hex</text>
+  <text x="121" y="808" text-anchor="middle" font-size="8" fill="#bfdbfe">traffic.json</text>
+
+  <!-- C++ Model Run -->
+  <rect x="234" y="750" width="150" height="28" rx="4" fill="#1a1a4e"/>
+  <text x="309" y="768" text-anchor="middle" font-size="10" fill="white" font-weight="bold">C++ Model (run_all)</text>
+
+  <!-- RTL Model Run -->
+  <rect x="234" y="790" width="150" height="28" rx="4" fill="#5b7285"/>
+  <text x="309" y="808" text-anchor="middle" font-size="10" fill="white" font-weight="bold">RTL DUT (DPI-C)</text>
+
+  <!-- Arrows: Same Input → models -->
+  <line x1="188" y1="770" x2="232" y2="764" stroke="#444" stroke-width="1.5" marker-end="url(#a)"/>
+  <line x1="188" y1="800" x2="232" y2="804" stroke="#444" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- C++ Output -->
+  <rect x="432" y="750" width="110" height="28" rx="4" fill="#1a1a4e"/>
+  <text x="487" y="768" text-anchor="middle" font-size="10" fill="white" font-weight="bold">C++ Output</text>
+
+  <!-- RTL Output -->
+  <rect x="432" y="790" width="110" height="28" rx="4" fill="#5b7285"/>
+  <text x="487" y="808" text-anchor="middle" font-size="10" fill="white" font-weight="bold">RTL Output</text>
+
+  <!-- Arrows: models → outputs -->
+  <line x1="386" y1="764" x2="430" y2="764" stroke="#444" stroke-width="1.5" marker-end="url(#a)"/>
+  <line x1="386" y1="804" x2="430" y2="804" stroke="#444" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- Comparator -->
+  <rect x="594" y="758" width="110" height="36" rx="4" fill="#16a34a"/>
+  <text x="649" y="776" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Comparator</text>
+  <text x="649" y="790" text-anchor="middle" font-size="8" fill="#d1fae5">byte-exact match</text>
+
+  <!-- Arrows: outputs → comparator -->
+  <line x1="544" y1="764" x2="592" y2="772" stroke="#444" stroke-width="1.5" marker-end="url(#a)"/>
+  <line x1="544" y1="804" x2="592" y2="784" stroke="#444" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- PASS / FAIL -->
+  <rect x="756" y="762" width="80" height="32" rx="4" fill="#166534"/>
+  <text x="796" y="778" text-anchor="middle" font-size="12" fill="white" font-weight="bold">PASS</text>
+  <text x="796" y="790" text-anchor="middle" font-size="9" fill="#d1fae5">/ FAIL</text>
+
+  <!-- Arrow: comparator → result -->
+  <line x1="706" y1="776" x2="754" y2="778" stroke="#16a34a" stroke-width="2" marker-end="url(#ag)"/>
+
+  <!-- Verification note -->
+  <text x="650" y="830" text-anchor="middle" font-size="9.5" fill="#2e7d32" font-style="italic">cycle-accurate + bit-exact: Memory State + Response Log</text>
+
+  <!-- ============================================================ -->
+  <!--  LEGEND  (y=856 ~ 910)                                      -->
+  <!-- ============================================================ -->
+  <rect x="24" y="856" width="1252" height="54" rx="4" fill="#e4e4e4"/>
+
+  <!-- Row 1 -->
+  <rect x="40" y="864" width="14" height="12" rx="2" fill="#3d5a80"/>
+  <text x="58" y="874" font-size="9.5" fill="#333">Public API Group</text>
+
+  <rect x="170" y="864" width="14" height="12" rx="2" fill="#1a1a4e"/>
+  <text x="188" y="874" font-size="9.5" fill="#333">Internal Component</text>
+
+  <rect x="310" y="864" width="14" height="12" rx="2" fill="#2a2a5e"/>
+  <text x="328" y="874" font-size="9.5" fill="#333">Mesh Node</text>
+
+  <rect x="410" y="864" width="14" height="12" rx="2" fill="#5b7285"/>
+  <text x="428" y="874" font-size="9.5" fill="#333">Sub-module / Memory</text>
+
+  <line x1="560" y1="870" x2="584" y2="870" stroke="#8a9a3e" stroke-width="3"/>
+  <text x="590" y="874" font-size="9.5" fill="#333">Channel (mesh link)</text>
+
+  <rect x="710" y="864" width="14" height="12" rx="2" fill="none" stroke="#d97706" stroke-width="2"/>
+  <text x="728" y="874" font-size="9.5" fill="#333">Gateway Node</text>
+
+  <rect x="830" y="864" width="22" height="12" rx="2" fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="856" y="874" font-size="9.5" fill="#333">Callout / Hot-swap boundary</text>
+
+  <!-- Row 2 -->
+  <rect x="40" y="886" width="14" height="12" rx="2" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="58" y="896" font-size="9.5" fill="#333">Input File</text>
+
+  <rect x="130" y="886" width="14" height="12" rx="2" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="148" y="896" font-size="9.5" fill="#333">Output File</text>
+
+  <line x1="232" y1="892" x2="256" y2="892" stroke="#444" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="262" y="896" font-size="9.5" fill="#333">Data flow</text>
+
+  <line x1="332" y1="892" x2="356" y2="892" stroke="#444" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <text x="362" y="896" font-size="9.5" fill="#333">Observe / control</text>
+
+  <line x1="470" y1="892" x2="494" y2="892" stroke="#6b5b95" stroke-width="2.5"/>
+  <text x="500" y="896" font-size="9.5" fill="#333">Protocol interface (AXI / NoC I/F)</text>
+
+  <line x1="680" y1="892" x2="704" y2="892" stroke="#2563eb" stroke-width="1.2" stroke-dasharray="6,3" marker-end="url(#ab)"/>
+  <text x="710" y="896" font-size="9.5" fill="#333">Callout link</text>
+</svg>

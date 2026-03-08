@@ -56,16 +56,16 @@
                                                                                             │
 
 ================================================================================
-  Layer Architecture
+  Software / Hardware Architecture
 ================================================================================
 
-  Layer 1: User Code / RTL Testbench
+  User Code / RTL Testbench
   ──────────────────────────────────
     - 使用者 C++ test program
     - SystemVerilog testbench
     - Python/shell test scripts
 
-  Layer 2: NocSystem Public API (noc_api.h)
+  NocSystem Public API (noc_api.h)
   ──────────────────────────────────────────
     - Group A: Construction & Configuration
     - Group B: Transaction Submission (High-Level)
@@ -74,7 +74,7 @@
     - Group E: Metrics & Verification
     - Group F: Debug & Introspection + Output Pattern Generation
 
-  Layer 3: Internal Components
+  Internal Components
   ─────────────────────────────
     - TrafficManager: Transaction lifecycle management
     - Mesh: Topology + wiring via Channel<T>
@@ -83,18 +83,18 @@
     - Channel<T>: Configurable-delay link model
     - InputBuffer / BufferState: Separated data + credit tracking
     - Allocator: Pluggable (RoundRobin / iSLIP / QoSAwareRR)
-    - GoldenManager / MetricsCollector
+    - Scoreboard / MetricsCollector
     - HostMemory / LocalMemory
 
     ┌──────────────── HOT-SWAP BOUNDARY ────────────────┐
-    │  CppRouter ←→ RtlRouterProxy (Router_Interface)   │
-    │  CppNI     ←→ RtlNIProxy     (NI_Interface)       │
+    │  CppRouter ←→ RouterDpiBridge (Router_Interface)   │
+    │  CppNI     ←→ NIDpiBridge     (NI_Interface)       │
     └────────────────────────────────────────────────────┘
 
-  Layer 4: Co-Sim Bridge + RTL
+  Co-Sim Bridge + RTL
   ─────────────────────────────
     - DPI-C thin wrapper: noc_init / noc_step / noc_submit_* / noc_get_*
-    - RtlRouterProxy / RtlNIProxy
+    - RouterDpiBridge / NIDpiBridge
     - SystemVerilog RTL modules
 
 ================================================================================

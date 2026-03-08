@@ -1,10 +1,10 @@
-# 系統概述
+# System Overview
 
 本文件說明 NoC Behavior Model 的整體系統架構。
 
 ---
 
-## 1. 系統架構圖
+## 1. Overview
 
 ```
   ┌─────────────────────────────────────────────────────────────┐
@@ -39,7 +39,7 @@
 
 | 參數 | 預設值 | 說明 |
 |------|--------|------|
-| `mesh_cols` | 5 | 欄數 |
+| `mesh_cols` | 4 | 欄數 |
 | `mesh_rows` | 4 | 列數 |
 
 ### 2.1 Flit 與 Link 參數
@@ -54,7 +54,7 @@
 | `AXI_DATA_WIDTH` | 256 bits (32 bytes) | AXI 資料寬度 |
 | `AXI_ADDR_WIDTH` | 64 bits | AXI 位址寬度 |
 | `AXI_ID_WIDTH` | 8 bits | AXI transaction ID 寬度 |
-| `NODE_ID_WIDTH` | 8 bits | 節點 ID 寬度 ({y[3:0], x[3:0]}) |
+| `NODE_ID_WIDTH` | 8 bits | 節點 ID 寬度（[7:4]=y, [3:0]=x） |
 | `QOS_WIDTH` | 4 bits | QoS 優先級寬度 |
 | `ROB_IDX_WIDTH` | 5 bits | RoB index 寬度 (32 entries) |
 | `ECC_WIDTH` | 32 bits | ECC 總寬度 (SECDED) |
@@ -70,7 +70,7 @@
 | XY Routing | Deterministic routing，X-first then Y |
 | Wormhole Switching | Packet-level path lock，`last` bit 釋放 |
 | Separate Req/Rsp Channels | Request / Response 獨立 physical link，消除 protocol deadlock |
-| Credit-Based Flow Control | Per-port credit tracking（Version B） |
+| Credit-Based Flow Control | Per-port credit tracking（Credit-Based mode） |
 
 ---
 
@@ -86,4 +86,4 @@
 - [Router 規格](03_router.md)
 - [Network Interface 規格](04_network_interface.md)
 - [Flit 格式](02_flit.md)
-- [內部介面架構](05_internal_interface.md)
+- [Simulation Platform](09_simulation.md)

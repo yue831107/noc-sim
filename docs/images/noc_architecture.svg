@@ -1,0 +1,455 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1520 1100" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#555"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#2563EB"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#16A34A"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#EA580C"/>
+    </marker>
+    <marker id="arrow-rev" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto">
+      <path d="M8,0 L0,3 L8,6 Z" fill="#555"/>
+    </marker>
+    <!-- Queue symbol -->
+    <symbol id="queue" viewBox="0 0 40 24">
+      <rect x="0" y="0" width="40" height="24" rx="2" fill="#E5E7EB" stroke="#6B7280" stroke-width="1"/>
+      <line x1="10" y1="0" x2="10" y2="24" stroke="#6B7280" stroke-width="0.8"/>
+      <line x1="20" y1="0" x2="20" y2="24" stroke="#6B7280" stroke-width="0.8"/>
+      <line x1="30" y1="0" x2="30" y2="24" stroke="#6B7280" stroke-width="0.8"/>
+    </symbol>
+  </defs>
+
+  <!-- ===== Background Regions ===== -->
+  <!-- User Code region -->
+  <rect x="10" y="10" width="195" height="1080" rx="8" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="1.5"/>
+  <text x="107" y="35" text-anchor="middle" font-size="14" font-weight="bold" fill="#374151">User Code</text>
+
+  <!-- NoC C++ Model region -->
+  <rect x="215" y="10" width="890" height="1080" rx="8" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1.5"/>
+  <text x="660" y="35" text-anchor="middle" font-size="14" font-weight="bold" fill="#1E40AF">NoC C++ Model &amp; API</text>
+
+  <!-- DPI-C Bridge region -->
+  <rect x="1115" y="10" width="170" height="1080" rx="8" fill="#F0FDF4" stroke="#86EFAC" stroke-width="1.5"/>
+  <text x="1200" y="35" text-anchor="middle" font-size="14" font-weight="bold" fill="#166534">DPI-C Bridge</text>
+
+  <!-- RTL region -->
+  <rect x="1295" y="10" width="215" height="1080" rx="8" fill="#FFF7ED" stroke="#FDBA74" stroke-width="1.5"/>
+  <text x="1402" y="35" text-anchor="middle" font-size="14" font-weight="bold" fill="#9A3412">RTL (SystemVerilog)</text>
+
+  <!-- ===== User Code ===== -->
+  <!-- main() block -->
+  <rect x="22" y="55" width="172" height="190" rx="5" fill="#fff" stroke="#6B7280" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="30" y="73" font-size="11" font-weight="bold" fill="#374151">main() {</text>
+  <text x="36" y="90" font-size="10" fill="#6B7280" font-family="Consolas, monospace">auto cfg =</text>
+  <text x="40" y="103" font-size="10" fill="#6B7280" font-family="Consolas, monospace">load_config(json);</text>
+  <text x="36" y="120" font-size="10" fill="#6B7280" font-family="Consolas, monospace">NocSystem sys(cfg);</text>
+  <text x="36" y="137" font-size="10" fill="#6B7280" font-family="Consolas, monospace">sys.load_memory(..);</text>
+  <text x="36" y="154" font-size="10" fill="#6B7280" font-family="Consolas, monospace">sys.load_traffic(..);</text>
+  <text x="36" y="171" font-size="10" fill="#6B7280" font-family="Consolas, monospace">sys.run_all();</text>
+  <text x="36" y="188" font-size="10" fill="#6B7280" font-family="Consolas, monospace">sys.generate_golden</text>
+  <text x="40" y="201" font-size="10" fill="#6B7280" font-family="Consolas, monospace">("output/");</text>
+  <text x="30" y="220" font-size="11" font-weight="bold" fill="#374151">}</text>
+
+  <!-- Input files -->
+  <rect x="22" y="260" width="172" height="90" rx="5" fill="#DBEAFE" stroke="#3B82F6" stroke-width="1"/>
+  <text x="108" y="280" text-anchor="middle" font-size="11" font-weight="bold" fill="#1E40AF">Input Patterns</text>
+  <text x="36" y="298" font-size="10" fill="#1E40AF" font-family="Consolas, monospace">config.json</text>
+  <text x="36" y="313" font-size="10" fill="#1E40AF" font-family="Consolas, monospace">memory/*.hex</text>
+  <text x="36" y="328" font-size="10" fill="#1E40AF" font-family="Consolas, monospace">traffic.json</text>
+
+  <!-- Callback block -->
+  <rect x="22" y="660" width="172" height="70" rx="5" fill="#fff" stroke="#6B7280" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="30" y="678" font-size="11" font-weight="bold" fill="#374151">Callback:</text>
+  <text x="36" y="696" font-size="10" fill="#6B7280" font-family="Consolas, monospace">on_complete(</text>
+  <text x="40" y="710" font-size="10" fill="#6B7280" font-family="Consolas, monospace">  handle, status)</text>
+
+  <!-- Golden output -->
+  <rect x="22" y="750" width="172" height="115" rx="5" fill="#DCFCE7" stroke="#22C55E" stroke-width="1"/>
+  <text x="108" y="770" text-anchor="middle" font-size="11" font-weight="bold" fill="#166534">Golden Output</text>
+  <text x="36" y="790" font-size="10" fill="#166534" font-family="Consolas, monospace">memory_state.hex</text>
+  <text x="36" y="805" font-size="10" fill="#166534" font-family="Consolas, monospace">response_log.json</text>
+  <text x="36" y="820" font-size="10" fill="#166534" font-family="Consolas, monospace">cycle_trace.vcd</text>
+  <text x="36" y="835" font-size="10" fill="#166534" font-family="Consolas, monospace">statistics.json</text>
+  <text x="36" y="853" font-size="9" fill="#6B7280" font-style="italic">(byte-exact / cycle-accurate)</text>
+
+  <!-- ===== NocSystem API Groups ===== -->
+  <!-- Group A: Construction -->
+  <rect x="228" y="55" width="200" height="100" rx="5" fill="#3B82F6" stroke="#1D4ED8" stroke-width="1"/>
+  <text x="238" y="73" font-size="11" font-weight="bold" fill="#fff">Group A: Construction</text>
+  <text x="238" y="90" font-size="10" fill="#DBEAFE" font-family="Consolas, monospace">NocSystem(config)</text>
+  <text x="238" y="104" font-size="10" fill="#DBEAFE" font-family="Consolas, monospace">load_config(json_path)</text>
+  <text x="238" y="118" font-size="10" fill="#DBEAFE" font-family="Consolas, monospace">load_memory(hex_dir)</text>
+  <text x="238" y="132" font-size="10" fill="#DBEAFE" font-family="Consolas, monospace">load_traffic(json_path)</text>
+
+  <!-- Group B: Transaction -->
+  <rect x="228" y="165" width="200" height="85" rx="5" fill="#3B82F6" stroke="#1D4ED8" stroke-width="1"/>
+  <text x="238" y="183" font-size="11" font-weight="bold" fill="#fff">Group B: Transaction</text>
+  <text x="238" y="200" font-size="10" fill="#DBEAFE" font-family="Consolas, monospace">submit_write(addr,data)</text>
+  <text x="238" y="214" font-size="10" fill="#DBEAFE" font-family="Consolas, monospace">submit_read(addr,len)</text>
+  <text x="238" y="228" font-size="10" fill="#DBEAFE" font-family="Consolas, monospace">submit_multicast_write()</text>
+
+  <!-- Group C: Simulation -->
+  <rect x="228" y="260" width="200" height="100" rx="5" fill="#3B82F6" stroke="#1D4ED8" stroke-width="1"/>
+  <text x="238" y="278" font-size="11" font-weight="bold" fill="#fff">Group C: Simulation</text>
+  <text x="238" y="295" font-size="10" fill="#DBEAFE" font-family="Consolas, monospace">process_cycle()</text>
+  <text x="238" y="309" font-size="10" fill="#DBEAFE" font-family="Consolas, monospace">run(N)</text>
+  <text x="238" y="323" font-size="10" fill="#DBEAFE" font-family="Consolas, monospace">run_until_idle(max)</text>
+  <text x="238" y="337" font-size="10" fill="#DBEAFE" font-family="Consolas, monospace">run_all()</text>
+
+  <!-- Group D: Completion -->
+  <rect x="228" y="370" width="200" height="100" rx="5" fill="#3B82F6" stroke="#1D4ED8" stroke-width="1"/>
+  <text x="238" y="388" font-size="11" font-weight="bold" fill="#fff">Group D: Completion</text>
+  <text x="238" y="405" font-size="10" fill="#DBEAFE" font-family="Consolas, monospace">is_complete(handle)</text>
+  <text x="238" y="419" font-size="10" fill="#DBEAFE" font-family="Consolas, monospace">all_complete()</text>
+  <text x="238" y="433" font-size="10" fill="#DBEAFE" font-family="Consolas, monospace">get_status(handle)</text>
+  <text x="238" y="447" font-size="10" fill="#DBEAFE" font-family="Consolas, monospace">get_read_data(handle)</text>
+
+  <!-- Group E: Metrics -->
+  <rect x="228" y="480" width="200" height="55" rx="5" fill="#3B82F6" stroke="#1D4ED8" stroke-width="1"/>
+  <text x="238" y="498" font-size="11" font-weight="bold" fill="#fff">Group E: Metrics</text>
+  <text x="238" y="515" font-size="10" fill="#DBEAFE" font-family="Consolas, monospace">get_metrics() / verify()</text>
+
+  <!-- Group F: Debug -->
+  <rect x="228" y="545" width="200" height="115" rx="5" fill="#3B82F6" stroke="#1D4ED8" stroke-width="1"/>
+  <text x="238" y="563" font-size="11" font-weight="bold" fill="#fff">Group F: Debug &amp; Output</text>
+  <text x="238" y="580" font-size="10" fill="#DBEAFE" font-family="Consolas, monospace">get_router(coord)</text>
+  <text x="238" y="594" font-size="10" fill="#DBEAFE" font-family="Consolas, monospace">get_ni(coord)</text>
+  <text x="238" y="608" font-size="10" fill="#DBEAFE" font-family="Consolas, monospace">dump_state(ostream)</text>
+  <text x="238" y="622" font-size="10" fill="#DBEAFE" font-family="Consolas, monospace">dump_memory_state()</text>
+  <text x="238" y="636" font-size="10" fill="#DBEAFE" font-family="Consolas, monospace">generate_golden(dir)</text>
+
+  <!-- ===== TrafficManager ===== -->
+  <rect x="455" y="55" width="230" height="260" rx="6" fill="#475569" stroke="#1E293B" stroke-width="1.5"/>
+  <text x="570" y="75" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">TrafficManager</text>
+  <text x="570" y="92" text-anchor="middle" font-size="9" fill="#94A3B8" font-style="italic">(Host DMA / PE DMA model)</text>
+
+  <!-- Injection mode -->
+  <rect x="467" y="100" width="206" height="36" rx="3" fill="#334155" stroke="#64748B" stroke-width="0.8"/>
+  <text x="477" y="116" font-size="9.5" fill="#FCD34D" font-family="Consolas, monospace">set_injection_mode(</text>
+  <text x="477" y="130" font-size="9.5" fill="#FCD34D" font-family="Consolas, monospace">  HOST_DMA | DIRECT_PE)</text>
+
+  <text x="467" y="153" font-size="9.5" fill="#CBD5E1" font-family="Consolas, monospace">set_gateway_node(id,port)</text>
+  <text x="467" y="168" font-size="9.5" fill="#CBD5E1" font-family="Consolas, monospace">submit_write(addr,data,len)</text>
+  <text x="467" y="183" font-size="9.5" fill="#CBD5E1" font-family="Consolas, monospace">submit_read(addr,len)</text>
+  <text x="467" y="198" font-size="9.5" fill="#CBD5E1" font-family="Consolas, monospace">tick(cycle)</text>
+  <!-- Queue -->
+  <text x="477" y="218" font-size="9" fill="#94A3B8" font-style="italic">Pending AXI Txn Queue:</text>
+  <use href="#queue" x="477" y="223" width="60" height="24"/>
+  <use href="#queue" x="547" y="223" width="60" height="24"/>
+  <text x="467" y="265" font-size="9.5" fill="#CBD5E1" font-family="Consolas, monospace">schedule_injection()</text>
+  <text x="467" y="280" font-size="9.5" fill="#CBD5E1" font-family="Consolas, monospace">collect_completion()</text>
+  <!-- AXI txn label on output -->
+  <text x="570" y="305" text-anchor="middle" font-size="9" fill="#FCD34D" font-weight="bold">AXI txn (not flit)</text>
+
+  <!-- ===== Scoreboard ===== -->
+  <rect x="710" y="55" width="170" height="105" rx="6" fill="#475569" stroke="#1E293B" stroke-width="1.5"/>
+  <text x="795" y="75" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Scoreboard</text>
+  <text x="720" y="95" font-size="9.5" fill="#CBD5E1" font-family="Consolas, monospace">register_expected()</text>
+  <text x="720" y="110" font-size="9.5" fill="#CBD5E1" font-family="Consolas, monospace">check_actual()</text>
+  <text x="720" y="125" font-size="9.5" fill="#CBD5E1" font-family="Consolas, monospace">get_summary()</text>
+  <text x="720" y="140" font-size="9.5" fill="#CBD5E1" font-family="Consolas, monospace">detect_collision()</text>
+
+  <!-- ===== MetricsCollector ===== -->
+  <rect x="905" y="55" width="175" height="105" rx="6" fill="#475569" stroke="#1E293B" stroke-width="1.5"/>
+  <text x="992" y="75" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">MetricsCollector</text>
+  <text x="915" y="95" font-size="9.5" fill="#CBD5E1" font-family="Consolas, monospace">capture(cycle)</text>
+  <text x="915" y="110" font-size="9.5" fill="#CBD5E1" font-family="Consolas, monospace">record_injection(id,cy)</text>
+  <text x="915" y="125" font-size="9.5" fill="#CBD5E1" font-family="Consolas, monospace">record_ejection(id,cy)</text>
+  <text x="915" y="140" font-size="9.5" fill="#CBD5E1" font-family="Consolas, monospace">get_latency_stats()</text>
+
+  <!-- ===== Mesh ===== -->
+  <rect x="455" y="330" width="635" height="560" rx="6" fill="#334155" stroke="#0F172A" stroke-width="2"/>
+  <text x="772" y="352" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">Mesh</text>
+
+  <!-- === Single Node Detail (inside Mesh) === -->
+  <rect x="470" y="365" width="600" height="235" rx="5" fill="#1E293B" stroke="#475569" stroke-width="1.5"/>
+  <text x="770" y="385" text-anchor="middle" font-size="11" font-weight="bold" fill="#E2E8F0">Single Node Detail (x,y)</text>
+
+  <!-- PE block -->
+  <rect x="485" y="395" width="130" height="70" rx="4" fill="#7C3AED" stroke="#6D28D9" stroke-width="1"/>
+  <text x="550" y="415" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Local PE</text>
+  <text x="495" y="433" font-size="9.5" fill="#DDD6FE" font-family="Consolas, monospace">DMA</text>
+  <text x="495" y="448" font-size="9.5" fill="#DDD6FE" font-family="Consolas, monospace">local DRAM</text>
+
+  <!-- Host DMA (dashed, optional) -->
+  <rect x="485" y="475" width="130" height="40" rx="4" fill="none" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="550" y="495" text-anchor="middle" font-size="10" font-weight="bold" fill="#F59E0B">Host DMA</text>
+  <text x="550" y="508" text-anchor="middle" font-size="8" fill="#92400E">(gateway node only)</text>
+
+  <!-- AXI arrows: PE → NI -->
+  <line x1="615" y1="425" x2="645" y2="425" stroke="#A78BFA" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="620" y="418" font-size="8" fill="#A78BFA">AXI</text>
+  <!-- AXI arrows: Host DMA → NI -->
+  <line x1="615" y1="492" x2="645" y2="470" stroke="#F59E0B" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arrow-orange)"/>
+  <text x="618" y="487" font-size="7" fill="#F59E0B">port_id=1</text>
+
+  <!-- NI block -->
+  <rect x="650" y="395" width="185" height="120" rx="5" fill="#1A3B2A" stroke="#4ADE80" stroke-width="1.5"/>
+  <text x="742" y="415" text-anchor="middle" font-size="11" font-weight="bold" fill="#86EFAC">NI (NMU + NSU)</text>
+  <text x="660" y="433" font-size="9" fill="#4ADE80" font-style="italic">NMU: AXI → flit</text>
+  <text x="660" y="448" font-size="9.5" fill="#86EFAC" font-family="Consolas, monospace">AddrTrans QoSGen</text>
+  <text x="660" y="462" font-size="9.5" fill="#86EFAC" font-family="Consolas, monospace">FlitPack EccGen</text>
+  <text x="660" y="480" font-size="9" fill="#4ADE80" font-style="italic">NSU: flit → AXI</text>
+  <text x="660" y="494" font-size="9.5" fill="#86EFAC" font-family="Consolas, monospace">FlitUnpack MemoryOp</text>
+  <text x="660" y="508" font-size="9.5" fill="#86EFAC" font-family="Consolas, monospace">RoB ReassemblyBuf</text>
+  <!-- port_id=0 label -->
+  <text x="652" y="418" font-size="7" fill="#4ADE80">port_id=0</text>
+
+  <!-- Channel between NI ↔ Router -->
+  <rect x="845" y="420" width="50" height="50" rx="3" fill="#475569" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="870" y="440" text-anchor="middle" font-size="8" font-weight="bold" fill="#FCD34D">Ch&lt;T&gt;</text>
+  <text x="870" y="453" text-anchor="middle" font-size="7" fill="#F59E0B">Req→</text>
+  <text x="870" y="463" text-anchor="middle" font-size="7" fill="#F59E0B">←Rsp</text>
+  <!-- NI → Channel -->
+  <line x1="835" y1="445" x2="843" y2="445" stroke="#F59E0B" stroke-width="2"/>
+  <!-- Channel → Router -->
+  <line x1="895" y1="445" x2="905" y2="445" stroke="#F59E0B" stroke-width="2"/>
+
+  <!-- Router block -->
+  <rect x="910" y="395" width="145" height="120" rx="5" fill="#1E3A5F" stroke="#60A5FA" stroke-width="1.5"/>
+  <text x="982" y="415" text-anchor="middle" font-size="11" font-weight="bold" fill="#93C5FD">Router</text>
+  <text x="920" y="433" font-size="9.5" fill="#93C5FD" font-family="Consolas, monospace">tick() post_wire()</text>
+  <text x="920" y="448" font-size="9.5" fill="#93C5FD" font-family="Consolas, monospace">InputBuf Crossbar</text>
+  <text x="920" y="463" font-size="9.5" fill="#93C5FD" font-family="Consolas, monospace">RouteCompute</text>
+  <text x="920" y="478" font-size="9.5" fill="#93C5FD" font-family="Consolas, monospace">Allocator PathLock</text>
+  <text x="920" y="493" font-size="9" fill="#60A5FA" font-style="italic">N/S/E/W + LOCAL(s)</text>
+  <text x="920" y="508" font-size="9" fill="#60A5FA" font-style="italic">port_id [1:0]</text>
+
+  <!-- Mesh links from Router -->
+  <line x1="1055" y1="430" x2="1080" y2="430" stroke="#60A5FA" stroke-width="2.5"/>
+  <line x1="1055" y1="445" x2="1080" y2="445" stroke="#60A5FA" stroke-width="2.5"/>
+  <text x="1060" y="425" font-size="7" fill="#60A5FA">N/S/E/W</text>
+  <text x="1060" y="460" font-size="7" fill="#60A5FA">mesh links</text>
+
+  <!-- === CppRouter Detail === -->
+  <rect x="470" y="615" width="295" height="260" rx="5" fill="#1E3A5F" stroke="#60A5FA" stroke-width="1.5"/>
+  <text x="617" y="635" text-anchor="middle" font-size="12" font-weight="bold" fill="#93C5FD">CppRouter</text>
+  <text x="617" y="650" text-anchor="middle" font-size="9" fill="#60A5FA">(Router_Interface&lt;Mode&gt;)</text>
+
+  <!-- Router public -->
+  <rect x="482" y="658" width="270" height="45" rx="3" fill="#1E40AF" stroke="#3B82F6" stroke-width="1"/>
+  <text x="492" y="674" font-size="9.5" fill="#DBEAFE" font-family="Consolas, monospace">tick()            // Phase 1-4</text>
+  <text x="492" y="688" font-size="9.5" fill="#DBEAFE" font-family="Consolas, monospace">post_wire()       // Phase 6-7</text>
+  <text x="492" y="698" font-size="9.5" fill="#DBEAFE" font-family="Consolas, monospace">get_output() / set_input()</text>
+
+  <!-- Router pipeline -->
+  <rect x="482" y="710" width="270" height="80" rx="3" fill="#172554" stroke="#3B82F6" stroke-width="0.8"/>
+  <text x="492" y="726" font-size="9" fill="#60A5FA" font-style="italic">Pipeline (Phase 4):</text>
+  <text x="492" y="741" font-size="9.5" fill="#93C5FD" font-family="Consolas, monospace">_InputQueuing  _RouteEval</text>
+  <text x="492" y="755" font-size="9.5" fill="#93C5FD" font-family="Consolas, monospace">_VCAllocEval   _SWAllocEval</text>
+  <text x="492" y="769" font-size="9.5" fill="#93C5FD" font-family="Consolas, monospace">_SwitchTraverse _OutputQueue</text>
+  <text x="492" y="783" font-size="9.5" fill="#93C5FD" font-family="Consolas, monospace">PathLock Allocator Crossbar</text>
+
+  <!-- Router sub-modules -->
+  <rect x="482" y="798" width="270" height="68" rx="3" fill="#172554" stroke="#3B82F6" stroke-width="0.8"/>
+  <text x="492" y="814" font-size="9" fill="#60A5FA" font-style="italic">Sub-Modules:</text>
+  <text x="492" y="829" font-size="9.5" fill="#93C5FD" font-family="Consolas, monospace">InputBuffer    BufferState</text>
+  <text x="492" y="843" font-size="9.5" fill="#93C5FD" font-family="Consolas, monospace">RouteCompute   MulticastTracker</text>
+  <text x="492" y="857" font-size="9.5" fill="#93C5FD" font-family="Consolas, monospace">ReductionSync  ReductionArb</text>
+
+  <!-- === CppNI Detail === -->
+  <rect x="780" y="615" width="295" height="260" rx="5" fill="#1A3B2A" stroke="#4ADE80" stroke-width="1.5"/>
+  <text x="927" y="635" text-anchor="middle" font-size="12" font-weight="bold" fill="#86EFAC">CppNI</text>
+  <text x="927" y="650" text-anchor="middle" font-size="9" fill="#4ADE80">(NI_Interface&lt;Mode&gt;)</text>
+
+  <!-- NI public -->
+  <rect x="792" y="658" width="270" height="32" rx="3" fill="#166534" stroke="#22C55E" stroke-width="1"/>
+  <text x="802" y="674" font-size="9.5" fill="#DCFCE7" font-family="Consolas, monospace">tick()  // Phase 8: NMU+NSU</text>
+  <text x="802" y="686" font-size="9.5" fill="#DCFCE7" font-family="Consolas, monospace">get_output() / set_input()</text>
+
+  <!-- NMU -->
+  <rect x="792" y="697" width="270" height="80" rx="3" fill="#14532D" stroke="#22C55E" stroke-width="0.8"/>
+  <text x="802" y="713" font-size="9" fill="#4ADE80" font-style="italic">NMU (AXI → flit):</text>
+  <text x="802" y="728" font-size="9.5" fill="#86EFAC" font-family="Consolas, monospace">_AddrTranslate _QosGenerate</text>
+  <text x="802" y="742" font-size="9.5" fill="#86EFAC" font-family="Consolas, monospace">_PackAW _PackW _PackAR</text>
+  <text x="802" y="756" font-size="9.5" fill="#86EFAC" font-family="Consolas, monospace">_EccGenerate _Inject</text>
+  <text x="802" y="770" font-size="9.5" fill="#86EFAC" font-family="Consolas, monospace">_UnpackB _UnpackR _AllocRoB</text>
+
+  <!-- NSU -->
+  <rect x="792" y="784" width="270" height="56" rx="3" fill="#14532D" stroke="#22C55E" stroke-width="0.8"/>
+  <text x="802" y="800" font-size="9" fill="#4ADE80" font-style="italic">NSU (flit → AXI → Memory):</text>
+  <text x="802" y="815" font-size="9.5" fill="#86EFAC" font-family="Consolas, monospace">_UnpackAW/AR/W _Reassemble</text>
+  <text x="802" y="829" font-size="9.5" fill="#86EFAC" font-family="Consolas, monospace">_EccCheck _PackB _PackR</text>
+  <text x="802" y="843" font-size="9.5" fill="#86EFAC" font-family="Consolas, monospace">_StoreReqInfo _MemoryOp</text>
+
+  <!-- NI sub-modules -->
+  <rect x="792" y="847" width="270" height="22" rx="3" fill="#14532D" stroke="#22C55E" stroke-width="0.8"/>
+  <text x="802" y="863" font-size="9.5" fill="#86EFAC" font-family="Consolas, monospace">InjBuf RoB ReassemblyBuf ReqInfoStore</text>
+
+  <!-- === HOT-SWAP BOUNDARY === -->
+  <rect x="460" y="890" width="620" height="48" rx="5" fill="none" stroke="#F59E0B" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="770" y="910" text-anchor="middle" font-size="11" font-weight="bold" fill="#D97706">HOT-SWAP BOUNDARY</text>
+  <text x="770" y="926" text-anchor="middle" font-size="9.5" fill="#92400E">CppRouter / CppNI  ↔  RouterDpiBridge / NIDpiBridge  (same Interface&lt;Mode&gt;)</text>
+
+  <!-- === Shared Components (bottom of Mesh) === -->
+  <!-- Channel<T> -->
+  <rect x="470" y="950" width="195" height="55" rx="5" fill="#475569" stroke="#94A3B8" stroke-width="1"/>
+  <text x="567" y="970" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Channel&lt;T&gt;</text>
+  <text x="480" y="988" font-size="9.5" fill="#CBD5E1" font-family="Consolas, monospace">Send() Receive() HasData()</text>
+  <text x="480" y="1001" font-size="9.5" fill="#CBD5E1" font-family="Consolas, monospace">ReadInputs() WriteOutputs()</text>
+
+  <!-- Memory -->
+  <rect x="680" y="950" width="195" height="55" rx="5" fill="#475569" stroke="#94A3B8" stroke-width="1"/>
+  <text x="777" y="970" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">HostMem / LocalMem</text>
+  <text x="690" y="988" font-size="9.5" fill="#CBD5E1" font-family="Consolas, monospace">read() write()</text>
+  <text x="690" y="1001" font-size="9.5" fill="#CBD5E1" font-family="Consolas, monospace">load_hex() dump_hex()</text>
+
+  <!-- Allocator -->
+  <rect x="890" y="950" width="190" height="55" rx="5" fill="#475569" stroke="#94A3B8" stroke-width="1"/>
+  <text x="985" y="970" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Allocator (pluggable)</text>
+  <text x="900" y="988" font-size="9.5" fill="#CBD5E1" font-family="Consolas, monospace">allocate(requests)</text>
+  <text x="900" y="1001" font-size="9.5" fill="#CBD5E1" font-family="Consolas, monospace">RoundRobin/iSLIP/QoSRR</text>
+
+  <!-- ===== DPI-C Bridge ===== -->
+  <!-- Signal-level only (aligned with Hot-Swap boundary) -->
+  <rect x="1127" y="620" width="145" height="310" rx="5" fill="#16A34A" stroke="#F59E0B" stroke-width="2.5"/>
+  <text x="1199" y="640" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Signal-Level</text>
+  <text x="1199" y="655" text-anchor="middle" font-size="8" fill="#FCD34D" font-weight="bold">HOT-SWAP Channel</text>
+  <text x="1199" y="670" text-anchor="middle" font-size="8" fill="#86EFAC" font-style="italic">(DPI-C Bridge ↔ RTL module)</text>
+
+  <text x="1137" y="695" font-size="9" fill="#FCD34D" font-style="italic">Per-cycle signal exchange:</text>
+  <text x="1137" y="715" font-size="9.5" fill="#DCFCE7" font-family="Consolas, monospace">noc_set_port_input</text>
+  <text x="1140" y="729" font-size="9.5" fill="#DCFCE7" font-family="Consolas, monospace">(node, port, ch,</text>
+  <text x="1141" y="743" font-size="9.5" fill="#DCFCE7" font-family="Consolas, monospace"> valid, flit, crdt)</text>
+  <text x="1137" y="765" font-size="9.5" fill="#DCFCE7" font-family="Consolas, monospace">noc_get_port_output</text>
+  <text x="1140" y="779" font-size="9.5" fill="#DCFCE7" font-family="Consolas, monospace">(node, port, ch,</text>
+  <text x="1141" y="793" font-size="9.5" fill="#DCFCE7" font-family="Consolas, monospace"> valid, flit, crdt)</text>
+
+  <!-- Substitution flow diagram inside Signal-Level -->
+  <rect x="1137" y="810" width="125" height="110" rx="3" fill="#14532D" stroke="#4ADE80" stroke-width="0.8"/>
+  <text x="1199" y="828" text-anchor="middle" font-size="8" fill="#4ADE80" font-weight="bold">Substitution Flow:</text>
+  <text x="1147" y="845" font-size="8" fill="#86EFAC">CppRouter.tick()</text>
+  <text x="1147" y="858" font-size="8" fill="#FCD34D">    ↓ replaced by</text>
+  <text x="1147" y="871" font-size="8" fill="#86EFAC">RouterDpiBridge.tick()</text>
+  <text x="1147" y="884" font-size="8" fill="#FCD34D">    ↓ calls DPI-C</text>
+  <text x="1147" y="897" font-size="8" fill="#86EFAC">noc_set/get_port_*()</text>
+  <text x="1147" y="910" font-size="8" fill="#FCD34D">    ↓ drives</text>
+  <text x="1147" y="923" font-size="8" fill="#FED7AA">RTL Router (SV)</text>
+
+  <!-- ===== RTL ===== -->
+  <!-- RTL Router (aligned with Signal-Level) -->
+  <rect x="1310" y="620" width="188" height="130" rx="5" fill="#EA580C" stroke="#C2410C" stroke-width="1.5"/>
+  <text x="1404" y="643" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">RTL Router (SV)</text>
+  <text x="1320" y="665" font-size="10" fill="#FED7AA">input_buffer</text>
+  <text x="1320" y="680" font-size="10" fill="#FED7AA">route_compute</text>
+  <text x="1320" y="695" font-size="10" fill="#FED7AA">vc_allocator</text>
+  <text x="1320" y="710" font-size="10" fill="#FED7AA">sw_allocator</text>
+  <text x="1320" y="725" font-size="10" fill="#FED7AA">crossbar</text>
+  <text x="1320" y="740" font-size="10" fill="#FED7AA">output_buffer</text>
+
+  <!-- RTL NI (below RTL Router) -->
+  <rect x="1310" y="765" width="188" height="160" rx="5" fill="#EA580C" stroke="#C2410C" stroke-width="1.5"/>
+  <text x="1404" y="788" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">RTL NI (SV)</text>
+  <text x="1320" y="810" font-size="10" fill="#FED7AA">nmu: addr_trans</text>
+  <text x="1320" y="825" font-size="10" fill="#FED7AA">nmu: flit_pack</text>
+  <text x="1320" y="840" font-size="10" fill="#FED7AA">nmu: reorder_buffer</text>
+  <text x="1320" y="855" font-size="10" fill="#FED7AA">nsu: flit_unpack</text>
+  <text x="1320" y="870" font-size="10" fill="#FED7AA">nsu: flit_pack</text>
+  <text x="1320" y="885" font-size="10" fill="#FED7AA">nsu: w_reassembly</text>
+  <text x="1320" y="900" font-size="10" fill="#FED7AA">nsu: local_memory</text>
+
+  <!-- Comparator (below RTL modules) -->
+  <rect x="1310" y="945" width="188" height="75" rx="5" fill="#7C3AED" stroke="#6D28D9" stroke-width="1"/>
+  <text x="1404" y="968" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Comparator</text>
+  <text x="1320" y="988" font-size="10" fill="#DDD6FE">Golden vs Actual</text>
+  <text x="1320" y="1003" font-size="10" fill="#DDD6FE">Memory: byte-exact</text>
+  <text x="1320" y="1018" font-size="10" fill="#DDD6FE">Response: cycle-accurate</text>
+
+  <!-- PASS/FAIL -->
+  <text x="1404" y="1048" text-anchor="middle" font-size="14" font-weight="bold" fill="#7C3AED">PASS / FAIL</text>
+
+  <!-- ===== Arrows ===== -->
+
+  <!-- ── LEFT SIDE: User Code ↔ API ── -->
+
+  <!-- main() → Group A (construction: NocSystem, load_config) -->
+  <line x1="194" y1="100" x2="225" y2="100" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <!-- main() → Group B (submit_write/read) -->
+  <line x1="194" y1="155" x2="225" y2="200" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <!-- main() → Group C (run_all) -->
+  <line x1="194" y1="175" x2="225" y2="300" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <!-- Input Patterns → Group A (config.json, memory/*.hex, traffic.json) -->
+  <line x1="194" y1="290" x2="225" y2="140" stroke="#2563EB" stroke-width="1.2" marker-end="url(#arrow-blue)"/>
+  <text x="200" y="205" font-size="7" fill="#2563EB" transform="rotate(-60,200,205)">config/mem/traffic</text>
+
+  <!-- Group D → Callback (completion notification) -->
+  <line x1="225" y1="430" x2="194" y2="690" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <!-- Group F → Golden Output (generate_golden output files) -->
+  <line x1="225" y1="635" x2="194" y2="790" stroke="#16A34A" stroke-width="1.2" marker-end="url(#arrow-green)"/>
+
+  <!-- ── RIGHT SIDE: API → Internal Components ── -->
+
+  <!-- Group A → TrafficManager (load_traffic) -->
+  <line x1="428" y1="130" x2="452" y2="130" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <text x="432" y="124" font-size="7" fill="#555">load_traffic</text>
+  <!-- Group A → Mesh/Memory (load_memory, construct) -->
+  <path d="M 428 110 L 440 110 L 440 970 L 677 970" fill="none" stroke="#555" stroke-width="1" marker-end="url(#arrow)" stroke-dasharray="4,2"/>
+  <text x="443" y="540" font-size="7" fill="#555" transform="rotate(90,443,540)">load_memory → LocalMem</text>
+
+  <!-- Group B → TrafficManager (submit_write/read) -->
+  <line x1="428" y1="200" x2="452" y2="168" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="432" y="178" font-size="7" fill="#555">submit</text>
+  <!-- Group C → TrafficManager (run/tick) -->
+  <line x1="428" y1="310" x2="452" y2="200" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="432" y="260" font-size="7" fill="#555">tick()</text>
+
+  <!-- Group D ← TrafficManager (is_complete, get_read_data) -->
+  <line x1="452" y1="265" x2="428" y2="420" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <text x="432" y="350" font-size="7" fill="#555" transform="rotate(75,432,350)">complete/data</text>
+
+  <!-- Group E → Scoreboard (verify) -->
+  <line x1="428" y1="505" x2="707" y2="125" stroke="#F59E0B" stroke-width="1" stroke-dasharray="4,2" marker-end="url(#arrow)"/>
+  <text x="560" y="310" font-size="7" fill="#92400E" transform="rotate(-30,560,310)">verify()</text>
+  <!-- Group E → MetricsCollector (get_metrics) -->
+  <line x1="428" y1="510" x2="902" y2="115" stroke="#555" stroke-width="1" stroke-dasharray="4,2" marker-end="url(#arrow)"/>
+  <text x="660" y="300" font-size="7" fill="#555" transform="rotate(-25,660,300)">get_metrics()</text>
+
+  <!-- Group F → Mesh (get_router/get_ni) -->
+  <path d="M 428 580 L 452 580 L 452 352" fill="none" stroke="#555" stroke-width="1" marker-end="url(#arrow)" stroke-dasharray="4,2"/>
+  <text x="455" y="470" font-size="7" fill="#555" transform="rotate(-90,455,470)">get_router / get_ni</text>
+  <!-- Group F → Scoreboard (generate_golden) -->
+  <line x1="428" y1="620" x2="707" y2="140" stroke="#16A34A" stroke-width="1" stroke-dasharray="4,2" marker-end="url(#arrow-green)"/>
+  <text x="555" y="380" font-size="7" fill="#166534" transform="rotate(-32,555,380)">generate_golden()</text>
+
+  <!-- ── INTERNAL: Component → Component ── -->
+
+  <!-- TrafficManager → Scoreboard (register expected) -->
+  <line x1="685" y1="100" x2="707" y2="100" stroke="#F59E0B" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="686" y="93" font-size="8" fill="#92400E">capture</text>
+  <!-- TrafficManager → MetricsCollector (stats) -->
+  <line x1="685" y1="80" x2="902" y2="80" stroke="#555" stroke-width="1" marker-end="url(#arrow)"/>
+  <text x="780" y="73" font-size="8" fill="#555">stats</text>
+  <!-- TrafficManager → Mesh NI (AXI txn injection) -->
+  <line x1="570" y1="315" x2="570" y2="327" stroke="#2563EB" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <text x="580" y="324" font-size="9" fill="#1E40AF" font-weight="bold">AXI txn → NI</text>
+
+  <!-- ===== HOT-SWAP PATH (the key visual) ===== -->
+  <!-- Hot-Swap Boundary → Signal-Level DPI-C (thick orange arrow) -->
+  <path d="M 1080 914 L 1100 914 L 1100 770 L 1124 770" fill="none" stroke="#F59E0B" stroke-width="3" marker-end="url(#arrow-orange)"/>
+  <text x="1088" y="845" font-size="9" fill="#D97706" font-weight="bold" transform="rotate(-90,1088,845)">DPI-C Bridge calls</text>
+
+  <!-- Signal-Level DPI-C → RTL Router (thick orange arrow) -->
+  <line x1="1272" y1="690" x2="1307" y2="690" stroke="#F59E0B" stroke-width="3" marker-end="url(#arrow-orange)"/>
+  <text x="1280" y="683" font-size="7" fill="#D97706">flit/cycle</text>
+
+  <!-- Signal-Level DPI-C → RTL NI (thick orange arrow) -->
+  <line x1="1272" y1="840" x2="1307" y2="840" stroke="#F59E0B" stroke-width="3" marker-end="url(#arrow-orange)"/>
+  <text x="1280" y="833" font-size="7" fill="#D97706">flit/cycle</text>
+
+  <!-- Golden Output → Comparator (bottom route) -->
+  <path d="M 108 865 L 108 1085 L 1404 1085 L 1404 1023" fill="none" stroke="#16A34A" stroke-width="1.5" marker-end="url(#arrow-green)" stroke-dasharray="6,3"/>
+  <text x="750" y="1098" text-anchor="middle" font-size="9" fill="#166534" font-style="italic">Golden Output → Comparator</text>
+
+  <!-- RTL → Comparator -->
+  <line x1="1404" y1="928" x2="1404" y2="942" stroke="#EA580C" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="1412" y="938" font-size="9" fill="#C2410C" font-style="italic">Actual</text>
+
+  <!-- CppRouter ↔ CppNI (horizontal link label) -->
+  <line x1="765" y1="740" x2="777" y2="740" stroke="#F59E0B" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="770" y="734" font-size="8" fill="#D97706">Channel&lt;T&gt;</text>
+</svg>

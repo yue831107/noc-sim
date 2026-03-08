@@ -1,0 +1,28 @@
+# Build
+build/
+cmake-build-*/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Reference documents (large binaries)
+docs/ref/
+
+# Large image files (use SVG instead)
+docs/images/*.jpg
+docs/images/PIPE Interface Support.jpg
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Compiled
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a

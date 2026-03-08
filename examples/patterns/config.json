@@ -1,6 +1,6 @@
 {
   "topology": {
-    "mesh_cols": 5,
+    "mesh_cols": 4,
     "mesh_rows": 4
   },
   "router": {
