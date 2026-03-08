@@ -41,9 +41,7 @@
 
 | # | 文件 | 說明 |
 |---|------|------|
-| A1 | [Fixed-Width Design Rationale](A1_fixed_width_analysis.md) | 統一 408-bit flit 設計決策背景 |
 | A2 | [Width Converter](A2_width_converter.md) | AXI 寬度轉換（32b~1024b ↔ 256b） |
-| A3 | [Parameters Guide](A3_parameters_guide.md) | 參數調校參考（非規格） |
 
 ---
 
