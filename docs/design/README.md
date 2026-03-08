@@ -52,7 +52,4 @@
 | 檔案 | 內容 |
 |------|------|
 | [platform_diagram.svg](../images/platform_diagram.svg) | 平台全局圖（User Interface / NocSystem Internals / Golden Verification） |
-| [noc_architecture.svg](../images/noc_architecture.svg) | 元件功能架構圖（data flow、Hot-Swap boundary） |
-| [ni_router_block.svg](../images/ni_router_block.svg) | NI / Router block diagram（port 信號、pipeline、DPI-C） |
 | [hot_swap.svg](../images/hot_swap.svg) | Hot-Swap 概念圖（C++ ↔ RTL 切換） |
-| [noc_env.txt](../images/noc_env.txt) | 系統架構圖（ASCII） |
