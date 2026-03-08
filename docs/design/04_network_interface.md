@@ -417,4 +417,4 @@ Router 層 reduction 詳見 [Router Specification](03_router.md) FR-09。
 - [Flit Format](02_flit.md) — Header/Payload bit-level 定義、ECC 設計
 - [Router Specification](03_router.md) — Router port interface、in-network reduction
 - [QoS Design](06_qos.md) — QoS Generator 模式、CSR Memory Map
-- [Simulation](09_simulation.md) — NocSystem API、NocConfig、Channel\<T\>
+- [Simulation](08_simulation.md) — NocSystem API、NocConfig、Channel\<T\>

@@ -244,7 +244,7 @@ The NoC model's software architecture is shown below. Each block communicates th
 
 At the heart of the model is the NocSystem class, which owns the entire mesh and exposes six groups of API functions. User code interacts exclusively with this Public API. The NocSystem delegates to internal components: a TrafficManager that handles transaction lifecycle, a Mesh that owns all routers, NIs, and channels, and support components for online transaction verification (Scoreboard) and performance statistics (MetricsCollector).
 
-The main processing loop is driven by `process_cycle()`, which executes an 8-phase pipeline for each simulation cycle (detailed Phase 4 state machine and credit timing in [Simulation Platform](09_simulation.md) §6). The phases decompose RTL's inherently parallel behaviour into a deterministic sequential ordering:
+The main processing loop is driven by `process_cycle()`, which executes an 8-phase pipeline for each simulation cycle (detailed Phase 4 state machine and credit timing in [Simulation Platform](08_simulation.md) §6). The phases decompose RTL's inherently parallel behaviour into a deterministic sequential ordering:
 
 | Phase | Name | Action |
 |-------|------|--------|

@@ -27,21 +27,20 @@
 |---|------|------|
 | 05 | [Physical Channel](05_physical_channel.md) | 雙通道 Req/Rsp 架構、HoL Blocking 分析 |
 | 06 | [QoS Design](06_qos.md) | QoS 優先級設計、Generator、Probe |
-| 07 | [Memory Operations](07_memory_operations.md) | Host-to-NoC 傳輸 |
-| 08 | [Multicast](08_multicast.md) | Rectangle Multicast 設計 |
+| 07 | [Multicast](07_multicast.md) | Rectangle Multicast 設計 |
 
 ### Simulation & Verification — 09~10
 
 | # | 文件 | 說明 |
 |---|------|------|
-| 09 | [Simulation Platform](09_simulation.md) | NocConfig、API (5 Groups)、Cycle Model、Channel\<T\>、Hot-Swap、DPI-C |
-| 10 | [Verification](10_verification.md) | Scoreboard、效能指標、測試策略、Coverage |
+| 08 | [Simulation Platform](08_simulation.md) | NocConfig、API (5 Groups)、Cycle Model、Channel\<T\>、Hot-Swap、DPI-C |
+| 09 | [Verification](09_verification.md) | Scoreboard、效能指標、測試策略、Coverage |
 
 ### Appendix
 
 | # | 文件 | 說明 |
 |---|------|------|
-| A2 | [Width Converter](A2_width_converter.md) | AXI 寬度轉換（32b~1024b ↔ 256b） |
+| 10 | [Width Converter](10_width_converter.md) | AXI 寬度轉換（32b~1024b ↔ 256b） |
 
 ---
 

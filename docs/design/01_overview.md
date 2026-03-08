@@ -86,4 +86,4 @@
 - [Router 規格](03_router.md)
 - [Network Interface 規格](04_network_interface.md)
 - [Flit 格式](02_flit.md)
-- [Simulation Platform](09_simulation.md)
+- [Simulation Platform](08_simulation.md)

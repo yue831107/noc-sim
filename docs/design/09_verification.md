@@ -260,4 +260,4 @@ MetricsCollector 提供統一的效能指標收集介面，支援時間序列快
 
 - [Router](03_router.md) — Router behavior under test
 - [Network Interface](04_network_interface.md) — NI behavior under test
-- [Simulation Platform](09_simulation.md) — NocSystem API、DPI-C bridge
+- [Simulation Platform](08_simulation.md) — NocSystem API、DPI-C bridge

@@ -125,7 +125,7 @@ credit_cnt   3     2     1     0     1
 
 #### 8-Phase Cycle Timing
 
-一個 cycle 內的 phase 執行順序（詳見 [Simulation Platform](09_simulation.md) §6）：
+一個 cycle 內的 phase 執行順序（詳見 [Simulation Platform](08_simulation.md) §6）：
 
 ```
           ┌─── posedge clk ────────────────────── combinational ─────────────── posedge clk ───┐
@@ -318,5 +318,5 @@ ReqRouter 和 RspRouter 共用同一 164-bit 寬度設計，可複用 RTL 模組
 - [Flit Format](02_flit.md) — Flit 結構、header 欄位定義、payload format、physical link format
 - [Router Specification](03_router.md) — Router pipeline、ReqRouter/RspRouter 架構、wormhole switching
 - [Network Interface Specification](04_network_interface.md) — NI 的 AXI-to-Flit 轉換與 network 分流
-- [Simulation Platform](09_simulation.md) — Abstract Interface、8-phase cycle model、Channel\<T\>
+- [Simulation Platform](08_simulation.md) — Abstract Interface、8-phase cycle model、Channel\<T\>
 - [QoS Design](06_qos.md) — QoS-Aware arbitration policy
