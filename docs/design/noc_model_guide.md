@@ -694,7 +694,7 @@ The router's sub-modules and their responsibilities:
 |------------|-------------|
 | InputBuffer | Per-port FIFO (configurable depth) |
 | BufferState | Credit tracking, separated from data storage |
-| RouteCompute | XY routing + RCR multicast routing |
+| RouteComputer | XY routing + RCR multicast routing |
 | Crossbar | N×N switch fabric |
 | PathLock | Wormhole path locking FSM |
 | Allocator | Pluggable: RoundRobin / iSLIP / QoSAwareRR |
@@ -706,16 +706,16 @@ The router's sub-modules and their responsibilities:
 The NI contains two units: the NMU (Network Master Unit) on the request-issuing side, and the NSU (Network Slave Unit) on the request-serving side.
 
 **NMU pipeline (request path):**
-AXI Slave → AddrTranslate → QoSGenerate → FlitPack (AW/W/AR) → ECC Generate → Injection Buffer → Network
+AXI Slave → AddrTrans → QoSGenerator → FlitPackerer (AW/W/AR) → ECC Generate → Injection Buffer → Network
 
 **NMU pipeline (response path):**
-Network → ECC Check → FlitUnpack (B/R) → Reorder Buffer → AXI Slave
+Network → ECC Check → FlitUnpacker (B/R) → Reorder Buffer → AXI Slave
 
 **NSU pipeline (request path):**
-Network → FlitUnpack (AW/AR/W) → Reassembly → ECC Check → ReqInfoStore → Memory Operation
+Network → FlitUnpacker (AW/AR/W) → Reassembly → ECC Check → ReqInfoStore → Memory Operation
 
 **NSU pipeline (response path):**
-Memory → AXI Response → FlitPack (B/R) → ECC Generate → Network
+Memory → AXI Response → FlitPacker (B/R) → ECC Generate → Network
 
 Key sub-modules:
 
@@ -956,7 +956,7 @@ Each internal component has dedicated unit tests:
 |-----------|---------------|
 | InputBuffer | Push/pop, full/empty, overflow |
 | BufferState | Credit consume/release, invariant |
-| RouteCompute | XY routing correctness, boundary cases |
+| RouteComputer | XY routing correctness, boundary cases |
 | Crossbar | N×N switching, contention |
 | PathLock | Wormhole lock/release FSM |
 | Allocator | Fairness, priority, starvation-free |

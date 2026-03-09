@@ -75,7 +75,7 @@ Router 透過 4 個 mesh direction port（N/S/E/W）連接相鄰 Router，透過
 |------------|------|
 | InputBuffer | Per-port, per-VC flit 儲存。Push/Pop/Peek |
 | BufferState | Per-output credit tracking（sender side），與 InputBuffer 分離 |
-| RouteCompute | XY routing + Multicast RCR routing |
+| RouteComputer | XY routing + Multicast RCR routing |
 | VC Allocator | HEAD flit 的 VC 分配（Credit-Based mode only，pluggable） |
 | SW Allocator | Per-output switch arbitration（QoS-aware RR，pluggable） |
 | Crossbar | N×N non-blocking switch fabric |

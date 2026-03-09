@@ -53,14 +53,14 @@ NI 透過 Router 的 Eject port 連接，使用與 Router-Router **完全相同*
                 │                                            │
 AXI Master ────►│  ┌──────────────────────────────────────┐  │
 (AW/AR/W)       │  │            NMU (Manager)              │  │
-                │  │  AddrTrans → QoSGen → FlitPack → ECC  │  │──► Req Router
-AXI Master ◄────│  │  RoB ← FlitUnpack ← ECC Check        │  │
+                │  │  AddrTrans → QoSGenerator → FlitPacker → ECC  │  │──► Req Router
+AXI Master ◄────│  │  RoB ← FlitUnpacker ← ECC Check        │  │
 (B/R)           │  └──────────────────────────────────────┘  │◄── Rsp Router
                 │                                            │
 AXI Slave  ◄────│  ┌──────────────────────────────────────┐  │
 (AW/AR/W)       │  │            NSU (Subordinate)          │  │◄── Req Router
-                │  │  FlitUnpack → ReqInfoStore → MemOp    │  │
-AXI Slave  ────►│  │  FlitPack ← ECC Gen ← AXI Response   │  │──► Rsp Router
+                │  │  FlitUnpacker → ReqInfoStore → MemOp    │  │
+AXI Slave  ────►│  │  FlitPacker ← ECC Gen ← AXI Response   │  │──► Rsp Router
 (B/R)           │  └──────────────────────────────────────┘  │
                 └────────────────────────────────────────────┘
 ```
@@ -74,10 +74,10 @@ AXI Slave  ────►│  │  FlitPack ← ECC Gen ← AXI Response   │ 
 | Sub-Module | 職責 |
 |------------|------|
 | AddrTrans | AXI address → dst_id + local_addr |
-| QoSGen | 產生 header qos 值（4 modes） |
-| FlitPack (AW/W/AR) | AXI request → 408-bit flit |
+| QoSGenerator | 產生 header qos 值（4 modes） |
+| FlitPacker (AW/W/AR) | AXI request → 408-bit flit |
 | ECC Gen | SECDED ECC 產生（W channel wdata） |
-| FlitUnpack (B/R) | Response flit → AXI B/R |
+| FlitUnpacker (B/R) | Response flit → AXI B/R |
 | ECC Check | SECDED ECC 驗證（R channel rdata） |
 | RoB | Reorder Buffer，per-ID in-order release |
 | InjectionBuffer | 已打包 flit 的注入 FIFO |
@@ -86,11 +86,11 @@ AXI Slave  ────►│  │  FlitPack ← ECC Gen ← AXI Response   │ 
 
 | Sub-Module | 職責 |
 |------------|------|
-| FlitUnpack (AW/W/AR) | Request flit → AXI request |
+| FlitUnpacker (AW/W/AR) | Request flit → AXI request |
 | ReqInfoStore | 暫存 request header（rob_idx, src_id, qos）供 response 配對 |
 | W Reassembly | Multi-flit W burst 重組 |
 | ECC Check | SECDED ECC 驗證（W channel wdata） |
-| FlitPack (B/R) | AXI response → flit |
+| FlitPacker (B/R) | AXI response → flit |
 | ECC Gen | SECDED ECC 產生（R channel rdata） |
 
 ---
@@ -270,7 +270,7 @@ AXI side port 定義：
 | B | RSP | 64 | 288 | bid, bresp, buser, ecc_fail, multicast_status |
 | R | RSP | 352 | 0 | rlast, rid, rresp, ruser, rdata[256], recc[32] |
 
-Header 56 bits 的欄位來源（NMU request path）：`qos` ← QoSGen、`src_id` ← 本地座標、`dst_id` ← AddrTrans、`last` ← single-flit(AW/AR)=1 / W 末尾=1、`rob_idx` ← RoB allocate、`commtype` ← 0(unicast) / 1(multicast)。
+Header 56 bits 的欄位來源（NMU request path）：`qos` ← QoSGenerator、`src_id` ← 本地座標、`dst_id` ← AddrTrans、`last` ← single-flit(AW/AR)=1 / W 末尾=1、`rob_idx` ← RoB allocate、`commtype` ← 0(unicast) / 1(multicast)。
 
 Payload bit-level layout 詳見 [Flit Format](02_flit.md) Section 3。
 
