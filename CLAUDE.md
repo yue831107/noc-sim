@@ -144,7 +144,6 @@ When multiple valid approaches exist, choose based on:
 ### Key Design Docs
 
 - `docs/design/README.md` — File index
-- `docs/design/REVIEW_ISSUES.md` — Design decision tracker
 - `docs/PROJECT_GOALS.md` — Architecture overview and goals
 
 ### Git Conventions

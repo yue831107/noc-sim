@@ -222,7 +222,7 @@ The NoC model's software architecture is shown below. Each block communicates th
 ┌──────────────────────────────────────────────────────────────────────┐
 │ NocSystem Public API (noc_api.h)                                      │
 │   Group A: Construction    Group B: Transaction    Group C: Simulation │
-│   Group D: Completion      Group E: Metrics        Group F: Debug     │
+│   Group D: Metrics         Group E: Debug                             │
 └───────────────────────────────┬──────────────────────────────────────┘
                                 │ delegates to
                                 ▼
@@ -242,7 +242,7 @@ The NoC model's software architecture is shown below. Each block communicates th
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
-At the heart of the model is the NocSystem class, which owns the entire mesh and exposes six groups of API functions. User code interacts exclusively with this Public API. The NocSystem delegates to internal components: a TrafficManager that handles transaction lifecycle, a Mesh that owns all routers, NIs, and channels, and support components for online transaction verification (Scoreboard) and performance statistics (MetricsCollector).
+At the heart of the model is the NocSystem class, which owns the entire mesh and exposes five groups of API functions. User code interacts exclusively with this Public API. The NocSystem delegates to internal components: a TrafficManager that handles transaction lifecycle, a Mesh that owns all routers, NIs, and channels, and support components for online transaction verification (Scoreboard) and performance statistics (MetricsCollector).
 
 The main processing loop is driven by `process_cycle()`, which executes an 8-phase pipeline for each simulation cycle (detailed Phase 4 state machine and credit timing in [Simulation Platform](08_simulation.md) §6). The phases decompose RTL's inherently parallel behaviour into a deterministic sequential ordering:
 
@@ -563,7 +563,7 @@ void               dump_local_memory(uint8_t node_id, uint64_t addr,
                                      uint8_t* buf, size_t len);
 ```
 
-### Group B: Transaction Submission
+### Group B: Transaction
 
 ```cpp
 TxnHandle          submit_write(uint64_t addr, const uint8_t* data,
@@ -572,6 +572,11 @@ TxnHandle          submit_read(uint64_t addr, size_t len, uint8_t axi_id);
 TxnHandle          submit_multicast_write(uint64_t addr, const uint8_t* data,
                                           size_t len,
                                           const std::vector<uint8_t>& dst_nodes);
+bool               is_complete(TxnHandle h);
+bool               all_complete();
+TxnStatus          get_status(TxnHandle h);
+std::vector<uint8_t> get_read_data(TxnHandle h);
+void               set_completion_callback(CompletionCallback cb);
 ```
 
 ### Group C: Simulation Control
@@ -584,24 +589,14 @@ void               run_all();
 uint64_t           current_cycle();
 ```
 
-### Group D: Completion & Response
-
-```cpp
-bool               is_complete(TxnHandle h);
-bool               all_complete();
-TxnStatus          get_status(TxnHandle h);
-std::vector<uint8_t> get_read_data(TxnHandle h);
-void               set_completion_callback(CompletionCallback cb);
-```
-
-### Group E: Metrics & Verification
+### Group D: Metrics & Verification
 
 ```cpp
 MetricsCollector&  get_metrics();
 VerificationReport verify();
 ```
 
-### Group F: Debug & Output
+### Group E: Debug & Output
 
 ```cpp
 const Router&      get_router(Coord coord);
@@ -654,7 +649,7 @@ int                noc_get_num_ports(void* h, int node);
 
 ## C++ API Class
 
-In addition to the C-style DPI-C API described in the previous sections, the primary interface to the model is the `noc::NocSystem` C++ class defined in `include/noc/noc_api.h`. The class encapsulates all six API groups as member functions.
+In addition to the C-style DPI-C API described in the previous sections, the primary interface to the model is the `noc::NocSystem` C++ class defined in `include/noc/noc_api.h`. The class encapsulates all five API groups as member functions.
 
 The constructor takes a `NocConfig` object (typically obtained from `load_config()`) and builds the complete mesh, including all routers, NIs, channels, and memory instances. The mesh topology, buffer depths, flow control mode, and all other parameters are determined at construction time from the configuration.
 

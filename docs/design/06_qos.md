@@ -64,6 +64,7 @@ NI 中的 QoS Generator 負責產生或調整 flit header 的 `qos` 值。
 
 | Mode | Description | Use Case |
 |------|-------------|----------|
+| **Bypass** | 直接使用 AXI awqos/arqos，不做任何調整 | 預設行為，AXI Master 自行管理 QoS |
 | **Fixed** | 固定輸出指定的 qos 值 | 簡單系統，靜態優先級 |
 | **Limiter** | 限制頻寬上限，超過時降低 qos | 防止單一 master 獨佔頻寬 |
 | **Regulator** | 動態調節，保證最低頻寬 | 需要頻寬保證的 real-time traffic |
