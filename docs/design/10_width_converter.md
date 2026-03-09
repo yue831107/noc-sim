@@ -875,7 +875,7 @@ Width Converter 處理以下對齊情況：
 
 ---
 
-## 相關文件
+## Related Documents
 
 - [Flit Format](02_flit.md) — 固定參數定義與 payload 格式
 - [Network Interface Specification](04_network_interface.md) — NI packetization 與 RoB

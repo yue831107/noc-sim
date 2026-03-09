@@ -90,11 +90,11 @@ prerequisite: [00_architecture.md]
 
 ---
 
-## 相關文件
+## Related Documents
 
-- [Router 規格](03_router.md)
-- [Network Interface 規格](04_network_interface.md)
-- [Flit 格式](02_flit.md)
+- [Router Specification](03_router.md)
+- [Network Interface Specification](04_network_interface.md)
+- [Flit Format](02_flit.md)
 - [Simulation Platform](08_simulation.md)
 
 ---

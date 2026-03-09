@@ -530,9 +530,9 @@ QoS 只影響 **arbitration**，不影響 **flow control**。即使 qos=15，若
 
 ## Related Documents
 
-- [Flit Format](02_flit.md) - Header qos 欄位定義、NODE_ID_WIDTH、QOS_WIDTH
-- [Network Interface](04_network_interface.md) - NI 架構
-- [Router](03_router.md) - Router arbitration
+- [Flit Format](02_flit.md) — Header qos 欄位定義、NODE_ID_WIDTH、QOS_WIDTH
+- [Network Interface](04_network_interface.md) — NI 架構
+- [Router](03_router.md) — Router arbitration
 
 ### Design References
 
