@@ -37,18 +37,18 @@ prerequisite: [08_simulation.md]
 
 | Component | Test Focus | Min Cases |
 |-----------|------------|:---------:|
-| FlitBuffer | push/pop/full/empty/peek, depth boundary | 8 |
+| Flit Buffer | push/pop/full/empty/peek, depth boundary | 8 |
 | Flit (Header) | pack/unpack round-trip, bit-field accuracy | 6 |
-| XYRouter | routing decision for all 5 output ports, edge cases | 12 |
-| PathLock | lock/unlock FSM, state transitions | 6 |
-| QoSAwareArbiter | QoS priority, Round-Robin fairness | 10 |
+| XY Router | routing decision for all 5 output ports, edge cases | 12 |
+| Path Lock | lock/unlock FSM, state transitions | 6 |
+| QoS-Aware Arbiter | QoS priority, Round-Robin fairness | 10 |
 | Crossbar | N×N switching, no-uturn, no-self-loop | 8 |
-| CreditCounter | init/consume/release, underflow assert | 6 |
+| Credit Counter | init/consume/release, underflow assert | 6 |
 | NMU | flit packing (AW/W/AR), RoB allocate/release | 12 |
 | NSU | flit unpacking, W reassembly, B/R response | 10 |
 | ECC | generate/check round-trip, 1-bit correct, 2-bit detect | 6 |
-| ReductionSync/Arbiter | in-network B reduction, partial/all-ok/all-fail | 6 |
-| AddressTranslation | XY offset mode, SAM table mode | 4 |
+| Reduction Sync/Arbiter | in-network B reduction, partial/all-ok/all-fail | 6 |
+| Address Translation | XY offset mode, SAM table mode | 4 |
 
 ---
 
@@ -85,8 +85,8 @@ Golden data 使用 **capture-at-source** approach：Transaction 發起時從 sou
 
 | Scenario | Golden Source | Capture Timing | Verification Target |
 |----------|--------------|----------------|---------------------|
-| Write | Source Memory | Transfer start | Destination LocalMemory |
-| Read | Source LocalMemory | Transfer start | Response data (NMU RoB) |
+| Write | Source Memory | Transfer start | Destination Local Memory |
+| Read | Source Local Memory | Transfer start | Response data (NMU RoB) |
 
 ### 4.2 Scoreboard
 
@@ -106,13 +106,13 @@ Source Memory ──(1) Read + Capture──► Scoreboard (expected)
      │
      │ (2) Transfer via Mesh
      ▼
-Destination LocalMemory ──(3) Read actual──► Compare → PASS/FAIL
+Destination Local Memory ──(3) Read actual──► Compare → PASS/FAIL
 ```
 
 ### 4.4 Read 驗證流程
 
 ```
-Source LocalMemory ──(1) Read + Capture──► Scoreboard (expected)
+Source Local Memory ──(1) Read + Capture──► Scoreboard (expected)
      │
      │ (2) Transfer via Mesh
      ▼
@@ -125,7 +125,7 @@ NMU RoB (response data) ──(3) Compare──► PASS/FAIL
 
 偵測到 address collision 時產生 warning（不中斷 simulation）。同一 source node 的多次寫入是合法的（NMU injection order 保證順序）。
 
-### 4.6 VerificationReport
+### 4.6 Verification Report
 
 | Field | Description |
 |-------|-------------|
@@ -159,9 +159,9 @@ NMU RoB (response data) ──(3) Compare──► PASS/FAIL
 | Mesh | `MeshStats` | 總週期、總 flit 數 |
 | Memory | `MemoryStats` | 讀寫次數、bytes 傳輸量 |
 
-### 5.2 MetricsCollector
+### 5.2 Metrics Collector
 
-MetricsCollector 提供統一的效能指標收集介面，支援時間序列快照與延遲追蹤。
+Metrics Collector 提供統一的效能指標收集介面，支援時間序列快照與延遲追蹤。
 
 | Method | Description |
 |--------|-------------|
@@ -201,7 +201,7 @@ MetricsCollector 提供統一的效能指標收集介面，支援時間序列快
 ┌─────────────────┐       ┌─────────────────┐
 │  SystemVerilog  │       │   C++ Model     │
 │  RTL Testbench  │◄─────►│  (via DPI-C)    │
-│  RTL Router ×N  │       │  NocSystem      │
+│  RTL Router ×N  │       │  NoC System      │
 │  RTL NI ×N     │       │                 │
 └────────┬────────┘       └────────┬────────┘
          ▼                         ▼
@@ -228,7 +228,7 @@ MetricsCollector 提供統一的效能指標收集介面，支援時間序列快
 | 2 | Stress test | 100 random transactions, all transaction results match |
 | 3 | Corner cases | Buffer full, credit exhaustion, multicast timeout |
 | 4 | Performance | Latency/throughput within 5% tolerance |
-| 5 | Multicast deadlock | Concurrent multicast write，驗證 ReductionSync |
+| 5 | Multicast deadlock | Concurrent multicast write，驗證 Reduction Sync |
 | 6 | Reset behavior | Reset 後 state 歸零，新 traffic 正常運作 |
 | 7 | Hot-swap drain | Channel drain 後替換元件，flit 不遺失 |
 
@@ -242,7 +242,7 @@ MetricsCollector 提供統一的效能指標收集介面，支援時間序列快
 |------|------|---------|
 | Code line coverage | ≥ 80% | gcov / llvm-cov |
 | Branch coverage | ≥ 70% | gcov / llvm-cov |
-| FSM state coverage | 100% | 所有 PathLock 狀態轉移 |
+| FSM state coverage | 100% | 所有 Path Lock 狀態轉移 |
 | AXI channel coverage | 100% | 所有 5 channel 至少 1 transaction |
 | Routing direction coverage | 100% | 所有 5 output port 至少 1 routing |
 | Error path coverage | 100% | ECC error, credit boundary, buffer boundary |
@@ -269,7 +269,7 @@ MetricsCollector 提供統一的效能指標收集介面，支援時間序列快
 
 - [Router](03_router.md) — Router behavior under test
 - [Network Interface](04_network_interface.md) — NI behavior under test
-- [Simulation Platform](08_simulation.md) — NocSystem API、DPI-C bridge
+- [Simulation Platform](08_simulation.md) — NoC System API、DPI-C bridge
 
 ---
 

@@ -23,8 +23,8 @@ NoC 採用 Request / Response 雙通道分離架構。每個邏輯 Router 內部
 
 | Sub-Router | Network | AXI Channels | Direction (typical) |
 |------------|---------|--------------|---------------------|
-| **ReqRouter** | Request | AW, W, AR | Master → Slave |
-| **RspRouter** | Response | B, R | Slave → Master |
+| **Req Router** | Request | AW, W, AR | Master → Slave |
+| **Rsp Router** | Response | B, R | Slave → Master |
 
 兩個 sub-router 共用相同的 routing algorithm（XY routing）、arbitration policy（QoS-Aware Round-Robin）、crossbar structure，僅處理的 flit 類型不同（依 header `axi_ch` 欄位區分）。
 
@@ -34,11 +34,11 @@ NoC 採用 Request / Response 雙通道分離架構。每個邏輯 Router 內部
   Router A                                                Router B
   ┌──────────────────┐                                   ┌──────────────────┐
   │  ┌─────────────┐ │   Req Link (410b) ──────────►    │ ┌─────────────┐  │
-  │  │  ReqRouter  │ │   ◄────────── Req Link (410b)    │ │  ReqRouter  │  │
+  │  │  Req Router  │ │   ◄────────── Req Link (410b)    │ │  Req Router  │  │
   │  │  (408b flit)│ │                                   │ │  (408b flit)│  │
   │  └─────────────┘ │                                   │ └─────────────┘  │
   │  ┌─────────────┐ │   Rsp Link (410b) ──────────►    │ ┌─────────────┐  │
-  │  │  RspRouter  │ │   ◄────────── Rsp Link (410b)    │ │  RspRouter  │  │
+  │  │  Rsp Router  │ │   ◄────────── Rsp Link (410b)    │ │  Rsp Router  │  │
   │  │  (408b flit)│ │                                   │ │  (408b flit)│  │
   │  └─────────────┘ │                                   │ └─────────────┘  │
   └──────────────────┘                                   └──────────────────┘
@@ -267,11 +267,11 @@ Narrow flit 使用與 [Flit Format](02_flit.md) **相同的 56-bit header**，pa
 
 | Sub-Router | Flit Width | 承載 AXI Channels |
 |------------|-----------|-------------------|
-| **ReqRouter** | 164b | NarrowAW, NarrowW, NarrowAR, WideAR |
-| **RspRouter** | 164b | NarrowR, NarrowB, WideB |
-| **WideRouter** | 408b | WideAW, WideW, WideR |
+| **Req Router** | 164b | NarrowAW, NarrowW, NarrowAR, WideAR |
+| **Rsp Router** | 164b | NarrowR, NarrowB, WideB |
+| **Wide Router** | 408b | WideAW, WideW, WideR |
 
-ReqRouter 和 RspRouter 共用同一 164-bit 寬度設計，可複用 RTL 模組。WideRouter 使用現有 408-bit 寬度設計。所有 sub-router 共用相同 routing algorithm 與 arbitration policy。
+Req Router 和 Rsp Router 共用同一 164-bit 寬度設計，可複用 RTL 模組。Wide Router 使用現有 408-bit 寬度設計。所有 sub-router 共用相同 routing algorithm 與 arbitration policy。
 
 ---
 
@@ -305,7 +305,7 @@ ReqRouter 和 RspRouter 共用同一 164-bit 寬度設計，可複用 RTL 模組
 | Sub-routers per logical router | 2 | 3 |
 | Flit widths | 408b (uniform) | 164b + 408b |
 | Wire count (per pair) | 1,640 | 1,484 (-9.5%) |
-| RTL module reuse | ReqRouter = RspRouter | ReqRouter = RspRouter (164b) + WideRouter (408b) |
+| RTL module reuse | Req Router = Rsp Router | Req Router = Rsp Router (164b) + Wide Router (408b) |
 | HoL blocking (wide vs narrow) | 有 | 消除 |
 | AXI interface support | Single width (256b) | Dual width (64b + 256b) |
 | Buffer total (per router) | 2 × 5 ports × depth | 3 × 5 ports × depth |
@@ -333,7 +333,7 @@ ReqRouter 和 RspRouter 共用同一 164-bit 寬度設計，可複用 RTL 模組
 ## Related Documents
 
 - [Flit Format](02_flit.md) — Flit 結構、header 欄位定義、payload format、physical link format
-- [Router Specification](03_router.md) — Router pipeline、ReqRouter/RspRouter 架構、wormhole switching
+- [Router Specification](03_router.md) — Router pipeline、Req Router/Rsp Router 架構、wormhole switching
 - [Network Interface Specification](04_network_interface.md) — NI 的 AXI-to-Flit 轉換與 network 分流
 - [Simulation Platform](08_simulation.md) — Abstract Interface、8-phase cycle model、Channel\<T\>
 - [QoS Design](06_qos.md) — QoS-Aware arbitration policy

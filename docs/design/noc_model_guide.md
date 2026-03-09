@@ -43,7 +43,7 @@ The NoC (Network-on-Chip) C++ Behavior Model is a cycle-accurate simulation plat
 
 The model arose from the need to evaluate NoC performance characteristics — latency, throughput, buffer occupancy — long before RTL implementation is available, and then to reuse the same model as a bit-exact, cycle-accurate reference against which RTL outputs can be compared. This dual role drives the fundamental architecture: the same input patterns (configuration, memory initialisation, and traffic sequences) are fed to both the C++ model and the RTL simulation, and the C++ outputs serve as the golden standard for comparison.
 
-At its core, the model implements a configurable mesh of uniform routers connected by network interfaces (NIs). Each node comprises a Processing Element (PE) with DMA and local DRAM, a Network Interface (NMU + NSU), and a Router. External AXI masters and slaves communicate through the NIs, which perform AXI-to-flit protocol conversion. The model is written in C++17 and structured in four layers — User Code, NocSystem public API, internal components, and a Co-Simulation Bridge — with a hot-swap boundary that allows any C++ router or NI to be replaced with an RTL proxy via DPI-C.
+At its core, the model implements a configurable mesh of uniform routers connected by network interfaces (NIs). Each node comprises a Processing Element (PE) with DMA and local DRAM, a Network Interface (NMU + NSU), and a Router. External AXI masters and slaves communicate through the NIs, which perform AXI-to-flit protocol conversion. The model is written in C++17 and structured in four layers — User Code, NoC System public API, internal components, and a Co-Simulation Bridge — with a hot-swap boundary that allows any C++ router or NI to be replaced with an RTL proxy via DPI-C.
 
 ---
 
@@ -76,7 +76,7 @@ The model supports the following features:
 - **Wormhole Switching** — head flit reserves the path, `last` bit releases it
 - **Dual Flow Control** — Valid/Ready mode and Credit-Based mode, selected at compile time via template parameter
 - **Req/Rsp Physical Separation** — independent request and response networks, eliminating protocol-level deadlock
-- **QoS-Aware Arbitration** — 16-level priority with round-robin tie-breaking; pluggable allocator (RoundRobin, iSLIP, QoS-Aware RR)
+- **QoS-Aware Arbitration** — 16-level priority with round-robin tie-breaking; pluggable allocator (Round Robin, iSLIP, QoS-Aware RR)
 - **SECDED ECC** — end-to-end data integrity (NMU generates, router passes through, NSU checks)
 - **Multicast** — rectangle bounding box (RCR) multicast with in-network B response reduction
 - **Reorder Buffer** — per-NMU RoB for out-of-order response support
@@ -154,7 +154,7 @@ The NoC model integrates with SystemVerilog simulators through a DPI-C bridge la
 
 ### Transaction-Level DPI-C
 
-The transaction-level interface allows an SV testbench to create a NocSystem instance, submit AXI transactions, step the simulation, and retrieve responses. This is the simplest integration path and is used when the C++ model runs as a standalone golden reference:
+The transaction-level interface allows an SV testbench to create a NoC System instance, submit AXI transactions, step the simulation, and retrieve responses. This is the simplest integration path and is used when the C++ model runs as a standalone golden reference:
 
 ```systemverilog
 import "DPI-C" function chandle noc_init(string json_path);
@@ -227,7 +227,7 @@ The NoC model's software architecture is shown below. Each block communicates th
                                 │ C++ API / DPI-C
                                 ▼
 ┌──────────────────────────────────────────────────────────────────────┐
-│ NocSystem Public API (noc_api.h)                                      │
+│ NoC System Public API (noc_api.h)                                      │
 │   Group A: Construction    Group B: Transaction    Group C: Simulation │
 │   Group D: Metrics         Group E: Debug                             │
 └───────────────────────────────┬──────────────────────────────────────┘
@@ -235,10 +235,10 @@ The NoC model's software architecture is shown below. Each block communicates th
                                 ▼
 ┌──────────────────────────────────────────────────────────────────────┐
 │ Internal Components                                                    │
-│   TrafficManager / Mesh / Router / NI / Channel / Memory / Stats      │
+│   Traffic Manager / Mesh / Router / NI / Channel / Memory / Stats      │
 │   ┌──────────────────── HOT-SWAP BOUNDARY ───────────────────────┐  │
-│   │  CppRouter ◄── Router_Interface<Mode> ──► RouterDpiBridge     │  │
-│   │  CppNI     ◄── NI_Interface<Mode>    ──► NIDpiBridge          │  │
+│   │  C++ Router ◄── Router_Interface<Mode> ──► Router DPI Bridge     │  │
+│   │  C++ NI     ◄── NI_Interface<Mode>    ──► NI DPI Bridge          │  │
 │   └──────────────────────────────────────────────────────────────┘  │
 └───────────────────────────────┬──────────────────────────────────────┘
                                 │ DPI-C
@@ -249,7 +249,7 @@ The NoC model's software architecture is shown below. Each block communicates th
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
-At the heart of the model is the NocSystem class, which owns the entire mesh and exposes five groups of API functions. User code interacts exclusively with this Public API. The NocSystem delegates to internal components: a TrafficManager that handles transaction lifecycle, a Mesh that owns all routers, NIs, and channels, and support components for online transaction verification (Scoreboard) and performance statistics (MetricsCollector).
+At the heart of the model is the NoC System class, which owns the entire mesh and exposes five groups of API functions. User code interacts exclusively with this Public API. The NoC System delegates to internal components: a Traffic Manager that handles transaction lifecycle, a Mesh that owns all routers, NIs, and channels, and support components for online transaction verification (Scoreboard) and performance statistics (Metrics Collector).
 
 The main processing loop is driven by `process_cycle()`, which executes an 8-phase pipeline for each simulation cycle (detailed Phase 4 state machine and credit timing in [Simulation Platform](08_simulation.md) §6). The phases decompose RTL's inherently parallel behaviour into a deterministic sequential ordering:
 
@@ -270,15 +270,15 @@ Phases 1–4 are encapsulated in `Router_Interface::tick()`, Phase 5 is the glob
 
 ## Transaction Flow
 
-A transaction in the NoC model follows a well-defined path from submission to completion. The TrafficManager sits between the NocSystem API and the mesh, managing the entire lifecycle.
+A transaction in the NoC model follows a well-defined path from submission to completion. The Traffic Manager sits between the NoC System API and the mesh, managing the entire lifecycle.
 
 ### Write Transaction
 
-When the user submits a write via `submit_write()`, the TrafficManager creates a pending transaction record, registers the expected outcome in the Scoreboard for online verification, and queues it for injection. On each `tick()`, the TrafficManager checks whether the transaction's injection cycle has arrived and, if so, delivers the AXI write request (address, data, length) to the appropriate NMU.
+When the user submits a write via `submit_write()`, the Traffic Manager creates a pending transaction record, registers the expected outcome in the Scoreboard for online verification, and queues it for injection. On each `tick()`, the Traffic Manager checks whether the transaction's injection cycle has arrived and, if so, delivers the AXI write request (address, data, length) to the appropriate NMU.
 
 The NMU performs address translation to determine the destination node ID, generates QoS priority, packs the AXI AW channel into a header flit, and packs each W beat into one or more data flits. SECDED ECC is appended. The resulting flit sequence enters the request network, traverses routers via XY routing with wormhole path locking, and arrives at the destination NSU.
 
-The NSU unpacks the flits back into AXI format, verifies ECC, reassembles W burst data, and writes to local memory. It then generates a B response flit, which travels back through the response network to the originating NMU. The NMU's reorder buffer (RoB) matches the response to the outstanding request and delivers the completion to the TrafficManager.
+The NSU unpacks the flits back into AXI format, verifies ECC, reassembles W burst data, and writes to local memory. It then generates a B response flit, which travels back through the response network to the originating NMU. The NMU's reorder buffer (RoB) matches the response to the outstanding request and delivers the completion to the Traffic Manager.
 
 ### Read Transaction
 
@@ -303,7 +303,7 @@ All data flows use a uniform 408-bit flit (56-bit header + 352-bit payload). The
 
 ## Network Initialisation and Configuration
 
-The model works through a single configuration object, NocConfig, which serves as the single source of truth for all system parameters. A JSON file is loaded at startup and the resulting NocConfig is passed to the NocSystem constructor.
+The model works through a single configuration object, NocConfig, which serves as the single source of truth for all system parameters. A JSON file is loaded at startup and the resulting NocConfig is passed to the NoC System constructor.
 
 ### NocConfig Parameters
 
@@ -395,11 +395,11 @@ The traffic pattern is defined in a JSON file specifying a sequence of AXI trans
 | `burst_len` | AXI burst length (beats) |
 | `inject_cycle` | Absolute cycle number or `"after:<txn_id>"` |
 
-The TrafficManager loads this file and schedules injection according to the `inject_cycle` field. This allows both absolute timing and dependency-based sequencing of transactions.
+The Traffic Manager loads this file and schedules injection according to the `inject_cycle` field. This allows both absolute timing and dependency-based sequencing of transactions.
 
 ### Injection Modes
 
-The TrafficManager supports two injection modes, applicable to both traffic and memory initialisation:
+The Traffic Manager supports two injection modes, applicable to both traffic and memory initialisation:
 
 | Mode | Description |
 |------|-------------|
@@ -438,7 +438,7 @@ The `current_cycle()` function returns the current simulation cycle count, usefu
 
 ## Internal Memory Access
 
-Each node in the NoC mesh has its own local memory, modelled by the LocalMemory class. Additionally, a shared HostMemory represents the external host's memory space. Both can be accessed from user code through the NocSystem API.
+Each node in the NoC mesh has its own local memory, modelled by the Local Memory class. Additionally, a shared Host Memory represents the external host's memory space. Both can be accessed from user code through the NoC System API.
 
 To write to a node's local memory, `load_local_memory()` is used, which takes a node ID, a byte-aligned address, a pointer to data, and a byte length. To read back memory contents, `dump_local_memory()` retrieves the contents into a user-provided buffer. For the host memory, `load_host_memory()` and corresponding read functions are provided.
 
@@ -478,8 +478,8 @@ static void on_complete(noc::TxnHandle h, noc::TxnStatus status) {
 
 int main() {
     // Load configuration
-    auto config = noc::NocSystem::load_config("patterns/config.json");
-    noc::NocSystem system(config);
+    auto config = noc::NoC System::load_config("patterns/config.json");
+    noc::NoC System system(config);
 
     // Load initial memory contents
     system.load_memory("patterns/");
@@ -531,7 +531,7 @@ int main() {
 }
 ```
 
-The above code assumes a default 4×4 mesh. The call to `load_config()` reads the JSON configuration and constructs a NocConfig object. The NocSystem constructor builds the entire mesh — routers, NIs, channels, and memories — according to this configuration.
+The above code assumes a default 4×4 mesh. The call to `load_config()` reads the JSON configuration and constructs a NocConfig object. The NoC System constructor builds the entire mesh — routers, NIs, channels, and memories — according to this configuration.
 
 The completion callback tracks errors as they occur, while `get_status()` checks individual transactions after simulation. The destination node is encoded in bits `[39:32]` of the address — in this case node `0x01` (coordinates (1,0)). After the read completes, the returned data is compared against the original write data. Finally, `verify()` runs the full golden verification and `generate_golden()` produces output files for RTL comparison.
 
@@ -542,8 +542,8 @@ At its simplest, a user program is just calls to `submit_write()`, `submit_read(
 For traffic-file-driven simulation, the flow is even simpler:
 
 ```cpp
-auto config = noc::NocSystem::load_config("patterns/config.json");
-noc::NocSystem system(config);
+auto config = noc::NoC System::load_config("patterns/config.json");
+noc::NoC System system(config);
 system.load_memory("patterns/");
 system.load_traffic("patterns/traffic.json");
 system.run_all();
@@ -560,7 +560,7 @@ The `load_traffic()` function reads the traffic JSON and schedules all transacti
 
 ```cpp
 static NocConfig   load_config(const std::string& json_path);
-                    NocSystem(const NocConfig& config);
+                    NoC System(const NocConfig& config);
 void               load_memory(const std::string& hex_dir);
 void               load_traffic(const std::string& json_path);
 void               load_host_memory(uint64_t addr, const uint8_t* data, size_t len);
@@ -599,7 +599,7 @@ uint64_t           current_cycle();
 ### Group D: Metrics & Verification
 
 ```cpp
-MetricsCollector&  get_metrics();
+Metrics Collector&  get_metrics();
 VerificationReport verify();
 ```
 
@@ -613,7 +613,7 @@ void               generate_golden(const std::string& output_dir);
 void               dump_response_log(const std::string& path);
 ```
 
-### TrafficManager Functions
+### Traffic Manager Functions
 
 ```cpp
 void               set_injection_mode(InjectionMode mode);
@@ -656,18 +656,18 @@ int                noc_get_num_ports(void* h, int node);
 
 ## C++ API Class
 
-In addition to the C-style DPI-C API described in the previous sections, the primary interface to the model is the `noc::NocSystem` C++ class defined in `include/noc/noc_api.h`. The class encapsulates all five API groups as member functions.
+In addition to the C-style DPI-C API described in the previous sections, the primary interface to the model is the `noc::NoC System` C++ class defined in `include/noc/noc_api.h`. The class encapsulates all five API groups as member functions.
 
 The constructor takes a `NocConfig` object (typically obtained from `load_config()`) and builds the complete mesh, including all routers, NIs, channels, and memory instances. The mesh topology, buffer depths, flow control mode, and all other parameters are determined at construction time from the configuration.
 
-The flow control mode is resolved at compile time through a factory pattern. The user-facing `NocSystem` is a type-erased wrapper around a templated `NocSystemImpl<Mode>`:
+The flow control mode is resolved at compile time through a factory pattern. The user-facing `NoC System` is a type-erased wrapper around a templated `NoC SystemImpl<Mode>`:
 
 ```
-NocSystemBase (type-erased)
-    ├── NocSystemImpl<VALID_READY>
-    └── NocSystemImpl<CREDIT>
+NoC SystemBase (type-erased)
+    ├── NoC SystemImpl<VALID_READY>
+    └── NoC SystemImpl<CREDIT>
 
-create_noc_system(config) → switch(config.flow_control) → NocSystemImpl
+create_noc_system(config) → switch(config.flow_control) → NoC SystemImpl
 ```
 
 This is analogous to RTL parameter elaboration — the template parameter selects which flow control signals are instantiated, and no unused signals exist in the compiled model.
@@ -692,40 +692,40 @@ The router's sub-modules and their responsibilities:
 
 | Sub-Module | Description |
 |------------|-------------|
-| InputBuffer | Per-port FIFO (configurable depth) |
-| BufferState | Credit tracking, separated from data storage |
-| RouteComputer | XY routing + RCR multicast routing |
+| Input Buffer | Per-port FIFO (configurable depth) |
+| Buffer State | Credit tracking, separated from data storage |
+| Route Computer | XY routing + RCR multicast routing |
 | Crossbar | N×N switch fabric |
-| PathLock | Wormhole path locking FSM |
-| Allocator | Pluggable: RoundRobin / iSLIP / QoSAwareRR |
-| MulticastTracker | Multicast fork tracking |
-| ReductionSync / ReductionArb | In-network B response reduction |
+| Path Lock | Wormhole path locking FSM |
+| Allocator | Pluggable: Round Robin / iSLIP / QoS-Aware RR |
+| Multicast Tracker | Multicast fork tracking |
+| Reduction Sync / Reduction Arbiter | In-network B response reduction |
 
 ### Network Interface Architecture
 
 The NI contains two units: the NMU (Network Master Unit) on the request-issuing side, and the NSU (Network Slave Unit) on the request-serving side.
 
 **NMU pipeline (request path):**
-AXI Slave → AddrTrans → QoSGenerator → FlitPackerer (AW/W/AR) → ECC Generate → Injection Buffer → Network
+AXI Slave → Address Translator → QoS Generator → Flit Packerer (AW/W/AR) → ECC Generate → Injection Buffer → Network
 
 **NMU pipeline (response path):**
-Network → ECC Check → FlitUnpacker (B/R) → Reorder Buffer → AXI Slave
+Network → ECC Check → Flit Unpacker (B/R) → Reorder Buffer → AXI Slave
 
 **NSU pipeline (request path):**
-Network → FlitUnpacker (AW/AR/W) → Reassembly → ECC Check → ReqInfoStore → Memory Operation
+Network → Flit Unpacker (AW/AR/W) → Reassembly → ECC Check → Request Info Store → Memory Operation
 
 **NSU pipeline (response path):**
-Memory → AXI Response → FlitPacker (B/R) → ECC Generate → Network
+Memory → AXI Response → Flit Packer (B/R) → ECC Generate → Network
 
 Key sub-modules:
 
 | Sub-Module | Description |
 |------------|-------------|
-| InjectionBuffer | NMU → network FIFO (req/rsp each) |
-| ReorderBuffer (RoB) | NMU response reordering (32 entries default) |
-| ReassemblyBuffer | NSU W burst reassembly |
-| ReqInfoStore | NSU stores src/qos/rob_idx for response routing |
-| LocalMemory | Per-node flat memory model |
+| Injection Buffer | NMU → network FIFO (req/rsp each) |
+| Reorder Buffer (RoB) | NMU response reordering (32 entries default) |
+| Reassembly Buffer | NSU W burst reassembly |
+| Request Info Store | NSU stores src/qos/rob_idx for response routing |
+| Local Memory | Per-node flat memory model |
 
 ### Channel\<T\> Link Model
 
@@ -747,15 +747,15 @@ The allocator is an abstract base class with a single `allocate(requests, grants
 
 | Implementation | Description |
 |----------------|-------------|
-| RoundRobin | Basic round-robin arbitration |
+| Round Robin | Basic round-robin arbitration |
 | iSLIP | Iterative round-robin matching (multi-iteration) |
-| QoSAwareRR | QoS priority with round-robin tie-breaking (default) |
+| QoS-Aware RR | QoS priority with round-robin tie-breaking (default) |
 
 The allocator strategy is selected by the NocConfig string (`vc_allocator`, `sw_allocator`) and instantiated by the factory at construction time.
 
-### Buffer / BufferState Separation
+### Buffer / Buffer State Separation
 
-The InputBuffer stores flit data (push/pop/peek/full/empty), while the BufferState tracks credit counts independently. This separation allows the credit tracking logic to operate without accessing the actual buffer data, which is important for the credit-based flow control mode. The credit invariant is:
+The Input Buffer stores flit data (push/pop/peek/full/empty), while the Buffer State tracks credit counts independently. This separation allows the credit tracking logic to operate without accessing the actual buffer data, which is important for the credit-based flow control mode. The credit invariant is:
 
 ```
 upstream.credit[vc] + downstream.buffer.count(vc) + in_flight(vc) == INPUT_BUFFER_DEPTH_PER_VC
@@ -771,10 +771,10 @@ The NoC model can be configured to replace individual C++ routers or NIs with RT
 
 | Mode | Router | NI | Use Case |
 |------|--------|----|----------|
-| Pure C++ | CppRouter | CppNI | High-speed performance evaluation |
-| NI RTL | CppRouter | NIDpiBridge | Verify NI RTL against C++ golden |
-| Router RTL | RouterDpiBridge | CppNI | Verify Router RTL against C++ golden |
-| Full RTL | RouterDpiBridge | NIDpiBridge | Full system co-simulation |
+| Pure C++ | C++ Router | C++ NI | High-speed performance evaluation |
+| NI RTL | C++ Router | NI DPI Bridge | Verify NI RTL against C++ golden |
+| Router RTL | Router DPI Bridge | C++ NI | Verify Router RTL against C++ golden |
+| Full RTL | Router DPI Bridge | NI DPI Bridge | Full system co-simulation |
 
 In the pure C++ mode, maximum simulation speed is achieved. As RTL components are substituted, simulation speed decreases proportionally due to the DPI-C overhead and RTL simulator step time, but the same input patterns and expected outputs apply.
 
@@ -793,12 +793,12 @@ The substitution targets are specified in the JSON configuration file under a `c
 }
 ```
 
-The `node_id` uses the same encoding as the flit header（[7:4]=y, [3:0]=x）. Multiple nodes can be listed to replace several routers or NIs simultaneously. In user code, the factory function reads this section and instantiates `RouterDpiBridge` or `NIDpiBridge` for the designated nodes, while all other nodes use the C++ implementations:
+The `node_id` uses the same encoding as the flit header（[7:4]=y, [3:0]=x）. Multiple nodes can be listed to replace several routers or NIs simultaneously. In user code, the factory function reads this section and instantiates `Router DPI Bridge` or `NI DPI Bridge` for the designated nodes, while all other nodes use the C++ implementations:
 
 ```cpp
-auto config = noc::NocSystem::load_config("cosim_config.json");
-// Factory automatically creates RouterDpiBridge for node 0x12
-noc::NocSystem system(config);
+auto config = noc::NoC System::load_config("cosim_config.json");
+// Factory automatically creates Router DPI Bridge for node 0x12
+noc::NoC System system(config);
 
 system.load_memory("patterns/");
 system.load_traffic("patterns/traffic.json");
@@ -816,7 +816,7 @@ Substitution can only occur when the target component's channels are empty (no i
 
 ### Interface Contract
 
-The interface is the contract. Both CppRouter and RouterDpiBridge implement the same `Router_Interface<Mode>`, and the Mesh wiring loop connects components solely through this interface. The flow control mode is a compile-time template parameter, ensuring that valid/ready mode carries no credit signals and credit mode carries no ready signal — no unused wires exist.
+The interface is the contract. Both C++ Router and Router DPI Bridge implement the same `Router_Interface<Mode>`, and the Mesh wiring loop connects components solely through this interface. The flow control mode is a compile-time template parameter, ensuring that valid/ready mode carries no credit signals and credit mode carries no ready signal — no unused wires exist.
 
 NI-to-router connections use the same interface and wiring as router-to-router connections, so the hot-swap mechanism applies uniformly to both.
 
@@ -824,11 +824,11 @@ NI-to-router connections use the same interface and wiring as router-to-router c
 
 | Component | Reason |
 |-----------|--------|
-| TrafficManager | Central coordinator, no RTL equivalent |
+| Traffic Manager | Central coordinator, no RTL equivalent |
 | Mesh topology | Fixed wiring, parameterised by config |
 | Channel\<T\> | Link model, no RTL equivalent |
-| Scoreboard / MetricsCollector | Verification/stats logic, C++ only |
-| HostMemory / LocalMemory | Behavioural model, no RTL equivalent |
+| Scoreboard / Metrics Collector | Verification/stats logic, C++ only |
+| Host Memory / Local Memory | Behavioural model, no RTL equivalent |
 
 ---
 
@@ -884,9 +884,9 @@ The same set of input patterns is fed to both the C++ model and the RTL simulati
                    PASS / FAIL
 ```
 
-### MetricsCollector
+### Metrics Collector
 
-The MetricsCollector records per-node and per-transaction performance metrics throughout the simulation:
+The Metrics Collector records per-node and per-transaction performance metrics throughout the simulation:
 
 | Function | Description |
 |----------|-------------|
@@ -954,18 +954,18 @@ Each internal component has dedicated unit tests:
 
 | Component | Test Coverage |
 |-----------|---------------|
-| InputBuffer | Push/pop, full/empty, overflow |
-| BufferState | Credit consume/release, invariant |
-| RouteComputer | XY routing correctness, boundary cases |
+| Input Buffer | Push/pop, full/empty, overflow |
+| Buffer State | Credit consume/release, invariant |
+| Route Computer | XY routing correctness, boundary cases |
 | Crossbar | N×N switching, contention |
-| PathLock | Wormhole lock/release FSM |
+| Path Lock | Wormhole lock/release FSM |
 | Allocator | Fairness, priority, starvation-free |
 | NMU | AXI→flit packing, ECC generation |
 | NSU | Flit→AXI unpacking, ECC checking |
 | Channel\<T\> | Delay pipeline, ordering |
 | RoB | Reorder, timeout, overflow |
-| LocalMemory | Read/write, hex load/dump |
-| TrafficManager | Injection scheduling, completion |
+| Local Memory | Read/write, hex load/dump |
+| Traffic Manager | Injection scheduling, completion |
 
 ### Integration Tests
 
@@ -1012,9 +1012,9 @@ ctest --output-on-failure
 noc_c_model/
 ├── include/noc/         Public headers (noc_api.h, types.h, config.h)
 ├── src/core/            Router, NI, Flit, Buffer, Arbiter, Routing, Mesh
-├── src/memory/          LocalMemory, HostMemory
-├── src/system/          NocSystem, Scoreboard
-├── src/stats/           MetricsCollector
+├── src/memory/          Local Memory, Host Memory
+├── src/system/          NoC System, Scoreboard
+├── src/stats/           Metrics Collector
 ├── src/bridge/          DPI-C and VPI simulator bridge
 ├── rtl/                 Minimal RTL harness (SystemVerilog)
 ├── tests/               Unit, integration, co-sim tests (GoogleTest)
