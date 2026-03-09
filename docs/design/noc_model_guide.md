@@ -1,13 +1,13 @@
 ---
 document_id: NOC-GUIDE-01
-title: NoC C++ Behavior Model — User Guide
+title: NoC Virtual Behavior Model — User Guide
 version: 1.0
 status: Draft
 last_updated: 2026-03-09
 prerequisite: [00_architecture.md]
 ---
 
-# NoC C++ Behavior Model
+# NoC Virtual Behavior Model
 
 ## User Guide
 
@@ -39,17 +39,17 @@ prerequisite: [00_architecture.md]
 
 ## Introduction
 
-The NoC (Network-on-Chip) C++ Behavior Model is a cycle-accurate simulation platform for a 2D mesh interconnect fabric. It serves two primary purposes: pre-silicon performance evaluation through high-speed parameter sweeping, and provision of a golden reference for RTL co-simulation verification.
+The NoC (Network-on-Chip) Virtual Behavior Model is a cycle-accurate simulation platform for a 2D mesh interconnect fabric. It serves two primary purposes: pre-silicon performance evaluation through high-speed parameter sweeping, and provision of a golden reference for RTL co-simulation verification.
 
-The model arose from the need to evaluate NoC performance characteristics — latency, throughput, buffer occupancy — long before RTL implementation is available, and then to reuse the same model as a bit-exact, cycle-accurate reference against which RTL outputs can be compared. This dual role drives the fundamental architecture: the same input patterns (configuration, memory initialisation, and traffic sequences) are fed to both the C++ model and the RTL simulation, and the C++ outputs serve as the golden standard for comparison.
+The model arose from the need to evaluate NoC performance characteristics — latency, throughput, buffer occupancy — long before RTL implementation is available, and then to reuse the same model as a bit-exact, cycle-accurate reference against which RTL outputs can be compared. This dual role drives the fundamental architecture: the same input patterns (configuration, memory initialisation, and traffic sequences) are fed to both the virtual model and the RTL simulation, and the virtual model outputs serve as the golden standard for comparison.
 
-At its core, the model implements a configurable mesh of uniform routers connected by network interfaces (NIs). Each node comprises a Processing Element (PE) with DMA and local DRAM, a Network Interface (NMU + NSU), and a Router. External AXI masters and slaves communicate through the NIs, which perform AXI-to-flit protocol conversion. The model is written in C++17 and structured in four layers — User Code, NoC System public API, internal components, and a Co-Simulation Bridge — with a hot-swap boundary that allows any C++ router or NI to be replaced with an RTL proxy via DPI-C.
+At its core, the model implements a configurable mesh of uniform routers connected by network interfaces (NIs). Each node comprises a Processing Element (PE) with DMA and local DRAM, a Network Interface (NMU + NSU), and a Router. External AXI masters and slaves communicate through the NIs, which perform AXI-to-flit protocol conversion. The model is written in C++17 and structured in four layers — User Code, NoC System public API, internal components, and a Co-Simulation Bridge — with a hot-swap boundary that allows any virtual router or NI to be replaced with an RTL proxy via DPI-C.
 
 ---
 
 ## Prerequisites
 
-The following are required to build and run the NoC C++ model:
+The following are required to build and run the NoC virtual model:
 
 - A C++17 compliant compiler (GCC 9+, Clang 10+, or MSVC 2019+)
 - CMake 3.16 or later
@@ -150,11 +150,11 @@ For the complete bit-level specification, see [Flit Format](02_flit.md).
 
 ## SystemVerilog Integration
 
-The NoC model integrates with SystemVerilog simulators through a DPI-C bridge layer. This bridge provides two levels of API: a transaction-level interface for driving the C++ model from an SV testbench, and a signal-level interface for the hot-swap co-simulation mode.
+The NoC model integrates with SystemVerilog simulators through a DPI-C bridge layer. This bridge provides two levels of API: a transaction-level interface for driving the virtual model from an SV testbench, and a signal-level interface for the hot-swap co-simulation mode.
 
 ### Transaction-Level DPI-C
 
-The transaction-level interface allows an SV testbench to create a NoC System instance, submit AXI transactions, step the simulation, and retrieve responses. This is the simplest integration path and is used when the C++ model runs as a standalone golden reference:
+The transaction-level interface allows an SV testbench to create a NoC System instance, submit AXI transactions, step the simulation, and retrieve responses. This is the simplest integration path and is used when the virtual model runs as a standalone golden reference:
 
 ```systemverilog
 import "DPI-C" function chandle noc_init(string json_path);
@@ -171,7 +171,7 @@ The `noc_init()` function reads a JSON configuration file and constructs the ent
 
 ### Signal-Level DPI-C
 
-The signal-level interface is used when one or more C++ components are replaced with RTL modules (the hot-swap mode). In this case, the RTL proxy within the C++ model calls DPI-C functions every cycle to exchange port-level signals with the RTL simulator:
+The signal-level interface is used when one or more virtual components are replaced with RTL modules (the hot-swap mode). In this case, the RTL proxy within the virtual model calls DPI-C functions every cycle to exchange port-level signals with the RTL simulator:
 
 ```systemverilog
 import "DPI-C" function void noc_set_port_input(chandle h, int node, int port,
@@ -184,7 +184,7 @@ import "DPI-C" function void noc_get_port_output(chandle h, int node, int port,
                                                   output int ready_or_credit);
 ```
 
-The `ch` parameter selects the channel: 0 for REQ, 1 for RSP. The `ready_or_credit` parameter carries a ready bit in valid/ready mode or a per-VC credit bitmask in credit mode. Each cycle, the RTL proxy sets its input signals from the RTL module's outputs and provides its output signals for the RTL module's inputs, maintaining cycle-accurate synchronisation between the C++ mesh and the RTL component under test.
+The `ch` parameter selects the channel: 0 for REQ, 1 for RSP. The `ready_or_credit` parameter carries a ready bit in valid/ready mode or a per-VC credit bitmask in credit mode. Each cycle, the RTL proxy sets its input signals from the RTL module's outputs and provides its output signals for the RTL module's inputs, maintaining cycle-accurate synchronisation between the virtual mesh and the RTL component under test.
 
 ### RTL Module Instantiation
 
@@ -201,13 +201,13 @@ module noc_cosim_top;
     end
 
     always @(posedge clk) begin
-        // Push RTL outputs into C++ model
+        // Push RTL outputs into virtual model
         noc_set_port_input(noc_handle, NODE_ID, port, ch,
                            rtl_out_valid, rtl_out_flit, rtl_out_ready);
-        // Pull C++ model outputs to drive RTL inputs
+        // Pull virtual model outputs to drive RTL inputs
         noc_get_port_output(noc_handle, NODE_ID, port, ch,
                             rtl_in_valid, rtl_in_flit, rtl_in_ready);
-        // Step C++ model
+        // Step virtual model
         noc_step(noc_handle, 1);
     end
 endmodule
@@ -237,8 +237,8 @@ The NoC model's software architecture is shown below. Each block communicates th
 │ Internal Components                                                    │
 │   Traffic Manager / Mesh / Router / NI / Channel / Memory / Stats      │
 │   ┌──────────────────── HOT-SWAP BOUNDARY ───────────────────────┐  │
-│   │  C++ Router ◄── Router_Interface<Mode> ──► Router DPI Bridge     │  │
-│   │  C++ NI     ◄── NI_Interface<Mode>    ──► NI DPI Bridge          │  │
+│   │  Virtual Router ◄── Router_Interface<Mode> ──► Router DPI Bridge     │  │
+│   │  Virtual NI     ◄── NI_Interface<Mode>    ──► NI DPI Bridge          │  │
 │   └──────────────────────────────────────────────────────────────┘  │
 └───────────────────────────────┬──────────────────────────────────────┘
                                 │ DPI-C
@@ -376,7 +376,7 @@ Pre-loading of host memory and per-node local memory uses `$readmemh`-compatible
 @00000000 AB CD EF 01 02 03 04 05 ...
 ```
 
-Each node has its own `.hex` file (optional; uninitialised nodes default to zero). The same files are consumed by both the C++ model (via `load_memory()`) and the RTL simulation (via `$readmemh`), ensuring identical starting conditions.
+Each node has its own `.hex` file (optional; uninitialised nodes default to zero). The same files are consumed by both the virtual model (via `load_memory()`) and the RTL simulation (via `$readmemh`), ensuring identical starting conditions.
 
 ### Traffic Definition
 
@@ -765,18 +765,18 @@ upstream.credit[vc] + downstream.buffer.count(vc) + in_flight(vc) == INPUT_BUFFE
 
 ## Hot-Swap and Co-Simulation
 
-The NoC model can be configured to replace individual C++ routers or NIs with RTL implementations for verification purposes. This is achieved through the hot-swap mechanism, which relies on the abstract `Router_Interface<Mode>` and `NI_Interface<Mode>` base classes.
+The NoC model can be configured to replace individual virtual routers or NIs with RTL implementations for verification purposes. This is achieved through the hot-swap mechanism, which relies on the abstract `Router_Interface<Mode>` and `NI_Interface<Mode>` base classes.
 
 ### Substitution Modes
 
 | Mode | Router | NI | Use Case |
 |------|--------|----|----------|
-| Pure C++ | C++ Router | C++ NI | High-speed performance evaluation |
-| NI RTL | C++ Router | NI DPI Bridge | Verify NI RTL against C++ golden |
-| Router RTL | Router DPI Bridge | C++ NI | Verify Router RTL against C++ golden |
+| Pure Virtual | Virtual Router | Virtual NI | High-speed performance evaluation |
+| NI RTL | Virtual Router | NI DPI Bridge | Verify NI RTL against virtual model golden |
+| Router RTL | Router DPI Bridge | Virtual NI | Verify Router RTL against virtual model golden |
 | Full RTL | Router DPI Bridge | NI DPI Bridge | Full system co-simulation |
 
-In the pure C++ mode, maximum simulation speed is achieved. As RTL components are substituted, simulation speed decreases proportionally due to the DPI-C overhead and RTL simulator step time, but the same input patterns and expected outputs apply.
+In the Pure Virtual mode, maximum simulation speed is achieved. As RTL components are substituted, simulation speed decreases proportionally due to the DPI-C overhead and RTL simulator step time, but the same input patterns and expected outputs apply.
 
 ### Configuring Substitution
 
@@ -793,7 +793,7 @@ The substitution targets are specified in the JSON configuration file under a `c
 }
 ```
 
-The `node_id` uses the same encoding as the flit header（[7:4]=y, [3:0]=x）. Multiple nodes can be listed to replace several routers or NIs simultaneously. In user code, the factory function reads this section and instantiates `Router DPI Bridge` or `NI DPI Bridge` for the designated nodes, while all other nodes use the C++ implementations:
+The `node_id` uses the same encoding as the flit header（[7:4]=y, [3:0]=x）. Multiple nodes can be listed to replace several routers or NIs simultaneously. In user code, the factory function reads this section and instantiates `Router DPI Bridge` or `NI DPI Bridge` for the designated nodes, while all other nodes use the virtual implementations:
 
 ```cpp
 auto config = noc::NoC System::load_config("cosim_config.json");
@@ -808,15 +808,15 @@ system.run_all();
 system.generate_golden("golden/");
 ```
 
-The user program itself does not change — the substitution is entirely configuration-driven. The same traffic patterns produce the same golden outputs regardless of which nodes use C++ or RTL implementations.
+The user program itself does not change — the substitution is entirely configuration-driven. The same traffic patterns produce the same golden outputs regardless of which nodes use virtual or RTL implementations.
 
 ### Hot-Swap Constraints
 
-Substitution can only occur when the target component's channels are empty (no in-flight flits). The model does not support migrating C++ internal state to RTL register state or vice versa; thus, hot-swap must happen during network quiescence or after draining the relevant channels. In practice, substitution is configured before the simulation begins and remains fixed for the duration of the run.
+Substitution can only occur when the target component's channels are empty (no in-flight flits). The model does not support migrating virtual model internal state to RTL register state or vice versa; thus, hot-swap must happen during network quiescence or after draining the relevant channels. In practice, substitution is configured before the simulation begins and remains fixed for the duration of the run.
 
 ### Interface Contract
 
-The interface is the contract. Both C++ Router and Router DPI Bridge implement the same `Router_Interface<Mode>`, and the Mesh wiring loop connects components solely through this interface. The flow control mode is a compile-time template parameter, ensuring that valid/ready mode carries no credit signals and credit mode carries no ready signal — no unused wires exist.
+The interface is the contract. Both Virtual Router and Router DPI Bridge implement the same `Router_Interface<Mode>`, and the Mesh wiring loop connects components solely through this interface. The flow control mode is a compile-time template parameter, ensuring that valid/ready mode carries no credit signals and credit mode carries no ready signal — no unused wires exist.
 
 NI-to-router connections use the same interface and wiring as router-to-router connections, so the hot-swap mechanism applies uniformly to both.
 
@@ -827,7 +827,7 @@ NI-to-router connections use the same interface and wiring as router-to-router c
 | Traffic Manager | Central coordinator, no RTL equivalent |
 | Mesh topology | Fixed wiring, parameterised by config |
 | Channel\<T\> | Link model, no RTL equivalent |
-| Scoreboard / Metrics Collector | Verification/stats logic, C++ only |
+| Scoreboard / Metrics Collector | Verification/stats logic, virtual model only |
 | Host Memory / Local Memory | Behavioural model, no RTL equivalent |
 
 ---
@@ -851,7 +851,7 @@ The model generates four types of output:
 
 ### Golden Verification Flow
 
-The same set of input patterns is fed to both the C++ model and the RTL simulation. The C++ outputs serve as the golden reference:
+The same set of input patterns is fed to both the virtual model and the RTL simulation. The virtual model outputs serve as the golden reference:
 
 ```
                   ┌─────────────┐
@@ -863,7 +863,7 @@ The same set of input patterns is fed to both the C++ model and the RTL simulati
               ┌──────────┴──────────┐
               ▼                     ▼
     ┌──────────────────┐  ┌──────────────────┐
-    │  C++ NoC Model   │  │  RTL Simulation  │
+    │  Virtual NoC Model   │  │  RTL Simulation  │
     │  (golden ref)    │  │  (DUT)           │
     └────────┬─────────┘  └────────┬─────────┘
              ▼                     ▼
@@ -986,7 +986,7 @@ Integration tests exercise end-to-end transaction flows through a small mesh:
 
 ### Co-Simulation Tests
 
-Co-simulation tests replace one C++ component with its RTL counterpart and verify that the mixed simulation produces identical outputs to the pure C++ run.
+Co-simulation tests replace one virtual component with its RTL counterpart and verify that the mixed simulation produces identical outputs to the pure virtual run.
 
 ---
 

@@ -160,7 +160,7 @@ NI 使用 config struct 組織參數，由上層 instantiation 時傳入。
 | `axi_out_rsp_t` | AXI subordinate response channels | AXI typedef |
 | `sam_rule_t` | SAM address rule type | USE_ID_TABLE 時使用 |
 
-### 3.6 Simulation Parameters（C++ model 專用）
+### 3.6 Simulation Parameters（virtual model 專用）
 
 | Parameter | Source | Default | Description |
 |-----------|--------|---------|-------------|

@@ -60,7 +60,7 @@
 | File | Content |
 |------|---------|
 | [platform_diagram.svg](../images/platform_diagram.svg) | Platform overview (User Interface / NoC System Internals / Golden Verification) |
-| [hot_swap.svg](../images/hot_swap.svg) | Hot-Swap concept (C++ ↔ RTL switching) |
+| [hot_swap.svg](../images/hot_swap.svg) | Hot-Swap concept (virtual ↔ RTL switching) |
 
 ---
 
