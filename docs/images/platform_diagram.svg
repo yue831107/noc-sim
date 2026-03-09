@@ -22,7 +22,7 @@
   <rect width="1300" height="920" fill="#f8f8f8" rx="6"/>
 
   <!-- Title -->
-  <text x="650" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#222">NoC C++ Behavior Model — Platform Diagram</text>
+  <text x="650" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#222">NoC Cycle-Approximate Model — Platform Diagram</text>
 
   <!-- ============================================================ -->
   <!--  SECTION 1: USER INTERFACE LAYER  (y=44 ~ 196)               -->

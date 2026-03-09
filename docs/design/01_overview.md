@@ -9,7 +9,7 @@ prerequisite: [00_architecture.md]
 
 # System Overview
 
-本文件說明 NoC Behavior Model 的整體系統架構。
+本文件說明 NoC Cycle-Approximate Model 的整體系統架構。
 
 ---
 

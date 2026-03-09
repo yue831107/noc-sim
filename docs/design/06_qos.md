@@ -234,7 +234,7 @@ final_qos   = max(15, SOCKET_QOS)
 
 > **SOCKET_QOS 用途**：確保 QoS 不會低於某個下限，即使 urgency=0 也能維持最低優先級。
 
-> **Implementation Note：** Regulator 的 `response_bytes` 來自 NMU 的 response path。virtual model 中，QoS Generator 需要 NMU 提供 `on_response(bytes)` callback 或每 cycle 輪詢 response counter。
+> **Implementation Note：** Regulator 的 `response_bytes` 來自 NMU 的 response path。CA Model 中，QoS Generator 需要 NMU 提供 `on_response(bytes)` callback 或每 cycle 輪詢 response counter。
 
 #### 2.4.7 與 Limiter Mode 的比較
 

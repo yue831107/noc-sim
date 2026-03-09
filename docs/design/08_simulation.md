@@ -9,7 +9,7 @@ prerequisite: [00_architecture.md, 01_overview.md, 02_flit.md, 03_router.md, 04_
 
 # Simulation Platform 規格
 
-本文件定義 NoC virtual model 的模擬平台架構、配置參數、I/O pattern、public API、cycle model 與可替換邊界。
+本文件定義 NoC CA Model 的模擬平台架構、配置參數、I/O pattern、public API、cycle model 與可替換邊界。
 
 ---
 
@@ -17,14 +17,14 @@ prerequisite: [00_architecture.md, 01_overview.md, 02_flit.md, 03_router.md, 04_
 
 ### 1.1 平台目標
 
-NoC virtual model 服務兩大目標：
+NoC CA Model 服務兩大目標：
 
 | 目標 | 說明 | 產物 |
 |------|------|------|
 | **Pre-silicon performance evaluation** | 高速模擬 + 參數掃描 | Statistics JSON |
-| **RTL co-simulation golden reference** | virtual model output 作為 RTL 驗證的比對基準 | Memory State + Response Log |
+| **RTL co-simulation golden reference** | CA Model output 作為 RTL 驗證的比對基準 | Memory State + Response Log |
 
-核心流程：**同一組 Input Pattern 分別餵入 virtual model 和 RTL，virtual model 的 Output 當 Golden，與 RTL Output 比對。**
+核心流程：**同一組 Input Pattern 分別餵入 CA Model 和 RTL，CA Model 的 Output 當 Golden，與 RTL Output 比對。**
 
 ### 1.2 I/O 總覽
 
@@ -33,7 +33,7 @@ NoC virtual model 服務兩大目標：
  │  INPUT PATTERNS  │                              │ OUTPUT PATTERNS  │
  ├─────────────────┤     ┌──────────────────┐      ├─────────────────┤
  │ 1. Config       │────►│                  │─────►│ 1. Memory State │
- │    (.json)      │     │  Virtual NoC Model   │      │    (.hex)       │
+ │    (.json)      │     │  CA NoC Model        │      │    (.hex)       │
  │ 2. Memory Init  │────►│  (golden ref)    │─────►│ 2. Response Log │
  │    (.hex)       │     │                  │      │    (.json)      │
  │ 3. Traffic      │────►│                  │─────►│ 3. Cycle Trace  │
@@ -79,7 +79,7 @@ NoC virtual model 服務兩大目標：
 │                                                                     │
 │   ┌─────────────────────── HOT-SWAP BOUNDARY ──────────────────┐   │
 │   │  Router_Interface<Mode>  /  NI_Interface<Mode>              │   │
-│   │  Virtual Router ↔ Router DPI Bridge  |  Virtual NI ↔ NI DPI Bridge       │   │
+│   │  CA Router ↔ Router DPI Bridge  |  CA NI ↔ NI DPI Bridge       │   │
 │   └─────────────────────────────────────────────────────────────┘   │
 └────────────────────────────┬────────────────────────────────────────┘
                              ↓ DPI-C
@@ -351,15 +351,15 @@ Cycle N-1 Phase 5 ──────────► Cycle N Phase 1 (Sample)
 
 ### 6.3 RTL posedge clk 映射
 
-Virtual model 將 RTL 的並行行為拆為 8 個循序 phase，以 ordering 保證因果正確：
+CA Model 將 RTL 的並行行為拆為 8 個循序 phase，以 ordering 保證因果正確：
 
-| RTL posedge clk（Sequential） | Virtual Model Phase |
+| RTL posedge clk（Sequential） | CA Model Phase |
 |-------------------------------|-----------|
 | Input FF latch | Phase 1 |
 | Output FF update | Phase 6 |
 | Credit counter update | Phase 7 |
 
-| RTL combinational | Virtual Model Phase |
+| RTL combinational | CA Model Phase |
 |-------------------|-----------|
 | `out_ready = ~buffer_full` | Phase 3 |
 | RC → VA → SA → ST pipeline | Phase 4 |
@@ -496,19 +496,19 @@ Traffic Manager 的 `tick(current_cycle)` 每 cycle 執行：
 
 ### 9.1 Abstract Interface 合約
 
-Router 和 NI 均實作抽象介面，Simulation Driver 透過 wiring loop 連接所有元件，無需區分 virtual model 或 RTL 實作。
+Router 和 NI 均實作抽象介面，Simulation Driver 透過 wiring loop 連接所有元件，無需區分 CA Model 或 RTL 實作。
 
 ```
 ┌──────────────┐                           ┌──────────────┐
-│  Virtual Router   │── Router_Interface<M> ──│Router DPI Bridge│
-│  (Virtual Model) │                           │  (DPI-C)     │
+│  CA Router        │── Router_Interface<M> ──│Router DPI Bridge│
+│  (CA Model)      │                           │  (DPI-C)     │
 └──────────────┘                           └──────────────┘
          ▲           Simulation Driver           ▲
          │           (Mesh wiring loop)          │
          ▼                                       ▼
 ┌──────────────┐                           ┌──────────────┐
-│  Virtual NI       │── NI_Interface<M> ──────│  NI DPI Bridge  │
-│  (Virtual Model) │                           │  (DPI-C)     │
+│  CA NI            │── NI_Interface<M> ──────│  NI DPI Bridge  │
+│  (CA Model)      │                           │  (DPI-C)     │
 └──────────────┘                           └──────────────┘
 ```
 
@@ -565,14 +565,14 @@ create_noc_system(config) → switch(config.flow_control) → 對應 NoC SystemI
 
 | Substitution Mode | Router | NI | Use Case |
 |-------------------|--------|----|----------|
-| Pure Virtual | Virtual Router | Virtual NI | 高速效能模擬 |
-| NI RTL | Virtual Router | NI DPI Bridge | NI RTL 驗證 |
-| Router RTL | Router DPI Bridge | Virtual NI | Router RTL 驗證 |
+| Standalone | CA Router | CA NI | 高速效能模擬 |
+| NI RTL | CA Router | NI DPI Bridge | NI RTL 驗證 |
+| Router RTL | Router DPI Bridge | CA NI | Router RTL 驗證 |
 | Full RTL | Router DPI Bridge | NI DPI Bridge | 系統級 co-sim |
 
 **Hot-Swap 約束：**
 - 替換前必須 drain 目標元件的所有 Channel pipeline（排空 in-flight flits）
-- 不支援 in-flight flit 的跨實作遷移（virtual model state ↔ RTL register 格式不同）
+- 不支援 in-flight flit 的跨實作遷移（CA Model state ↔ RTL register 格式不同）
 - 只能在 network quiescent 或目標元件 Channel 已排空時進行
 
 ### 9.7 不可替換元件
@@ -582,18 +582,18 @@ create_noc_system(config) → switch(config.flow_control) → 對應 NoC SystemI
 | Traffic Manager | 中央協調，不需替換 |
 | Mesh topology | 固定 mesh，由 config 參數化 |
 | Channel | Link model，不需替換 |
-| Scoreboard / Metrics Collector | 驗證（online per-txn tracking）與統計邏輯，virtual model only |
+| Scoreboard / Metrics Collector | 驗證（online per-txn tracking）與統計邏輯，CA Model only |
 | Host Memory / Local Memory | 行為模型，不需替換 |
 
 ---
 
 ## 10. DPI-C Bridge
 
-DPI-C bridge 為 thin wrapper，提供 SystemVerilog 與 virtual model 的互操作介面。
+DPI-C bridge 為 thin wrapper，提供 SystemVerilog 與 CA Model 的互操作介面。
 
 ### 10.1 Transaction-Level API
 
-用於 virtual model 獨立執行，產生 golden output。SV testbench 只做 submit + step + response。
+用於 CA Model 獨立執行，產生 golden output。SV testbench 只做 submit + step + response。
 
 | Function | Description |
 |----------|-------------|
@@ -607,12 +607,12 @@ DPI-C bridge 為 thin wrapper，提供 SystemVerilog 與 virtual model 的互操
 
 ### 10.2 Signal-Level API
 
-用於 hot-swap co-sim。RTL proxy 每 cycle 透過 signal-level API 讀寫 port 信號，與 virtual mesh 中的其他元件互動。
+用於 hot-swap co-sim。RTL proxy 每 cycle 透過 signal-level API 讀寫 port 信號，與 CA mesh 中的其他元件互動。
 
 | Function | Description |
 |----------|-------------|
-| `noc_set_port_input(h, node, port, ch, valid, flit, ready_or_credit)` | RTL → virtual model |
-| `noc_get_port_output(h, node, port, ch, &valid, flit, &ready_or_credit)` | virtual model → RTL |
+| `noc_set_port_input(h, node, port, ch, valid, flit, ready_or_credit)` | RTL → CA Model |
+| `noc_get_port_output(h, node, port, ch, &valid, flit, &ready_or_credit)` | CA Model → RTL |
 | `noc_get_num_ports(h, node) → count` | 查詢 port 數 |
 
 `ch`: 0=REQ, 1=RSP。`ready_or_credit`: VR mode → ready bit；Credit mode → credit bitmask。
@@ -621,8 +621,8 @@ DPI-C bridge 為 thin wrapper，提供 SystemVerilog 與 virtual model 的互操
 
 | 模式 | Memory 歸屬 | 同步機制 |
 |------|-----------|---------|
-| Virtual as golden | virtual model 維護 | RTL memory 由 virtual model shadow |
-| RTL as primary | RTL memory 為 primary | virtual model 每 cycle 讀取 RTL state |
+| CA as golden | CA Model 維護 | RTL memory 由 CA Model shadow |
+| RTL as primary | RTL memory 為 primary | CA Model 每 cycle 讀取 RTL state |
 | Independent | 各自維護 | 比對 response data 驗證一致性 |
 
 ---
@@ -668,8 +668,8 @@ DPI-C bridge 為 thin wrapper，提供 SystemVerilog 與 virtual model 的互操
 
 - [System Overview](01_overview.md)
 - [Flit Format](02_flit.md) — 固定參數基準
-- [Router](03_router.md) — 8-phase pipeline、Virtual Router pipeline stages
-- [Network Interface](04_network_interface.md) — NMU/NSU、Virtual NI functions
+- [Router](03_router.md) — 8-phase pipeline、CA Router pipeline stages
+- [Network Interface](04_network_interface.md) — NMU/NSU、CA NI functions
 - [Verification](09_verification.md) — Golden 驗證、效能指標、測試策略
 
 ---

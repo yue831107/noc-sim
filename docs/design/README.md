@@ -1,6 +1,6 @@
-# NoC Behavior Model - Design Documents
+# NoC Cycle-Approximate Model - Design Documents
 
-本目錄包含 NoC Behavior Model 的設計規格文件。
+本目錄包含 NoC Cycle-Approximate Model 的設計規格文件。
 
 ---
 
@@ -60,7 +60,7 @@
 | File | Content |
 |------|---------|
 | [platform_diagram.svg](../images/platform_diagram.svg) | Platform overview (User Interface / NoC System Internals / Golden Verification) |
-| [hot_swap.svg](../images/hot_swap.svg) | Hot-Swap concept (virtual ↔ RTL switching) |
+| [hot_swap.svg](../images/hot_swap.svg) | Hot-Swap concept (CA ↔ RTL switching) |
 
 ---
 
@@ -70,7 +70,7 @@
 
 | Context | Language | Example |
 |---------|----------|---------|
-| Paragraph text | 繁體中文 | "每個 Router 由兩個結構對稱的 sub-router 組成" |
+| Paragraph text | 繁體中文 | "每個 Router 由 Req Router 與 Rsp Router 兩個結構對稱的子元件組成" |
 | Table column headers | English | `Parameter`, `Default`, `Description` |
 | Table Description column | English | Consistent with code and technical terms |
 | Function / API names | English code font | `tick()`, `process_cycle()` |
