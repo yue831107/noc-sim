@@ -1,8 +1,15 @@
+---
+document_id: NOC-GUIDE-01
+title: NoC C++ Behavior Model — User Guide
+version: 1.0
+status: Draft
+last_updated: 2026-03-09
+prerequisite: [00_architecture.md]
+---
+
 # NoC C++ Behavior Model
 
 ## User Guide
-
-Version 1.0
 
 ---
 
@@ -1028,3 +1035,11 @@ All public symbols are in the `noc::` namespace. Internal implementation details
 | `NOC_FLOW_CONTROL` | VALID_READY | Default flow control mode |
 
 The model is available in the project repository. All dependencies (GoogleTest) are fetched automatically via CMake's FetchContent mechanism.
+
+---
+
+## Change Log
+
+| Version | Date | Description |
+|---------|------|-------------|
+| 1.0 | 2026-03-09 | Initial release |

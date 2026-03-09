@@ -1,3 +1,12 @@
+---
+document_id: NOC-SPEC-06
+title: QoS and Performance Monitoring
+version: 1.0
+status: Draft
+last_updated: 2026-03-09
+prerequisite: [02_flit.md, 04_network_interface.md]
+---
+
 # QoS and Performance Monitoring
 
 NoC 的 Quality of Service (QoS) 機制與效能監控設計。
@@ -524,3 +533,11 @@ QoS 只影響 **arbitration**，不影響 **flow control**。即使 qos=15，若
 ### Design References
 
 本設計的 QoS Generator（Fixed/Limiter/Regulator modes）、Performance Probe（Packet/Transaction）、flit header qos field（4 bits）等機制，綜合參考業界主流 NoC QoS 架構設計而成。
+
+---
+
+## Change Log
+
+| Version | Date | Description |
+|---------|------|-------------|
+| 1.0 | 2026-03-09 | Initial release |

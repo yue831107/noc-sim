@@ -1,3 +1,12 @@
+---
+document_id: NOC-SPEC-01
+title: System Overview
+version: 1.0
+status: Draft
+last_updated: 2026-03-09
+prerequisite: [00_architecture.md]
+---
+
 # System Overview
 
 本文件說明 NoC Behavior Model 的整體系統架構。
@@ -37,40 +46,40 @@
 
 ## 2. 拓撲參數
 
-| 參數 | 預設值 | 說明 |
-|------|--------|------|
-| `mesh_cols` | 4 | 欄數 |
-| `mesh_rows` | 4 | 列數 |
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `mesh_cols` | 4 | Number of columns |
+| `mesh_rows` | 4 | Number of rows |
 
 ### 2.1 Flit 與 Link 參數
 
 以下為固定設計參數，與 [Flit 格式](02_flit.md) 一致：
 
-| 參數 | 值 | 說明 |
-|------|-----|------|
-| `FLIT_WIDTH` | 408 bits | Flit 總寬度 (Header + Payload) |
-| `HEADER_WIDTH` | 56 bits | Header 寬度 |
-| `PAYLOAD_WIDTH` | 352 bits (44 bytes) | 最大 Payload 寬度 (W/R channel) |
-| `AXI_DATA_WIDTH` | 256 bits (32 bytes) | AXI 資料寬度 |
-| `AXI_ADDR_WIDTH` | 64 bits | AXI 位址寬度 |
-| `AXI_ID_WIDTH` | 8 bits | AXI transaction ID 寬度 |
-| `NODE_ID_WIDTH` | 8 bits | 節點 ID 寬度（[7:4]=y, [3:0]=x） |
-| `QOS_WIDTH` | 4 bits | QoS 優先級寬度 |
-| `ROB_IDX_WIDTH` | 5 bits | RoB index 寬度 (32 entries) |
-| `ECC_WIDTH` | 32 bits | ECC 總寬度 (SECDED) |
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| `FLIT_WIDTH` | 408 bits | Total flit width (Header + Payload) |
+| `HEADER_WIDTH` | 56 bits | Header width |
+| `PAYLOAD_WIDTH` | 352 bits (44 bytes) | Maximum payload width (W/R channel) |
+| `AXI_DATA_WIDTH` | 256 bits (32 bytes) | AXI data width |
+| `AXI_ADDR_WIDTH` | 64 bits | AXI address width |
+| `AXI_ID_WIDTH` | 8 bits | AXI transaction ID width |
+| `NODE_ID_WIDTH` | 8 bits | Node ID width ([7:4]=y, [3:0]=x) |
+| `QOS_WIDTH` | 4 bits | QoS priority width |
+| `ROB_IDX_WIDTH` | 5 bits | RoB index width (32 entries) |
+| `ECC_WIDTH` | 32 bits | Total ECC width (SECDED) |
 | Physical Link | 410 bits | valid + ready + 408-bit flit |
 
 ---
 
 ## 3. 核心特性
 
-| 特性 | 說明 |
-|------|------|
-| Uniform Router | 所有 Router 結構統一，支援 multi-port LOCAL（port_id 識別） |
-| XY Routing | Deterministic routing，X-first then Y |
-| Wormhole Switching | Packet-level path lock，`last` bit 釋放 |
-| Separate Req/Rsp Channels | Request / Response 獨立 physical link，消除 protocol deadlock |
-| Credit-Based Flow Control | Per-port credit tracking（Credit-Based mode） |
+| Feature | Description |
+|---------|-------------|
+| Uniform Router | All routers identical, multi-port LOCAL supported (port_id) |
+| XY Routing | Deterministic routing, X-first then Y |
+| Wormhole Switching | Packet-level path lock, `last` bit releases |
+| Separate Req/Rsp Channels | Independent Req/Rsp physical links, eliminates protocol deadlock |
+| Credit-Based Flow Control | Per-port credit tracking (Credit-Based mode) |
 
 ---
 
@@ -87,3 +96,11 @@
 - [Network Interface 規格](04_network_interface.md)
 - [Flit 格式](02_flit.md)
 - [Simulation Platform](08_simulation.md)
+
+---
+
+## Change Log
+
+| Version | Date | Description |
+|---------|------|-------------|
+| 1.0 | 2026-03-09 | Initial release |

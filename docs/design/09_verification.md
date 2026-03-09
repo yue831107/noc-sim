@@ -1,3 +1,12 @@
+---
+document_id: NOC-SPEC-09
+title: Verification
+version: 1.0
+status: Draft
+last_updated: 2026-03-09
+prerequisite: [08_simulation.md]
+---
+
 # Verification
 
 本文件定義 NoC C++ model 的驗證策略、Scoreboard 機制、效能指標收集與 RTL co-simulation 驗證方法。
@@ -26,8 +35,8 @@
 
 ### 2.1 元件測試矩陣
 
-| 元件 | 測試重點 | 最低 Case 數 |
-|------|---------|:----------:|
+| Component | Test Focus | Min Cases |
+|-----------|------------|:---------:|
 | FlitBuffer | push/pop/full/empty/peek, depth boundary | 8 |
 | Flit (Header) | pack/unpack round-trip, bit-field accuracy | 6 |
 | XYRouter | routing decision for all 5 output ports, edge cases | 12 |
@@ -261,3 +270,11 @@ MetricsCollector 提供統一的效能指標收集介面，支援時間序列快
 - [Router](03_router.md) — Router behavior under test
 - [Network Interface](04_network_interface.md) — NI behavior under test
 - [Simulation Platform](08_simulation.md) — NocSystem API、DPI-C bridge
+
+---
+
+## Change Log
+
+| Version | Date | Description |
+|---------|------|-------------|
+| 1.0 | 2026-03-09 | Initial release |

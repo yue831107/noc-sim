@@ -1,3 +1,12 @@
+---
+document_id: NOC-SPEC-05
+title: Physical Channel Architecture
+version: 1.0
+status: Draft
+last_updated: 2026-03-09
+prerequisite: [02_flit.md]
+---
+
 # Physical Channel Architecture
 
 本文件描述 NoC 的 Physical Channel 架構，重點在 2-channel 與 3-channel 的設計差異。Flit 格式、header 欄位、payload layout 等定義請參見 [Flit Format](02_flit.md)。
@@ -320,3 +329,11 @@ ReqRouter 和 RspRouter 共用同一 164-bit 寬度設計，可複用 RTL 模組
 - [Network Interface Specification](04_network_interface.md) — NI 的 AXI-to-Flit 轉換與 network 分流
 - [Simulation Platform](08_simulation.md) — Abstract Interface、8-phase cycle model、Channel\<T\>
 - [QoS Design](06_qos.md) — QoS-Aware arbitration policy
+
+---
+
+## Change Log
+
+| Version | Date | Description |
+|---------|------|-------------|
+| 1.0 | 2026-03-09 | Initial release |

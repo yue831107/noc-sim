@@ -1,3 +1,12 @@
+---
+document_id: NOC-SPEC-10
+title: Width Converter
+version: 1.0
+status: Draft
+last_updated: 2026-03-09
+prerequisite: [02_flit.md, 04_network_interface.md]
+---
+
 # Width Converter
 
 本文件描述 Width Converter 元件，用於橋接不同 AXI bus 寬度與 NoC 固定 408-bit flit 格式之間的差異。所有參數依據 [Flit Format](02_flit.md) 之固定參數設計。
@@ -800,3 +809,11 @@ Width Converter 處理以下對齊情況：
 - [Flit Format](02_flit.md) — 固定參數定義與 payload 格式
 - [Network Interface Specification](04_network_interface.md) — NI packetization 與 RoB
 - [Router Specification](03_router.md) — 408-bit flit 轉發
+
+---
+
+## Change Log
+
+| Version | Date | Description |
+|---------|------|-------------|
+| 1.0 | 2026-03-09 | Initial release |

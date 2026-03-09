@@ -1,3 +1,12 @@
+---
+document_id: NOC-ARCH-00
+title: System Architecture
+version: 1.0
+status: Draft
+last_updated: 2026-03-09
+prerequisite: []
+---
+
 # System Architecture
 
 本文件以圖表為主，提供 NoC Behavior Model 的全局架構視圖。
@@ -895,3 +904,11 @@ RTL Router (SV)
 - [Physical Channel](05_physical_channel.md) — 2-ch / 3-ch 架構
 - [Simulation Platform](08_simulation.md) — NocConfig、API、cycle model、DPI-C
 - [Verification](09_verification.md) — Golden 驗證、測試策略
+
+---
+
+## Change Log
+
+| Version | Date | Description |
+|---------|------|-------------|
+| 1.0 | 2026-03-09 | Initial release |

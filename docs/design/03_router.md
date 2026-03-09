@@ -1,3 +1,12 @@
+---
+document_id: NOC-SPEC-03
+title: Router
+version: 1.0
+status: Draft
+last_updated: 2026-03-09
+prerequisite: [02_flit.md]
+---
+
 # Router
 
 ## 1. Overview
@@ -524,3 +533,11 @@ Router 為 flit 透通轉發器，不檢查/修改 ECC。XY routing 保證 deadl
 - [QoS Design](06_qos.md) — QoS arbitration policy
 - [Multicast](07_multicast.md) — RCR routing algorithm
 - [Simulation](08_simulation.md) — 8-phase cycle model、NocConfig、Channel\<T\>
+
+---
+
+## Change Log
+
+| Version | Date | Description |
+|---------|------|-------------|
+| 1.0 | 2026-03-09 | Initial release |

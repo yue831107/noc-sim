@@ -1,3 +1,12 @@
+---
+document_id: NOC-SPEC-04
+title: Network Interface
+version: 1.0
+status: Draft
+last_updated: 2026-03-09
+prerequisite: [02_flit.md, 03_router.md]
+---
+
 # Network Interface
 
 ## 1. Overview
@@ -418,3 +427,11 @@ Router 層 reduction 詳見 [Router Specification](03_router.md) FR-09。
 - [Router Specification](03_router.md) — Router port interface、in-network reduction
 - [QoS Design](06_qos.md) — QoS Generator 模式、CSR Memory Map
 - [Simulation](08_simulation.md) — NocSystem API、NocConfig、Channel\<T\>
+
+---
+
+## Change Log
+
+| Version | Date | Description |
+|---------|------|-------------|
+| 1.0 | 2026-03-09 | Initial release |

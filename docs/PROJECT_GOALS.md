@@ -1,3 +1,12 @@
+---
+document_id: NOC-PROJ-01
+title: Project Goals
+version: 1.0
+status: Draft
+last_updated: 2026-03-09
+prerequisite: []
+---
+
 # NoC C++ Model - Project Goals
 
 ## Executive Summary
@@ -373,3 +382,11 @@ noc_c_model/
 | `examples/patterns/` | I/O pattern 範例檔案 |
 | `docs/ref/Arteris_IP_Overview_20210820_1_HotChips.pdf` | Arteris NoC IP 參考 |
 | `docs/ref/Ch15_NoC_Design.pdf` | NoC 設計教材 |
+
+---
+
+## Change Log
+
+| Version | Date | Description |
+|---------|------|-------------|
+| 1.0 | 2026-03-09 | Initial release |

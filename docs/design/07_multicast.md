@@ -1,3 +1,12 @@
+---
+document_id: NOC-SPEC-07
+title: Multicast
+version: 1.0
+status: Draft
+last_updated: 2026-03-09
+prerequisite: [02_flit.md, 03_router.md]
+---
+
 # Multicast
 
 本文件定義 RCR-Multicast（Rectangle Coordinate-Range Multicast）的 header 格式、路由行為、response 路徑與設計參數。
@@ -173,12 +182,12 @@ Source 注入 1 個 flit → 9 個節點各收到 1 份。複製分散於 source
 
 ## 8. 設計參數
 
-| 參數 | 預設值 | 說明 |
-|------|-------|------|
-| `EN_MULTICAST` | 0 | 啟用 multicast。未設定時相關邏輯不啟用。 |
-| `X_BITS` / `Y_BITS` | 4 | 座標位寬，須與 `id_t` 一致。 |
-| `EN_MCAST_VC` | 0 | 專用 multicast VC（需 `NumVirtChannels >= 2`）。 |
-| `EN_REDUCTION` | 0 | 網路內 response reduction（需 `EN_MULTICAST = 1`）。 |
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `EN_MULTICAST` | 0 | Enable multicast; related logic inactive when 0 |
+| `X_BITS` / `Y_BITS` | 4 | Coordinate bit width, must match `id_t` |
+| `EN_MCAST_VC` | 0 | Dedicated multicast VC (requires `NumVirtChannels >= 2`) |
+| `EN_REDUCTION` | 0 | In-network response reduction (requires `EN_MULTICAST = 1`) |
 
 ---
 
@@ -200,3 +209,11 @@ Source 注入 1 個 flit → 9 個節點各收到 1 份。複製分散於 source
 - [Flit Format](02_flit.md) — Header 欄位定義（`dst_id` 重新解讀為 multicast 座標）
 - [Router](03_router.md) — Router pipeline 與 routing 整合
 - [Network Interface](04_network_interface.md) — NI 的 multicast response 處理
+
+---
+
+## Change Log
+
+| Version | Date | Description |
+|---------|------|-------------|
+| 1.0 | 2026-03-09 | Initial release |
