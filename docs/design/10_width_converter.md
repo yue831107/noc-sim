@@ -9,7 +9,7 @@ prerequisite: [02_flit.md, 04_network_interface.md]
 
 # Width Converter
 
-本文件描述 Width Converter 元件，用於橋接不同 AXI bus 寬度與 NoC 固定 408-bit flit 格式之間的差異。所有參數依據 [Flit Format](02_flit.md) 之固定參數設計。
+本文件描述 Width Converter 元件，用於橋接不同 AXI bus 寬度與 NoC 408-bit flit 格式之間的差異。所有參數依據 [Flit Format](02_flit.md)。
 
 ---
 
@@ -17,7 +17,7 @@ prerequisite: [02_flit.md, 04_network_interface.md]
 
 ### 1.1 問題描述
 
-NoC 採用固定 408-bit flit 格式，其中 W/R channel 的 payload 攜帶 256-bit data（`AXI_DATA_WIDTH = 256`）。然而系統中不同節點可能使用不同的 AXI bus 寬度：
+NoC 採用 408-bit flit 格式，其中 W/R channel 的 payload 攜帶 256-bit data（`AXI_DATA_WIDTH = 256`）。然而系統中不同節點可能使用不同的 AXI bus 寬度：
 
 | 節點類型 | 典型 AXI Data Width |
 |----------|---------------------|
@@ -672,11 +672,11 @@ uint8_t resp_merge(uint8_t resp_a, uint8_t resp_b) {
 ### 9.1 設計參數
 
 ```cpp
-// 固定參數（來自 02_flit.md）
+// 參數（來自 02_flit.md）
 static constexpr int FLIT_WIDTH       = 408;
 static constexpr int HEADER_WIDTH     = 56;
 static constexpr int PAYLOAD_WIDTH    = 352;
-static constexpr int NI_DATA_WIDTH    = 256;  // NI 側 AXI data width（固定）
+static constexpr int NI_DATA_WIDTH    = 256;  // NI 側 AXI data width
 static constexpr int AXI_ID_WIDTH     = 8;
 static constexpr int AXI_ADDR_WIDTH   = 64;
 static constexpr int ECC_WIDTH        = 32;
@@ -877,7 +877,7 @@ Width Converter 處理以下對齊情況：
 
 ## Related Documents
 
-- [Flit Format](02_flit.md) — 固定參數定義與 payload 格式
+- [Flit Format](02_flit.md) — payload 格式
 - [Network Interface Specification](04_network_interface.md) — NI packetization 與 RoB
 - [Router Specification](03_router.md) — 408-bit flit 轉發
 

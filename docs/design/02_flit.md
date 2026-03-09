@@ -7,25 +7,15 @@ last_updated: 2026-03-09
 prerequisite: [01_overview.md]
 ---
 
-# Flit Format — Fixed-Width Design
+# Flit Format
 
-NoC 基本傳輸單元。全固定參數設計，消除 configurable width，簡化 RTL 實作與驗證。
+NoC 基本傳輸單元。
 
 ---
 
 ## 1. Overview
 
-### 1.1 Design Philosophy
-
-全固定參數設計，理由：
-
-1. **多數配置從未使用** — Node ID、Address 寬度等在 tape-out 前即確定
-2. **Configurable width 增加 RTL 複雜度** — payload union 需 generate-if，bit-range 計算散佈各模組
-3. **驗證矩陣爆炸** — N×P×A 組合使 coverage closure 困難
-
-所有參數鎖定為單一固定值，設計目標支援最大 16×16 mesh（256 nodes）。
-
-### 1.2 Design Parameters
+### 1.1 Design Parameters
 
 | Parameter | Value | Description |
 |-----------|-------|-------------|

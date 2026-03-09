@@ -27,7 +27,7 @@
 
 | # | Document | Description |
 |---|----------|-------------|
-| 01 | [System Overview](01_overview.md) | Topology parameters, fixed design parameters |
+| 01 | [System Overview](01_overview.md) | Topology parameters |
 | 02 | [Flit Format](02_flit.md) | **Baseline** — fixed 408-bit flit, Header/Payload format |
 | 03 | [Router](03_router.md) | Ports, XY Routing, Wormhole, Pipeline, Multicast, Reduction |
 | 04 | [Network Interface](04_network_interface.md) | NMU/NSU, AXI ↔ Flit conversion, RoB, ECC |
@@ -83,7 +83,7 @@
 
 | Parameter Category | Authoritative Document |
 |--------------------|----------------------|
-| Flit format / fixed parameters | [02_flit.md](02_flit.md) §1.2 |
+| Flit format | [02_flit.md](02_flit.md) §1.1 |
 | NocConfig configurable parameters | [08_simulation.md](08_simulation.md) §3.1 |
 | QoS CSR memory map | [06_qos.md](06_qos.md) §4.1 |
 | Router pipeline stages | [03_router.md](03_router.md) §3 |

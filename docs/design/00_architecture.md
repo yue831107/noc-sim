@@ -899,7 +899,7 @@ RTL Router (SV)
 
 ## Related Documents
 
-- [System Overview](01_overview.md) — 拓撲參數、固定設計參數
+- [System Overview](01_overview.md) — 拓撲參數
 - [Flit Format](02_flit.md) — 408-bit flit header/payload 定義
 - [Router](03_router.md) — Router pipeline、XY routing、wormhole
 - [Network Interface](04_network_interface.md) — NMU/NSU、AXI ↔ Flit

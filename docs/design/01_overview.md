@@ -53,7 +53,7 @@ prerequisite: [00_architecture.md]
 
 ### 2.1 Flit 與 Link 參數
 
-以下為固定設計參數，與 [Flit 格式](02_flit.md) 一致：
+以下參數與 [Flit 格式](02_flit.md) 一致：
 
 | Parameter | Value | Description |
 |-----------|-------|-------------|

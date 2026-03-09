@@ -89,7 +89,7 @@ The model supports the following features:
 
 ## Flit Format
 
-All data in the NoC is transported as 408-bit flits — a fixed-width design that eliminates configurable widths and simplifies both RTL implementation and verification. Every flit consists of a 56-bit header and a 352-bit payload. All five AXI channels (AW, W, AR, B, R) share the same flit width; shorter payloads are zero-padded to 352 bits.
+All data in the NoC is transported as 408-bit flits. Every flit consists of a 56-bit header and a 352-bit payload. All five AXI channels (AW, W, AR, B, R) share the same flit width; shorter payloads are zero-padded to 352 bits.
 
 ### Header (56 bits)
 
@@ -343,19 +343,6 @@ The model works through a single configuration object, NocConfig, which serves a
 | `CREDIT_TIMEOUT` | 10000 | Credit starvation detection cycles (0 = disabled) |
 | `MULTICAST_TIMEOUT` | 10000 | Multicast handshake timeout cycles (0 = disabled) |
 | `DEADLOCK_THRESHOLD` | 1000 | Forward progress timeout cycles |
-
-### Fixed Design Parameters
-
-The following parameters are fixed at design time and cannot be changed during simulation:
-
-| Parameter | Value | Description |
-|-----------|-------|-------------|
-| `FLIT_WIDTH` | 408 bits | Header 56 + Payload 352 |
-| `AXI_DATA_WIDTH` | 256 bits | AXI data bus width |
-| `AXI_ADDR_WIDTH` | 64 bits | AXI address width |
-| `NODE_ID_WIDTH` | 8 bits | [7:4]=y, [3:0]=x |
-| `QOS_WIDTH` | 4 bits | 16 QoS levels |
-| `ECC_WIDTH` | 32 bits | SECDED |
 
 ### JSON Configuration Example
 

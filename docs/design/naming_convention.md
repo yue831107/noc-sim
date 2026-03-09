@@ -9,16 +9,16 @@ prerequisite: []
 
 # Naming Convention Reference
 
-本文件定義 NoC 專案的統一命名規範，對齊業界商業 NoC IP 慣例（Arteris FlexNoC、Arm CMN、AMD Versal、Cadence Janus）。
+本文件定義 NoC 專案的統一命名規範。
 
 ---
 
 ## 1. Model Abstraction Naming
 
-| Canonical Name | Abbreviation | Description | Industry Alignment |
-|----------------|-------------|-------------|-------------------|
-| **Cycle-Approximate Model** | **CA Model** | 本專案的 C++ 模擬模型，8-phase cycle-approximate | Arteris Architectural View |
-| **RTL** | — | Register Transfer Level 硬體描述 | 全行業統一 |
+| Canonical Name | Abbreviation | Description |
+|----------------|-------------|-------------|
+| **Cycle-Approximate Model** | **CA Model** | 本專案的 C++ 模擬模型，8-phase cycle-approximate |
+| **RTL** | — | Register Transfer Level 硬體描述 |
 
 **禁止使用**：~~virtual model~~、~~C++ behavior model~~、~~C++ model~~
 
@@ -28,12 +28,12 @@ prerequisite: []
 
 ## 2. Simulation Mode Naming
 
-| Canonical Name | Description | Industry Alignment |
-|----------------|-------------|-------------------|
-| **Standalone Simulation** | 全部元件為 CA 實作，不接 RTL | Arm Fast Model standalone |
-| **NI RTL Co-Simulation** | Router 為 CA，NI 替換為 RTL | — |
-| **Router RTL Co-Simulation** | NI 為 CA，Router 替換為 RTL | — |
-| **Full RTL Co-Simulation** | 全部 Router + NI 替換為 RTL | — |
+| Canonical Name | Description |
+|----------------|-------------|
+| **Standalone Simulation** | 全部元件為 CA 實作，不接 RTL |
+| **NI RTL Co-Simulation** | Router 為 CA，NI 替換為 RTL |
+| **Router RTL Co-Simulation** | NI 為 CA，Router 替換為 RTL |
+| **Full RTL Co-Simulation** | 全部 Router + NI 替換為 RTL |
 
 **禁止使用**：~~Pure Virtual~~、~~Pure Virtual Simulation~~
 
@@ -129,21 +129,6 @@ Error Correction Code (ECC)
 ```
 
 後續使用縮寫即可。
-
----
-
-## 6. Cross-Reference: Industry Vendor Terminology
-
-| Our Term | Arteris | Cadence | Arm | AMD/Xilinx |
-|----------|---------|---------|-----|-----------|
-| CA Model | Architectural View | Functional SystemC Model | Performance Model | SystemC TLM Model |
-| RTL | RTL | RTL | RTL | RTL |
-| Standalone Simulation | — | — | Fast Model standalone | TLM Simulation |
-| RTL Co-Simulation | Verification View | Mixed Simulation | Cycle Model | System Simulation |
-| Router | Switch | Routing Node | XP (Crosspoint) | NPS |
-| NI | NIU | IEA / TEA | ASIB / AMIB | — |
-| NMU | Initiator NIU | IEA | RN (Request Node) | NMU |
-| NSU | Target NIU | TEA | SN (Subordinate Node) | NSU |
 
 ---
 
