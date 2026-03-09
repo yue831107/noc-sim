@@ -67,7 +67,7 @@ NoC Flit (response) → NSU → AXI Slave
 
 ## 2. QoS Generator
 
-NI 中的 QoS Generator 負責產生或調整 flit header 的 `qos` 值。
+NI 中的 QoS Generator 負責產生或調整 flit header 的 `qos` 值。支援 4 種模式：Bypass（直通）、Fixed（固定值）、Limiter（開環頻寬限制）、Regulator（閉環頻寬保證），由 CSR `QOS_MODE` 選擇。
 
 ### 2.1 Operation Modes
 
@@ -97,6 +97,8 @@ if (FIXED_MODE)
 ### 2.3 Limiter Mode
 
 限制頻寬上限，當使用量超過閾值時降低 qos。
+
+> **Implementation Note：** `bandwidth_counter` 使用 saturating signed arithmetic。C++ 實作時注意：需自行實作 `sat_add` / `sat_sub`（C++ 無內建 saturating arithmetic），避免 undefined behavior。
 
 **Internal State:**
 
@@ -231,6 +233,8 @@ final_qos   = max(15, SOCKET_QOS)
 | `SOCKET_QOS` | 4 | Socket QoS 下限值 |
 
 > **SOCKET_QOS 用途**：確保 QoS 不會低於某個下限，即使 urgency=0 也能維持最低優先級。
+
+> **Implementation Note：** Regulator 的 `response_bytes` 來自 NMU 的 response path。C++ model 中，QoSGenerator 需要 NMU 提供 `on_response(bytes)` callback 或每 cycle 輪詢 response counter。
 
 #### 2.4.7 與 Limiter Mode 的比較
 

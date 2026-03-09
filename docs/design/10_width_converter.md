@@ -61,6 +61,8 @@ Local AXI (Nb)  ←→  Width Converter  ←→  NI (256b AXI)  ←→  Router (
 
 當本地 AXI 寬度為 256-bit 時，Width Converter 為 bypass 模式（wire-through），無轉換開銷。
 
+> **Implementation Note：** Width Converter 在 NI `tick()` 之前執行（或作為 NI 的 front-end stage）。`is_bypass()` 為 true 時所有 method 直接 forward，不分配 buffer。
+
 ---
 
 ## 3. 轉換場景
@@ -118,6 +120,8 @@ Local AXI (1024b)                  NI 側 (256b each)
 ---
 
 ## 4. Write Path（AW, W, B Channels）
+
+Write path 涵蓋 AW burst parameter 調整（含 transaction splitting）、W data packing/splitting、以及 B response merging。每個 channel 各有獨立的 state machine。
 
 ### 4.1 AW Channel 處理
 
@@ -204,6 +208,19 @@ Local AXI (1024b)                  NI 側 (256b each)
        └─────────────┘            └─────────────┘
 ```
 
+**AW Channel State Transition Table：**
+
+| Current State | Condition | Next State | Action |
+|---------------|-----------|------------|--------|
+| IDLE | `aw_valid` | CALC_PARAMS | Latch AW fields |
+| CALC_PARAMS | No split needed | PASSTHROUGH | Emit adjusted AW to NI |
+| CALC_PARAMS | Split needed | SPLIT_FIRST | Emit first sub-txn AW |
+| PASSTHROUGH | `ni_aw_ready` | DONE | — |
+| SPLIT_FIRST | `ni_aw_ready` | SPLIT_REMAIN | Record split info |
+| SPLIT_REMAIN | `ni_aw_ready` && more splits | SPLIT_REMAIN | Emit next sub-txn AW |
+| SPLIT_REMAIN | `ni_aw_ready` && last split | DONE | — |
+| DONE | — | IDLE | Accept next AW |
+
 ### 4.2 W Channel 處理
 
 #### 4.2.1 Upsizing（窄 → 256b）— Data Packing
@@ -279,6 +296,15 @@ Local AXI (512b)                    NI 側 (256b each)
          └─────────────┘
 ```
 
+**W Pack State Transition Table：**
+
+| Current State | Condition | Next State | Action |
+|---------------|-----------|------------|--------|
+| IDLE | `local_w_valid` | COLLECT | Start accumulating beats |
+| COLLECT | `beat_cnt < ratio-1` && `!local_wlast` | COLLECT | Append beat to pack buffer |
+| COLLECT | `beat_cnt == ratio-1` \|\| `local_wlast` | OUTPUT | Pack buffer ready |
+| OUTPUT | `ni_w_ready` | IDLE | Emit packed 256b beat to NI |
+
 #### 4.2.4 W Channel Serialize State Machine（Downsizing）
 
 ```
@@ -306,6 +332,15 @@ Local AXI (512b)                    NI 側 (256b each)
          │    IDLE     │
          └─────────────┘
 ```
+
+**W Serialize State Transition Table：**
+
+| Current State | Condition | Next State | Action |
+|---------------|-----------|------------|--------|
+| IDLE | `local_w_valid` | LATCH | Store full wide W beat |
+| LATCH | — | SERIALIZE | Begin outputting slices |
+| SERIALIZE | `ni_w_ready` && `beat_cnt < ratio-1` | SERIALIZE | Emit `data_slice[beat_cnt]` |
+| SERIALIZE | `ni_w_ready` && `beat_cnt == ratio-1` | IDLE | Last slice emitted |
 
 ### 4.3 B Channel 處理 — Response Merging
 
@@ -353,9 +388,23 @@ DECERR (2'b11) > SLVERR (2'b10) > EXOKAY (2'b01) > OKAY (2'b00)
                   └─────────────┘
 ```
 
+**B Channel State Transition Table：**
+
+| Current State | Condition | Next State | Action |
+|---------------|-----------|------------|--------|
+| IDLE | `ni_b_valid` | CHECK_SPLIT | Lookup split tracker |
+| CHECK_SPLIT | Not a split txn | PASSTHROUGH | Forward B directly |
+| CHECK_SPLIT | Is a split txn | MERGE | Begin accumulating responses |
+| PASSTHROUGH | — | OUTPUT | — |
+| MERGE | `pending_cnt > 1` | MERGE | `merged_resp = resp_merge(merged, new)` |
+| MERGE | `pending_cnt == 1` | OUTPUT | Final merge |
+| OUTPUT | `local_b_ready` | IDLE | Emit merged bresp to local AXI |
+
 ---
 
 ## 5. Read Path（AR, R Channels）
+
+Read path 與 write path 對稱：AR 使用相同的 burst parameter 調整與 splitting 邏輯，R channel 執行 lane steering（upsizing）或 data reassembly（downsizing）。
 
 ### 5.1 AR Channel 處理
 
@@ -445,6 +494,15 @@ NI 側 (256b each)                   Local AXI (1024b)
          └─────────────┘
 ```
 
+**R Lane Steer State Transition Table：**
+
+| Current State | Condition | Next State | Action |
+|---------------|-----------|------------|--------|
+| IDLE | `ni_r_valid` | LATCH | Store full 256b R beat |
+| LATCH | — | LANE_STEER | Begin outputting lanes |
+| LANE_STEER | `local_r_ready` && `lane_idx < ratio-1` | LANE_STEER | Emit `rdata[lane_idx]` |
+| LANE_STEER | `local_r_ready` && `lane_idx == ratio-1` | IDLE | Last lane emitted |
+
 #### 5.2.4 R Channel Reassembly State Machine（Downsizing）
 
 ```
@@ -473,6 +531,15 @@ NI 側 (256b each)                   Local AXI (1024b)
          └─────────────┘
 ```
 
+**R Reassembly State Transition Table：**
+
+| Current State | Condition | Next State | Action |
+|---------------|-----------|------------|--------|
+| IDLE | `ni_r_valid` | COLLECT | Begin accumulating NI R beats |
+| COLLECT | `ni_r_valid` && `beat_cnt < ratio-1` | COLLECT | Append to reassembly buffer |
+| COLLECT | `ni_r_valid` && `beat_cnt == ratio-1` | OUTPUT | Buffer full |
+| OUTPUT | `local_r_ready` | IDLE | Emit reassembled wide rdata |
+
 ### 5.3 R Response Merging
 
 與 B channel 類似，split transaction 的 R response 必須合併：
@@ -485,6 +552,8 @@ NI 側 (256b each)                   Local AXI (1024b)
 ---
 
 ## 6. Transaction Splitting 細節
+
+Transaction splitting 僅發生於 downsizing 場景，當轉換後的 burst length 超過 AXI 上限 256 beats 時觸發。本節描述 splitting 條件、追蹤結構與 response merging 邏輯。
 
 ### 6.1 何時需要 Splitting
 
@@ -781,6 +850,8 @@ Width Converter 處理以下對齊情況：
 | FIXED（00） | 需重複同一 address | 不支援 split（每 beat 同 address） |
 
 初始實作僅支援 INCR burst type。WRAP 和 FIXED burst type 的轉換屬於進階功能。
+
+> **Implementation Note：** `WidthConverter` constructor 計算 `ratio_` 並選擇對應的處理路徑。所有 `process_*` method 為 stateless（狀態在 struct members 中），便於 unit test 與 reset。
 
 ---
 

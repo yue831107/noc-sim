@@ -15,6 +15,8 @@ prerequisite: [02_flit.md]
 
 ## 1. 2-Channel Architecture（V1 預設）
 
+本節描述 V1 預設的 Req/Rsp 雙通道架構，涵蓋 deadlock avoidance、對稱設計、頻寬分析與 flow control timing。
+
 ### 1.1 雙通道設計
 
 NoC 採用 Request / Response 雙通道分離架構。每個邏輯 Router 內部由兩個結構對稱的獨立 sub-router 組成：
@@ -154,6 +156,8 @@ Phase:    1          2          3          4              5           6         
 
 ## 2. Head-of-Line (HoL) Blocking 分析
 
+HoL Blocking 是 wormhole switching 的主要效能瓶頸。本節分析 2-channel 架構下的 blocking 場景與緩解機制。
+
 ### 2.1 2-Channel 的 HoL Blocking
 
 Request network 承載三種 AXI channel（AW, W, AR），共用同一 physical link 與 input buffer：
@@ -184,6 +188,8 @@ Response network（B + R）同理：R burst 會鎖定路徑阻塞 B flit，但 B
 ---
 
 ## 3. 3-Channel Architecture（V2 進階）
+
+V2 架構引入第三條 physical channel，將 narrow 控制封包與 wide 資料封包分離，消除 wide-blocks-narrow HoL blocking 並支援 dual AXI 寬度介面（64b + 256b）。
 
 ### 3.1 設計動機
 
@@ -270,6 +276,8 @@ ReqRouter 和 RspRouter 共用同一 164-bit 寬度設計，可複用 RTL 模組
 ---
 
 ## 4. 2-Channel vs 3-Channel 比較
+
+本節從 wire count、HoL blocking、RTL 複用性等維度量化比較兩種架構，提供選型依據。
 
 ### 4.1 Wire Count
 

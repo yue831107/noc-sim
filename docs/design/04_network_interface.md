@@ -65,6 +65,8 @@ AXI Slave  ────►│  │  FlitPack ← ECC Gen ← AXI Response   │ 
                 └────────────────────────────────────────────┘
 ```
 
+> **Implementation Note：** NMU 與 NSU 可獨立啟用（`EN_MGR_PORT` / `EN_SBR_PORT`），未啟用時對應 sub-module 不 instantiate。NI 的 `tick()` 對應 Phase 8。
+
 ### 2.2 Sub-Module 職責
 
 **NMU（Network Master Unit）：**
@@ -252,6 +254,8 @@ AXI side port 定義：
 
 **USE_ID_TABLE 模式：** 透過 SAM (System Address Map) 查表，將 address 映射至 dst_id。SAM rules 由 `sam_rule_t` 定義。
 
+> **Testability：** 注入 `addr[39:32]=0x21` 驗證 `dst_id=(x=1, y=2)`。測試 SAM table 模式的 address-to-node 映射。
+
 ### FR-02: Flit Packing（AXI → Flit）
 
 **描述：** NMU 將 AXI request 打包為 408-bit flit，NSU 將 AXI response 打包為 flit。
@@ -270,6 +274,8 @@ Header 56 bits 的欄位來源（NMU request path）：`qos` ← QoSGen、`src_i
 
 Payload bit-level layout 詳見 [Flit Format](02_flit.md) Section 3。
 
+> **Testability：** AXI AW/W/AR → flit → unpack round-trip 驗證所有欄位不失真。驗證 W payload 100% utilization（352 bits 全用）、AW payload padding 為 0。
+
 ### FR-03: Flit Unpacking（Flit → AXI）
 
 **描述：** NSU 將 request flit 還原為 AXI request，NMU 將 response flit 還原為 AXI B/R。
@@ -282,6 +288,8 @@ Payload bit-level layout 詳見 [Flit Format](02_flit.md) Section 3。
 **NMU 行為：**
 - B flit → 更新 RoB entry → 依 per-ID 順序 release
 - R flit → 累積 rdata beats → 最後一個 beat 觸發 RoB release
+
+> **Testability：** Pack → transfer → unpack end-to-end，比較 AXI request fields 完全一致。
 
 ### FR-04: Burst Handling
 
@@ -299,6 +307,8 @@ Payload bit-level layout 詳見 [Flit Format](02_flit.md) Section 3。
 **AW 與 W 獨立性：** AW 與 W 為兩個獨立 wormhole packet。AW→W ordering 由 NMU 注入順序保證（同 output port，FIFO 天然保證）。Router 無需 AW/W 關聯邏輯。
 
 **Burst types：** FIXED（同地址）、INCR（遞增）、WRAP（wrap-around）均支援。NSU 依 burst type 計算每 beat address。
+
+> **Testability：** 測試 `awlen=0`（2 flits）與 `awlen=15`（17 flits）。驗證 AW→W ordering 與 wormhole 鎖路行為。
 
 ### FR-05: Reorder Buffer (RoB)
 
@@ -321,7 +331,11 @@ FREE ──► ALLOCATED ──► RESPONSE_RECEIVED ──► READY_TO_RELEASE 
 
 **Per-ID Ordering：** 同 `axi_id` 的多筆 outstanding transactions 依 rob_idx 分配順序依序 release。不同 axi_id 之間可 out-of-order。
 
+> **Implementation Note：** RoB 內部維護 per-ID linked list。`rob_idx` 作為 flit header 欄位（5 bits），最大 32 entries。NormalRoB 需 O(MAX_TXNS) storage；SimpleRoB 可用 circular buffer 實作。
+
 **Backpressure：** RoB 無 free entry 時，deassert AXI `awready` / `arready`。
+
+> **Testability：** 驗證 RoB 4 狀態轉移（FREE→ALLOCATED→RECEIVED→RELEASE→FREE）。測試不同 `axi_id` 的 OoO release。測試 RoB full 時的 backpressure（`awready=0`）。
 
 ### FR-06: ECC Generate / Check
 
@@ -354,6 +368,8 @@ FREE ──► ALLOCATED ──► RESPONSE_RECEIVED ──► READY_TO_RELEASE 
 | 1-bit corrected | 使用校正資料，log CSR | 使用校正資料，log CSR |
 | 2-bit uncorrectable | B response `ecc_fail=1`, `bresp=SLVERR` | `rresp=SLVERR`, log CSR |
 
+> **Testability：** Generate→check round-trip（inject known data，驗證 ECC match）。Inject 1-bit error → 驗證自動校正。Inject 2-bit error → 驗證 SLVERR + CSR log。
+
 ### FR-07: QoS Generation
 
 **描述：** NMU 的 QoS Generator 在 AW/AR flit 打包時計算 header `qos` 值。
@@ -370,6 +386,8 @@ FREE ──► ALLOCATED ──► RESPONSE_RECEIVED ──► READY_TO_RELEASE 
 W flit 的 `qos` 繼承對應 AW flit 值。Response flit 的 `qos` 繼承 request（由 NSU ReqInfoStore 提供）。
 
 詳見 [QoS Design](06_qos.md)。
+
+> **Testability：** 測試 4 種模式各自的 QoS output。Bypass 模式驗證 `flit.qos == awqos`。Regulator 模式驗證 urgency 隨頻寬不足自動提升。
 
 ### FR-08: Multicast Response（In-Network Reduction）
 
@@ -388,6 +406,8 @@ W flit 的 `qos` 繼承對應 AW flit 值。Response flit 的 `qos` 繼承 reque
 | 全部非 OKAY | SLVERR | MC_ALL_FAIL |
 
 Router 層 reduction 詳見 [Router Specification](03_router.md) FR-09。
+
+> **Testability：** Multicast write 至 4 NSU → 驗證 NMU 僅收到 1 個 B response。測試部分 NSU SLVERR → merged = SLVERR。
 
 ---
 
