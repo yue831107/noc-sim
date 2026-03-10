@@ -57,8 +57,8 @@ prerequisite: [00_architecture.md]
 
 | Parameter | Value | Description |
 |-----------|-------|-------------|
-| `FLIT_WIDTH` | 408 bits | Total flit width (Header + Payload) |
-| `HEADER_WIDTH` | 56 bits | Header width |
+| `FLIT_WIDTH` | 400 bits | Total flit width (Header + Payload) |
+| `HEADER_WIDTH` | 48 bits | Header width |
 | `PAYLOAD_WIDTH` | 352 bits (44 bytes) | Maximum payload width (W/R channel) |
 | `AXI_DATA_WIDTH` | 256 bits (32 bytes) | AXI data width |
 | `AXI_ADDR_WIDTH` | 64 bits | AXI address width |
@@ -67,7 +67,7 @@ prerequisite: [00_architecture.md]
 | `QOS_WIDTH` | 4 bits | QoS priority width |
 | `ROB_IDX_WIDTH` | 5 bits | RoB index width (32 entries) |
 | `ECC_WIDTH` | 32 bits | Total ECC width (SECDED) |
-| Physical Link | 410 bits | valid + ready + 408-bit flit |
+| Physical Link | 402 bits | valid + ready + 400-bit flit |
 
 ---
 

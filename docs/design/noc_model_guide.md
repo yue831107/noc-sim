@@ -71,7 +71,7 @@ The model supports the following features:
 
 - **2D Mesh Topology** — configurable from 2×2 to 16×16 (up to 256 nodes)
 - **Uniform Router** — all routers identical in structure, no edge/compute distinction
-- **408-bit Fixed Flit** — 56-bit header + 352-bit payload, carrying all five AXI channels (AW, W, AR, B, R) in a unified format
+- **400-bit Fixed Flit** — 48-bit header + 352-bit payload, carrying all five AXI channels (AW, W, AR, B, R) in a unified format
 - **XY Deterministic Routing** — X-first then Y, deadlock-free by construction
 - **Wormhole Switching** — head flit reserves the path, `last` bit releases it
 - **Dual Flow Control** — Valid/Ready mode and Credit-Based mode, selected at compile time via template parameter
@@ -88,7 +88,7 @@ The model supports the following features:
 
 ## Flit Format
 
-All data in the NoC is transported as 408-bit flits. Every flit consists of a 56-bit header and a 352-bit payload. All five AXI channels (AW, W, AR, B, R) share the same flit width; shorter payloads are zero-padded to 352 bits.
+All data in the NoC is transported as 400-bit flits. Every flit consists of a 48-bit header and a 352-bit payload. All five AXI channels (AW, W, AR, B, R) share the same flit width; shorter payloads are zero-padded to 352 bits.
 
 ### Header (56 bits)
 
@@ -139,7 +139,7 @@ In a typical burst write (awlen=15), the flit sequence is 1×AW + 16×W + 1×B =
 
 ### Physical Link
 
-Each router-to-router or NI-to-router connection carries four unidirectional links: Req forward, Req reverse, Rsp forward, and Rsp reverse. Each link is 410 bits wide (1 valid + 1 ready + 408 flit data), totalling 1,640 bits per router pair.
+Each router-to-router or NI-to-router connection carries four unidirectional links: Req forward, Req reverse, Rsp forward, and Rsp reverse. Each link is 402 bits wide (1 valid + 1 ready + 400 flit data), totalling 1,608 bits per router pair.
 
 Request and response use independent physical links (dual-rail full-duplex), eliminating request-response circular dependency as the primary protocol deadlock avoidance mechanism.
 
@@ -285,7 +285,7 @@ Read transactions follow a similar path. The NMU packs an AR flit which traverse
 
 ### Flit Mapping
 
-All data flows use a uniform 408-bit flit (56-bit header + 352-bit payload). The mapping from AXI transactions to flits is:
+All data flows use a uniform 400-bit flit (48-bit header + 352-bit payload). The mapping from AXI transactions to flits is:
 
 | AXI Transaction | Request Flits | Response Flits |
 |-----------------|:-------------:|:--------------:|
@@ -913,7 +913,7 @@ The model decomposes RTL's parallel behaviour into 8 sequential phases. Combinat
 
 1. **Pipeline delay calibration** — The Phase 4 per-flit state machine delays (`ROUTING_DELAY`, `VC_ALLOC_DELAY`, `SW_ALLOC_DELAY`) must be calibrated against RTL pipeline depths for cycle-accurate matching. Incorrect calibration produces functionally correct but timing-shifted results.
 2. **Memory latency** — Configurable via `MEMORY_READ_LATENCY` / `MEMORY_WRITE_LATENCY` (default 0 = ideal). Non-zero values add cycles to NSU memory access but do not model DRAM refresh or bank conflicts.
-3. **Header integrity** — ECC protects only payload data (wdata/rdata). The 56-bit header and payload metadata (wstrb, axi_id, etc.) rely on physical link layer integrity. A `dst_id` bit flip will cause misrouting.
+3. **Header integrity** — ECC protects only payload data (wdata/rdata). The 48-bit header and payload metadata (wstrb, axi_id, etc.) rely on physical link layer integrity. A `dst_id` bit flip will cause misrouting.
 
 ---
 

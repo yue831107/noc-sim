@@ -311,7 +311,7 @@
 
   <!-- System-wide notes -->
   <text x="80" y="660" font-size="9" fill="#888" font-style="italic">Flow Control: VALID_READY 或 CREDIT — compile-time template parameter (like RTL generate)</text>
-  <text x="80" y="676" font-size="9" fill="#888" font-style="italic">Flit: 408-bit (Header 56b + Payload 352b) · Dual-rail: REQ + RSP physical channels</text>
+  <text x="80" y="676" font-size="9" fill="#888" font-style="italic">Flit: 400-bit (Header 48b + Payload 352b) · Dual-rail: REQ + RSP physical channels</text>
   <text x="80" y="692" font-size="9" fill="#888" font-style="italic">Injection: HOST_DMA (via gateway) 或 DIRECT_PE (distributed to each node's NI)</text>
 
   <!-- ============================================================ -->

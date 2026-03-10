@@ -22,7 +22,7 @@ prerequisite: []
 
 - **Purpose**：Pre-silicon performance evaluation + RTL co-simulation golden reference
 - **API**：5 groups — Construction / Transaction / Simulation / Metrics / Debug
-- **Mesh**：N×N (N=2\~16)，Node = PE → NI → Router，408-bit Flit，XY Routing + Wormhole
+- **Mesh**：N×N (N=2\~16)，Node = PE → NI → Router，400-bit Flit，XY Routing + Wormhole
 - **Hot-Swap**：NI & Router 可獨立替換為 RTL (DPI-C)，Channel 始終為 CA 實作
 - **Verification**：Scoreboard online per-txn 比對；CA Model vs RTL byte-exact match
 
@@ -216,7 +216,7 @@ prerequisite: []
 
 ### 2.3 Flit 傳輸單位
 
-所有 data flow 使用統一的 408-bit flit（56-bit header + 352-bit payload）。一個 AXI transaction 在 NoC 中映射為一或多個 flit：
+所有 data flow 使用統一的 400-bit flit（48-bit header + 352-bit payload）。一個 AXI transaction 在 NoC 中映射為一或多個 flit：
 
 | AXI Transaction | Request Flits | Response Flits |
 |-----------------|:-------------:|:--------------:|
@@ -316,17 +316,17 @@ Interface 合約確保 CA 與 RTL 實作的行為一致。替換粒度為單一 
 每條 Router ↔ Router / NI ↔ Router link 的信號定義：
 
 ```
-  410 bits per direction:
+  402 bits per direction:
   ┌──────────────────────────────────────────────────────┬───────┬───────┐
-  │                 flit (408 bits)                       │ ready │ valid │
-  │         header (56b)  +  payload (352b)              │  (1b) │  (1b) │
+  │                 flit (400 bits)                       │ ready │ valid │
+  │         header (48b)  +  payload (352b)              │  (1b) │  (1b) │
   └──────────────────────────────────────────────────────┴───────┴───────┘
 
-  Router A ════════[410b Req fwd]════════► Router B
-  Router A ◄═══════[410b Req rev]═════════ Router B
-  Router A ════════[410b Rsp fwd]════════► Router B
-  Router A ◄═══════[410b Rsp rev]═════════ Router B
-                 Total: 4 × 410 = 1,640 bits per router pair
+  Router A ════════[402b Req fwd]════════► Router B
+  Router A ◄═══════[402b Req rev]═════════ Router B
+  Router A ════════[402b Rsp fwd]════════► Router B
+  Router A ◄═══════[402b Rsp rev]═════════ Router B
+                 Total: 4 × 402 = 1,608 bits per router pair
 ```
 
 ---
@@ -462,7 +462,7 @@ CA Model 為主控方。當某個 CA Router / CA NI 被替換為 RTL 時，DPI-C
   │                      │  └──────────┘    │                      │
   └──────────────────────┘                  └──────────────────────┘
 
-  每 cycle 交換：flit (408b) + valid (1b) + ready (1b) + credit
+  每 cycle 交換：flit (400b) + valid (1b) + ready (1b) + credit
 ```
 
 ---
@@ -894,7 +894,7 @@ RTL Router (SV)
 ## Related Documents
 
 - [System Overview](01_overview.md) — 拓撲參數
-- [Flit Format](02_flit.md) — 408-bit flit header/payload 定義
+- [Flit Format](02_flit.md) — 400-bit flit header/payload 定義
 - [Router](03_router.md) — Router pipeline、XY routing、wormhole
 - [Network Interface](04_network_interface.md) — NMU/NSU、AXI ↔ Flit
 - [Physical Channel](05_physical_channel.md) — 2-ch / 3-ch 架構

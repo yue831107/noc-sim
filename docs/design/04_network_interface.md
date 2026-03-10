@@ -78,7 +78,7 @@ AXI Slave  ──►│  │  Flit Pack ◄── ECC Gen ◄── AXI Response
 |------------|------|
 | Address Translator | AXI address → dst_id + local_addr |
 | QoS Generator | 產生 header qos 值（4 modes） |
-| Flit Packer (AW/W/AR) | AXI request → 408-bit flit |
+| Flit Packer (AW/W/AR) | AXI request → 400-bit flit |
 | ECC Generator | SECDED ECC 產生（W channel wdata） |
 | Flit Unpacker (B/R) | Response flit → AXI B/R |
 | ECC Checker | SECDED ECC 驗證（R channel rdata） |
@@ -150,8 +150,8 @@ NI 使用 config struct 組織參數，由上層 instantiation 時傳入。
 
 | Parameter | Description | 來源 |
 |-----------|-------------|------|
-| `flit_t` | Flit data type（408 bits） | [Flit Format](02_flit.md) |
-| `hdr_t` | Flit header type（56 bits） | [Flit Format](02_flit.md) |
+| `flit_t` | Flit data type（400 bits） | [Flit Format](02_flit.md) |
+| `hdr_t` | Flit header type（48 bits） | [Flit Format](02_flit.md) |
 | `id_t` | Node ID type | `logic[ID_WIDTH-1:0]` |
 | `noc_req_t` | Request link type（valid + flit） | Req network |
 | `noc_rsp_t` | Response link type（valid + flit） | Rsp network |
@@ -258,7 +258,7 @@ AXI side port 定義：
 
 ### FR-02: Flit Packing（AXI → Flit）
 
-**描述：** NMU 將 AXI request 打包為 408-bit flit，NSU 將 AXI response 打包為 flit。
+**描述：** NMU 將 AXI request 打包為 400-bit flit，NSU 將 AXI response 打包為 flit。
 
 **Payload 使用率：**
 

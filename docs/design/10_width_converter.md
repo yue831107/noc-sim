@@ -9,7 +9,7 @@ prerequisite: [02_flit.md, 04_network_interface.md]
 
 # Width Converter
 
-本文件描述 Width Converter 元件，用於橋接不同 AXI bus 寬度與 NoC 408-bit flit 格式之間的差異。所有參數依據 [Flit Format](02_flit.md)。
+本文件描述 Width Converter 元件，用於橋接不同 AXI bus 寬度與 NoC 400-bit flit 格式之間的差異。所有參數依據 [Flit Format](02_flit.md)。
 
 ---
 
@@ -17,7 +17,7 @@ prerequisite: [02_flit.md, 04_network_interface.md]
 
 ### 1.1 問題描述
 
-NoC 採用 408-bit flit 格式，其中 W/R channel 的 payload 攜帶 256-bit data（`AXI_DATA_WIDTH = 256`）。然而系統中不同節點可能使用不同的 AXI bus 寬度：
+NoC 採用 400-bit flit 格式，其中 W/R channel 的 payload 攜帶 256-bit data（`AXI_DATA_WIDTH = 256`）。然而系統中不同節點可能使用不同的 AXI bus 寬度：
 
 | 節點類型 | 典型 AXI Data Width |
 |----------|---------------------|
@@ -46,7 +46,7 @@ NoC 採用 408-bit flit 格式，其中 W/R channel 的 payload 攜帶 256-bit d
 Width Converter 放置於 **本地 AXI 介面與 NI 之間**（NI packetization 之前），確保 NI 始終看到 256-bit AXI 介面：
 
 ```
-Local AXI (Nb)  ←→  Width Converter  ←→  NI (256b AXI)  ←→  Router (408b flit)
+Local AXI (Nb)  ←→  Width Converter  ←→  NI (256b AXI)  ←→  Router (400b flit)
                     (Width Conv,          (RoB, Pack/Unpack,
                      Split, Merge)         ECC, Header)
 ```
@@ -57,7 +57,7 @@ Local AXI (Nb)  ←→  Width Converter  ←→  NI (256b AXI)  ←→  Router (
 |------|------|
 | **Width Converter** | AXI 寬度轉換、burst parameter 調整、transaction splitting、response merging |
 | **NI** | Flit packetization/depacketization、RoB、ECC generate/check、header 填充 |
-| **Router** | 408-bit flit 轉發、XY routing、arbitration |
+| **Router** | 400-bit flit 轉發、XY routing、arbitration |
 
 當本地 AXI 寬度為 256-bit 時，Width Converter 為 bypass 模式（wire-through），無轉換開銷。
 
@@ -620,7 +620,7 @@ uint8_t resp_merge(uint8_t resp_a, uint8_t resp_b) {
 
 ## 7. Width Conversion Ratio 表
 
-以下表格基於 408-bit flit 格式（56-bit header + 352-bit payload，其中 W/R data 為 256 bits）：
+以下表格基於 400-bit flit 格式（48-bit header + 352-bit payload，其中 W/R data 為 256 bits）：
 
 | Local AXI Width | Ratio | 轉換類型 | W beats 轉換 | Burst len=15 轉換後 | Max Burst 不 Split |
 |-----------------|-------|----------|-------------|--------------------|--------------------|
@@ -673,8 +673,8 @@ uint8_t resp_merge(uint8_t resp_a, uint8_t resp_b) {
 
 ```cpp
 // 參數（來自 02_flit.md）
-static constexpr int FLIT_WIDTH       = 408;
-static constexpr int HEADER_WIDTH     = 56;
+static constexpr int FLIT_WIDTH       = 400;
+static constexpr int HEADER_WIDTH     = 48;
 static constexpr int PAYLOAD_WIDTH    = 352;
 static constexpr int NI_DATA_WIDTH    = 256;  // NI 側 AXI data width
 static constexpr int AXI_ID_WIDTH     = 8;
@@ -879,7 +879,7 @@ Width Converter 處理以下對齊情況：
 
 - [Flit Format](02_flit.md) — payload 格式
 - [Network Interface Specification](04_network_interface.md) — NI packetization 與 RoB
-- [Router Specification](03_router.md) — 408-bit flit 轉發
+- [Router Specification](03_router.md) — 400-bit flit 轉發
 
 ---
 

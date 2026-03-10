@@ -24,8 +24,8 @@ prerequisite: []
 | 項目 | 數值 |
 |------|------|
 | Mesh 預設大小 | 4 × 4（16 nodes，最大 16×16 = 256） |
-| Flit 寬度 | 408-bit（Header 56b + Payload 352b） |
-| Physical Link | 每 pair 4 × 410 = 1,640 bits（Req/Rsp × fwd/rev） |
+| Flit 寬度 | 400-bit（Header 48b + Payload 352b） |
+| Physical Link | 每 pair 4 × 402 = 1,608 bits（Req/Rsp × fwd/rev） |
 | Simulation Phases | 8 phases per cycle |
 | API Groups | 5 組（A~E） |
 | Internal Components | 十餘個（Router, NI, Channel, Memory 等） |
@@ -43,7 +43,7 @@ prerequisite: []
 - **Flow Control**: 雙模式 — Valid/Ready (Version A) 和 Credit-Based (Version B)，compile-time 選擇
 - **Interface**: AXI4 (AW/W/AR/B/R 五通道)
 - **Physical Channel**: Req/Rsp 物理分離（雙軌架構）
-- **Flit**: 固定 408-bit（Header 56b + Payload 352b）
+- **Flit**: 固定 400-bit（Header 48b + Payload 352b）
 - **Injection Mode**: `HOST_DMA`（集中從 gateway node 注入）或 `DIRECT_PE`（分散到各 PE 直接注入）
 
 ### Node 結構
@@ -213,7 +213,7 @@ void generate_golden(const std::string& output_dir) const;
 | `Channel<T>` | 帶可配置延遲的 link model |
 | `Allocator` | 抽象 arbiter base → RoundRobin / iSLIP / QoSAwareRR |
 | `InputBuffer` / `BufferState` | Data storage 與 credit tracking 分離 |
-| `Flit` | 408-bit flit 結構 + object pooling |
+| `Flit` | 400-bit flit 結構 + object pooling |
 | `RouteCompute` | XY routing |
 | `Scoreboard` | Online expected vs actual tracking (per-txn) |
 | `MetricsCollector` | Per-node, per-class 效能統計 |
@@ -317,7 +317,7 @@ noc_c_model/
 
 ### Phase 1: Core Library
 
-- [ ] 基礎資料結構: `Flit`（408-bit）、`AXITransaction`、`NocConfig`
+- [ ] 基礎資料結構: `Flit`（400-bit）、`AXITransaction`、`NocConfig`
 - [ ] `Channel<T>` — 帶可配置延遲的 link model
 - [ ] `InputBuffer` + `BufferState`（data/credit 分離）
 - [ ] `Allocator` 抽象 + RoundRobin / iSLIP 實作
