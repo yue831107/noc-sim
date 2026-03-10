@@ -48,21 +48,25 @@ NI 透過 Router 的 Eject port 連接，使用與 Router-Router **完全相同*
 ### 2.1 Block Diagram
 
 ```
-                ┌────────────────────────────────────────────┐
-                │              Network Interface              │
-                │                                            │
-AXI Master ────►│  ┌──────────────────────────────────────┐  │
-(AW/AR/W)       │  │            NMU (Manager)              │  │
-                │  │  Address Translator → QoS Generator → Flit Packer → ECC  │  │──► Req Router
-AXI Master ◄────│  │  RoB ← Flit Unpacker ← ECC Checker        │  │
-(B/R)           │  └──────────────────────────────────────┘  │◄── Rsp Router
-                │                                            │
-AXI Slave  ◄────│  ┌──────────────────────────────────────┐  │
-(AW/AR/W)       │  │            NSU (Subordinate)          │  │◄── Req Router
-                │  │  Flit Unpacker → Request Info Store → MemOp    │  │
-AXI Slave  ────►│  │  Flit Packer ← ECC Generator ← AXI Response   │  │──► Rsp Router
-(B/R)           │  └──────────────────────────────────────┘  │
-                └────────────────────────────────────────────┘
+              ┌──────────────────────────────────────────────────┐
+              │                Network Interface                  │
+              │                                                  │
+AXI Master ──►│  ┌──────────────────────────────────────────┐   │
+(AW/AR/W)     │  │              NMU (Manager)                │   │
+              │  │                                           │   │
+              │  │  AddrTrans → QoS Gen → Flit Pack → ECC   │───►  Req Router
+              │  │                                           │   │
+AXI Master ◄──│  │  RoB ◄── Flit Unpack ◄── ECC Check       │   │
+(B/R)         │  └──────────────────────────────────────────┘◄──  Rsp Router
+              │                                                  │
+AXI Slave  ◄──│  ┌──────────────────────────────────────────┐   │
+(AW/AR/W)     │  │            NSU (Subordinate)              │◄──  Req Router
+              │  │                                           │   │
+              │  │  Flit Unpack → ReqInfo Store → MemOp      │   │
+              │  │                                           │   │
+AXI Slave  ──►│  │  Flit Pack ◄── ECC Gen ◄── AXI Response  │───►  Rsp Router
+(B/R)         │  └──────────────────────────────────────────┘   │
+              └──────────────────────────────────────────────────┘
 ```
 
 > **Implementation Note：** NMU 與 NSU 可獨立啟用（`EN_MGR_PORT` / `EN_SBR_PORT`），未啟用時對應 sub-module 不 instantiate。NI 的 `tick()` 對應 Phase 8。

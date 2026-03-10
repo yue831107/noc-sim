@@ -52,6 +52,7 @@
 | # | Document | Description |
 |---|----------|-------------|
 | 10 | [Width Converter](10_width_converter.md) | AXI width conversion (32b~1024b ↔ 256b) |
+| — | [Implementation Gaps](implementation_gaps.md) | Implementation gaps & risk register (High/Medium/Low) |
 
 ---
 

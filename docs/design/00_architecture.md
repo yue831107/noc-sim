@@ -793,7 +793,7 @@ Mesh 內由上到下分 3 層：
 | | Pipeline | 6 stage：InputQueuing → RouteEval → VCAllocEval → SWAllocEval → SwitchTraverse → OutputQueue |
 | | Sub-Modules | Input Buffer、Buffer State、Route Computer、Crossbar、Path Lock、Allocator、Multicast Tracker、Reduction Sync/Arb |
 | **CA NI** | Public | `tick()` Phase 8、`get_output()/set_input()` |
-| | NMU | Address Translatorlate → QosGenerate → PackAW/W/AR → ECC Generator → Inject + UnpackB/R + AllocRoB |
+| | NMU | Address Translate → QosGenerate → PackAW/W/AR → ECC Generator → Inject + UnpackB/R + AllocRoB |
 | | NSU | UnpackAW/AR/W → Reassemble → ECC Checker → PackB/R + StoreReqInfo + MemoryOp |
 | | Sub-Modules | Injection Buffer、RoB、Reassembly Buffer、Request Info Store |
 

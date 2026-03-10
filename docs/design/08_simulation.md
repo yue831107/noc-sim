@@ -274,7 +274,7 @@ Debug 用途。每 cycle 記錄 router/NI/channel 狀態。VCD 或 JSON trace �
 | `dump_state(ostream)` | Dump 內部狀態 |
 | `generate_golden(output_dir)` | 產生所有 output patterns |
 
-### 5.7 使用範例
+### 5.6 使用範例
 
 ```cpp
 // 從檔案載入 → 執行 → 產生 golden
@@ -286,7 +286,7 @@ system.run_all();
 system.generate_golden("golden/");
 ```
 
-### 5.8 RTL Testbench 對應
+### 5.7 RTL Testbench 對應
 
 ```
 SV Testbench:

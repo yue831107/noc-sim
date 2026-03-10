@@ -34,7 +34,7 @@ NoC 基本傳輸單元。
 | `PAYLOAD_WIDTH` | 352 | Maximum payload width (W/R channels) |
 | `FLIT_WIDTH` | 408 | Total flit width (Header + Payload) |
 
-### 1.3 Flit Structure
+### 1.2 Flit Structure
 
 ```
   55                                        0   351                              0
