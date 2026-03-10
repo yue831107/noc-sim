@@ -52,7 +52,7 @@
 
   <rect x="378" y="80" width="136" height="32" rx="3" fill="#3d5a80"/>
   <text x="446" y="94" text-anchor="middle" font-size="10" fill="white" font-weight="bold">B: Transaction</text>
-  <text x="446" y="106" text-anchor="middle" font-size="8" fill="#c0d8f0">write · read · multicast</text>
+  <text x="446" y="106" text-anchor="middle" font-size="8" fill="#c0d8f0">write · read</text>
 
   <rect x="522" y="80" width="144" height="32" rx="3" fill="#3d5a80"/>
   <text x="594" y="94" text-anchor="middle" font-size="10" fill="white" font-weight="bold">C: Simulation</text>

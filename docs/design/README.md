@@ -29,7 +29,7 @@
 |---|----------|-------------|
 | 01 | [System Overview](01_overview.md) | Topology parameters |
 | 02 | [Flit Format](02_flit.md) | **Baseline** — fixed 408-bit flit, Header/Payload format |
-| 03 | [Router](03_router.md) | Ports, XY Routing, Wormhole, Pipeline, Multicast, Reduction |
+| 03 | [Router](03_router.md) | Ports, XY Routing, Wormhole, Pipeline |
 | 04 | [Network Interface](04_network_interface.md) | NMU/NSU, AXI ↔ Flit conversion, RoB, ECC |
 
 ### Architecture — 05~08
@@ -38,7 +38,6 @@
 |---|----------|-------------|
 | 05 | [Physical Channel](05_physical_channel.md) | Dual Req/Rsp channel architecture, HoL Blocking analysis |
 | 06 | [QoS Design](06_qos.md) | QoS priority design, Generator, Probe |
-| 07 | [Multicast](07_multicast.md) | Rectangle Multicast design |
 
 ### Simulation & Verification — 08~09
 

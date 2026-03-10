@@ -43,13 +43,6 @@ prerequisite: []
 - **影響**: Hot-Swap 功能可用性
 - **待決策**: 定義 drain API 與判定條件
 
-### H-5: 3-Channel 架構 Reduction 整合
-
-- **所在文件**: `05_physical_channel.md` §3, `07_multicast.md`
-- **說明**: 3-channel 有 Wide Router 處理 WideAW/WideW/WideR，但 in-network reduction（B response 合併）發生在 Rsp Router。Multicast WideAW 的 B response 如何正確走 rsp channel 並進行 reduction 未明確說明。
-- **影響**: 3-Channel multicast correctness
-- **待決策**: 定義 WideAW multicast 的 B response reduction 路徑（走 rsp channel? Wide Router 也需 reduction?）
-
 ---
 
 ## Medium Priority
