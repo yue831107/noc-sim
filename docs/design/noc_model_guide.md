@@ -76,7 +76,7 @@ The model supports the following features:
 - **Wormhole Switching** — head flit reserves the path, `last` bit releases it
 - **Dual Flow Control** — Valid/Ready mode and Credit-Based mode, selected at compile time via template parameter
 - **Req/Rsp Physical Separation** — independent request and response networks, eliminating protocol-level deadlock
-- **QoS-Aware Arbitration** — 16-level priority with round-robin tie-breaking; pluggable allocator (Round Robin, iSLIP, QoS-Aware RR)
+- **Pluggable Arbitration** — 4 種仲裁策略; pluggable allocator (FIFO, Fixed Priority, Round Robin, Rotate)
 - **SECDED ECC** — end-to-end data integrity (NMU generates, router passes through, NSU checks)
 - **Reorder Buffer** — per-NMU RoB for out-of-order response support
 - **Configurable Channel Delay** — link propagation modelled as N-cycle pipeline
@@ -323,8 +323,8 @@ The model works through a single configuration object, NocConfig, which serves a
 | `CREDIT_DELAY` | 1 | Credit return latency (cycles) |
 | `CHANNEL_DELAY` | 1 | Link propagation latency (cycles) |
 | **Allocator** | | |
-| `VC_ALLOCATOR` | `"round_robin"` | VC allocator strategy |
-| `SW_ALLOCATOR` | `"qos_aware_rr"` | Switch allocator strategy |
+| `VC_ALLOCATOR` | `"fifo"` | VC allocator strategy (`fifo` / `fixed_priority` / `round_robin` / `rotate`) |
+| `SW_ALLOCATOR` | `"fifo"` | Switch allocator strategy (`fifo` / `fixed_priority` / `round_robin` / `rotate`) |
 | **Traffic** | | |
 | `MAX_OUTSTANDING` | 8 | Maximum outstanding transactions |
 | `MAX_BURST_LEN` | 16 | Maximum AXI burst length |
@@ -673,7 +673,7 @@ The router's sub-modules and their responsibilities:
 | Route Computer | XY deterministic routing |
 | Crossbar | N×N switch fabric |
 | Path Lock | Wormhole path locking FSM |
-| Allocator | Pluggable: Round Robin / iSLIP / QoS-Aware RR |
+| Allocator | Pluggable: FIFO / Fixed Priority / Round Robin / Rotate |
 
 ### Network Interface Architecture
 
@@ -721,9 +721,10 @@ The allocator is an abstract base class with a single `allocate(requests, grants
 
 | Implementation | Description |
 |----------------|-------------|
-| Round Robin | Basic round-robin arbitration |
-| iSLIP | Iterative round-robin matching (multi-iteration) |
-| QoS-Aware RR | QoS priority with round-robin tie-breaking (default) |
+| FIFO | 依 request 到達順序（預設） |
+| Fixed Priority | 依 QoS priority 高者優先 |
+| Round Robin | 基本輪詢 |
+| Rotate | 每次 grant 後 pointer 旋轉至下一 input |
 
 The allocator strategy is selected by the NocConfig string (`vc_allocator`, `sw_allocator`) and instantiated by the factory at construction time.
 
@@ -888,7 +889,7 @@ The `dump_state()` function outputs the complete internal state of every router,
 | Credit-based flow control | Y | Per-VC credit counters (Credit-Based mode) |
 | Valid/Ready handshake | Y | AXI-style backpressure (Valid/Ready mode) |
 | AXI protocol (AW/W/AR/B/R) | Y | Burst, reorder, interleaving |
-| QoS-aware arbitration | Y | 16-level priority + round-robin tie-break |
+| Pluggable arbitration | Y | FIFO / Fixed Priority / Round Robin / Rotate |
 | ECC generate/check | Y | SECDED behavioural model |
 | Configurable channel delay | Y | Channel\<T\> N-cycle pipeline |
 | Deadlock detection | Y | Configurable forward progress timeout |
@@ -951,7 +952,7 @@ Integration tests exercise end-to-end transaction flows through a small mesh:
 | Multi-hop | 4×4 mesh, corner-to-corner |
 | Backpressure | Buffer full → flow control |
 | Credit flow | Credit-Based mode credit exchange |
-| QoS priority | High-priority preemption |
+| Arbitration scheme | FIFO / Fixed / RR / Rotate correctness |
 | Deadlock detection | Timeout and abort |
 | Multiple outstanding | N transactions in flight |
 | Gateway injection | HOST_DMA mode |

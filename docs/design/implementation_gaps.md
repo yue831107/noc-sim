@@ -47,12 +47,12 @@ prerequisite: []
 
 ## Medium Priority
 
-### M-1: QoS Regulator response_bytes 來源
+### M-1: ~~QoS Regulator response_bytes 來源~~ [RESOLVED]
 
-- **所在文件**: `06_qos.md` §2.4
-- **說明**: 提到 NMU 需提供 `on_response(bytes)` callback，但具體 callback 機制（Phase 8 哪個時序？累計 or 單筆？）未定義。
-- **影響**: QoS Regulator 實作正確性
-- **待決策**: 定義 callback 時序與語義
+- **所在文件**: `06_qos.md` §2.4, §7.3
+- **說明**: 原始設計中 Regulator 需追蹤 response bytes，依賴 `on_response(bytes)` callback。重寫後 Regulator 改為追蹤 request bytes（NMU 注入時即可計算），不再需要 response callback。
+- **影響**: 已解決 — callback 來源問題不再存在
+- **狀態**: **RESOLVED**（參見 06_qos.md §2.4 與 §7.3）
 
 ### M-2: Multi-port LOCAL no-UTurn 規則 Use Case
 

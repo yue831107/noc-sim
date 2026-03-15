@@ -380,14 +380,14 @@ FREE ──► ALLOCATED ──► RESPONSE_RECEIVED ──► READY_TO_RELEASE 
 |------|---------|------|
 | Bypass | `awqos` / `arqos` | AXI QoS 直通 |
 | Fixed | CSR 配置值 | 固定優先級 |
-| Limiter | 超標 → LOW_PRIORITY | 限制頻寬上限 |
-| Regulator | BASE_QOS + urgency | 保證最低頻寬 |
+| Limiter | 超標 → 阻塞 request | 硬性頻寬上限 |
+| Regulator | 超標 → 降低 urgency/hurry | 軟性頻寬控制 |
 
 W flit 的 `qos` 繼承對應 AW flit 值。Response flit 的 `qos` 繼承 request（由 NSU Request Info Store 提供）。
 
 詳見 [QoS Design](06_qos.md)。
 
-> **Testability：** 測試 4 種模式各自的 QoS output。Bypass 模式驗證 `flit.qos == awqos`。Regulator 模式驗證 urgency 隨頻寬不足自動提升。
+> **Testability：** 測試 4 種模式各自的 QoS output。Bypass 模式驗證 `flit.qos == awqos`。Limiter 模式驗證超標時 request 被 stall（阻塞注入）。Regulator 模式驗證超標時 urgency 降低。
 
 ---
 

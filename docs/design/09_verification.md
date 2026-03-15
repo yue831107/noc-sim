@@ -41,7 +41,7 @@ prerequisite: [08_simulation.md]
 | Flit (Header) | pack/unpack round-trip, bit-field accuracy | 6 |
 | XY Router | routing decision for all 5 output ports, edge cases | 12 |
 | Path Lock | lock/unlock FSM, state transitions | 6 |
-| QoS-Aware Arbiter | QoS priority, Round-Robin fairness | 10 |
+| Arbitration Scheme | FIFO / Fixed / RR / Rotate correctness | 10 |
 | Crossbar | N×N switching, no-uturn, no-self-loop | 8 |
 | Credit Counter | init/consume/release, underflow assert | 6 |
 | NMU | flit packing (AW/W/AR), RoB allocate/release | 12 |
