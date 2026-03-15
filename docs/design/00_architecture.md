@@ -156,6 +156,8 @@ prerequisite: []
   └─────────────────────────────────────────────────────────────┘
 ```
 
+> 當本地 AXI 寬度非 256-bit 時，Width Converter 位於 AXI port 與 NI 之間（`Local AXI ↔ Width Converter ↔ NI`），256-bit 時為 bypass（wire-through）。詳見 [Width Converter](10_width_converter.md)。
+
 ---
 
 ## 2. Data Flow
@@ -469,34 +471,18 @@ CA Model 為主控方。當某個 CA Router / CA NI 被替換為 RTL 時，DPI-C
 
 ## 6. 8-Phase Simulation Cycle
 
-CA Model 將 RTL 的並行行為拆為 8 個循序 phase，以 ordering 保證因果正確（詳細 Phase 4 state machine 與 credit 時序見 [Simulation Platform](08_simulation.md) §6）：
+CA Model 將 RTL 的並行行為拆為 8 個循序 phase，以 ordering 保證因果正確。完整 Phase 定義、RTL 映射與 credit 時序見 [Simulation Platform](08_simulation.md) §6（single source of truth）。
 
-```
-  ┌─── Cycle N ──────────────────────────────────────────────────────────┐
-  │                                                                       │
-  │  Phase 1: Sample         in_valid && out_ready → push to buffer      │
-  │  Phase 2: Clear Inputs   防止重複 sample                              │
-  │  Phase 3: Update Ready   out_ready = !buffer.full()                  │
-  │  Phase 4: Route & Forward RC→VA→SA→ST pipeline + credit return 產生   │
-  │  Phase 5: Wire All       Channel<T> 交換 output → 對端 input         │
-  │  Phase 6: Clear Accepted  out_valid && in_ready → 清除 output        │
-  │  Phase 7: Credit Update  上游收到 credit → counter +1                 │
-  │  Phase 8: NI Process     NMU/NSU AXI ↔ flit conversion              │
-  │                                                                       │
-  └───────────────────────────────────────────────────────────────────────┘
-
-  RTL Mapping:
-  ┌────────────────────────┬──────────────────────────────────┐
-  │ RTL posedge clk        │ CA Phase                         │
-  ├────────────────────────┼──────────────────────────────────┤
-  │ Input FF latch         │ Phase 1 (Sample)                 │
-  │ Output FF update       │ Phase 6 (Clear Accepted)         │
-  │ Credit counter update  │ Phase 7 (Credit Update)          │
-  ├────────────────────────┼──────────────────────────────────┤
-  │ Combinational logic    │ Phase 3 (Ready) + Phase 4 (Pipe) │
-  │ Wire propagation       │ Phase 5 (Wire All)               │
-  └────────────────────────┴──────────────────────────────────┘
-```
+| Phase | Name | 概要 |
+|-------|------|------|
+| 1 | Sample | `in_valid && out_ready` → push to buffer |
+| 2 | Clear Inputs | 防止重複 sample |
+| 3 | Update Ready | `out_ready = !buffer.full()` |
+| 4 | Route & Forward | RC → VA → SA → ST pipeline + credit return |
+| 5 | Wire All | Channel\<T\> 交換 output → 對端 input |
+| 6 | Clear Accepted | `out_valid && in_ready` → 清除 output |
+| 7 | Credit Update | 上游收到 credit → counter +1 |
+| 8 | NI Process | NMU/NSU AXI ↔ flit conversion |
 
 ---
 
@@ -785,7 +771,7 @@ Mesh 內由上到下分 3 層：
 | 元件 | 層次 | 內容 |
 |------|------|------|
 | **CA Router** | Public | `tick()` Phase 1-4、`post_wire()` Phase 6-7、`get_output()/set_input()` |
-| | Pipeline | 6 stage：InputQueuing → RouteEval → VCAllocEval → SWAllocEval → SwitchTraverse → OutputQueue |
+| | Pipeline | Phase 4 sub-stages：RC (Route Computation) → VA (VC Allocation) → SA (Switch Allocation) → ST (Switch Traversal) → OQ (Output Queuing)。詳見 [Router](03_router.md) §5 FR-03 |
 | | Sub-Modules | Input Buffer、Buffer State、Route Computer、Crossbar、Path Lock、Allocator |
 | **CA NI** | Public | `tick()` Phase 8、`get_output()/set_input()` |
 | | NMU | Address Translate → QosGenerate → PackAW/W/AR → ECC Generator → Inject + UnpackB/R + AllocRoB |

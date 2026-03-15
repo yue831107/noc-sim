@@ -56,7 +56,7 @@ prerequisite: []
 
 ### M-2: Multi-port LOCAL no-UTurn 規則 Use Case
 
-- **所在文件**: `03_router.md` FR-10
+- **所在文件**: `03_router.md` FR-08
 - **說明**: 說「L0→L1 inter-port 直連允許」，但 routing function 中 `dst == cur` 時轉 LOCAL、`port_id` 選具體 port，何時會出現 L0→L1 的需求？需釐清 use case。
 - **影響**: 設計清晰度
 - **待決策**: 確認 L0↔L1 inter-port routing 的實際場景（Gateway Host DMA ↔ Local PE?）

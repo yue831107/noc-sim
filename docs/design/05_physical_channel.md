@@ -45,6 +45,8 @@ NoC 採用 Request / Response 雙通道分離架構。每個邏輯 Router 內部
         Total per router pair: 4 × 402 = 1,608 bits (bidirectional)
 ```
 
+> Physical link 的 bit position 定義（valid/ready/flit 在 402-bit 中的排列）見 [Flit Format](02_flit.md) §4.1。
+
 ### 1.3 Deadlock Avoidance
 
 Request 與 Response 使用**獨立 physical link**，從物理層面消除 protocol-level circular dependency：

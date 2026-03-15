@@ -69,8 +69,9 @@ prerequisite: [08_simulation.md]
 | IT-11 | Multi-ID reorder | 不同 axi_id 的 response OoO | RoB per-ID ordering |
 | IT-12 | Credit exhaustion | 持續注入至 credit=0 | Flow control correctness |
 | IT-13 | ECC single-bit error | 注入 1-bit error | ECC correction |
+| IT-09 | Multi-ID OoO reorder | NMU RoB | 不同 axi_id response 亂序返回，RoB per-ID ordering 正確 |
 | IT-14 | ECC double-bit error | 注入 2-bit error | ECC detection, SLVERR |
-| IT-14 | Width Converter | up/down conversion | Data integrity through converter |
+| IT-15 | Width Converter | Width Conv + NI | up/down conversion data integrity |
 
 ---
 
@@ -250,12 +251,12 @@ Metrics Collector 提供統一的效能指標收集介面，支援時間序列�
 | Wormhole lock/unlock | IT-03, IT-07 |
 | QoS arbitration | IT-06 |
 | Credit flow control | IT-12 |
-| RoB reorder | IT-09, IT-10 |
+| RoB reorder | IT-09, IT-11 |
 | ECC generate/check | IT-13, IT-14 |
 | Backpressure propagation | IT-07, IT-12 |
 | NMU injection buffer | IT-10 |
 | NSU W-flit reassembly | IT-03 |
-| Width Converter | IT-16 |
+| Width Converter | IT-15 |
 
 ---
 

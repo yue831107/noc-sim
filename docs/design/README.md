@@ -32,12 +32,13 @@
 | 03 | [Router](03_router.md) | Ports, XY Routing, Wormhole, Pipeline |
 | 04 | [Network Interface](04_network_interface.md) | NMU/NSU, AXI ↔ Flit conversion, RoB, ECC |
 
-### Architecture — 05~08
+### Physical Layer & QoS — 05~06
 
 | # | Document | Description |
 |---|----------|-------------|
 | 05 | [Physical Channel](05_physical_channel.md) | Dual Req/Rsp channel architecture, HoL Blocking analysis |
 | 06 | [QoS Design](06_qos.md) | QoS priority design, Generator, Probe |
+| 07 | *(Reserved)* | — |
 
 ### Simulation & Verification — 08~09
 
@@ -86,5 +87,5 @@
 | Flit format | [02_flit.md](02_flit.md) §1.1 |
 | NocConfig configurable parameters | [08_simulation.md](08_simulation.md) §3.1 |
 | QoS CSR memory map | [06_qos.md](06_qos.md) §4.1 |
-| Router pipeline stages | [03_router.md](03_router.md) §3 |
+| Router pipeline stages | [03_router.md](03_router.md) §5 FR-03 |
 | NI functional requirements | [04_network_interface.md](04_network_interface.md) §2 |

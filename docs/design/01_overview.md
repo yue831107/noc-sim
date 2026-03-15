@@ -51,6 +51,8 @@ prerequisite: [00_architecture.md]
 | `mesh_cols` | 4 | Number of columns |
 | `mesh_rows` | 4 | Number of rows |
 
+> **Naming convention：** JSON config 使用 snake_case（`mesh_cols`），C++ 常數使用 SCREAMING_CASE（`MESH_COLS`）。
+
 ### 2.1 Flit 與 Link 參數
 
 以下參數與 [Flit 格式](02_flit.md) 一致：
